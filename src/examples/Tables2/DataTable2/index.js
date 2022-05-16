@@ -39,7 +39,7 @@ import MDPagination from "components/MDPagination";
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
 
-function DataTable({
+function DataTable2({
   entriesPerPage,
   canSearch,
   showTotalEntries,
@@ -288,7 +288,7 @@ DataTable.propTypes = {
   ]),
   canSearch: PropTypes.bool,
   showTotalEntries: PropTypes.bool,
-  table: PropTypes.objectOf(PropTypes.arrayOf).isRequired,
+  table: PropTypes.objectOf(PropTypes.array).isRequired,
   pagination: PropTypes.shape({
     variant: PropTypes.oneOf(["contained", "gradient"]),
     color: PropTypes.oneOf([
@@ -306,4 +306,4 @@ DataTable.propTypes = {
   noEndBorder: PropTypes.bool,
 };
 
-export default DataTable;
+export default DataTable2;

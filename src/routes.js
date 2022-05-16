@@ -38,6 +38,7 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
+
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -47,6 +48,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Tables2 from "layouts/tables2";
 
 const routes = [
   {
@@ -68,6 +70,14 @@ const routes = [
   {
     type: "collapse",
     name: "Caterer",
+    key: "tables2",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/tables2",
+    component: <Tables2 />,
+  },
+  {
+    type: "collapse",
+    name: "Billing",
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
