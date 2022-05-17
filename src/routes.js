@@ -53,7 +53,7 @@ import Tables2 from "layouts/tables2";
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "CERV Dashboard",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",

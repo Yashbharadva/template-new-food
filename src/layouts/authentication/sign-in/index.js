@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -34,6 +34,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import { UserContext } from "providers/user/user.providers";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
@@ -43,9 +44,20 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const { LogInUser } = useContext(UserContext);
+  const [userCredentials, setUserCredentials] = useState({ email: "", password: "" });
+  const { email, password } = userCredentials;
+  const handleChange = (event) => {
+    const { value, name } = event.target;
+    setUserCredentials({ ...userCredentials, [name]: value });
+  };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    LogInUser(userCredentials);
+    console.log(userCredentials);
+  };
   return (
     <BasicLayout image={bgImage}>
       <Card>
@@ -61,7 +73,7 @@ function Basic() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Sign in
+            Sign In
           </MDTypography>
           <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
@@ -84,10 +96,24 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput
+                name="email"
+                type="email"
+                label="Email"
+                value={email}
+                onChange={handleChange}
+                fullWidth
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput
+                name="password"
+                type="password"
+                label="Password"
+                value={password}
+                onChange={handleChange}
+                fullWidth
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -102,7 +128,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onSubmit={handleSubmit}>
                 sign in
               </MDButton>
             </MDBox>
