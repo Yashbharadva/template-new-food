@@ -67,16 +67,16 @@ export default function data() {
             <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
           </MDBox>
         ),
-        // employed: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     23/04/18
-        //   </MDTypography>
-        // ),
-        // action: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     Edit
-        //   </MDTypography>
-        // ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
       },
       {
         author: <Author image={team3} name="Vatsal Patel" email="alexa@creative-tim.com" />,
@@ -86,16 +86,16 @@ export default function data() {
             <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
           </MDBox>
         ),
-        // employed: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     11/01/19
-        //   </MDTypography>
-        // ),
-        // action: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     Edit
-        //   </MDTypography>
-        // ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            11/01/19
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
       },
       {
         author: <Author image={team4} name="Tanish Jain" email="laurent@creative-tim.com" />,
@@ -105,16 +105,16 @@ export default function data() {
             <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
           </MDBox>
         ),
-        // employed: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     19/09/17
-        //   </MDTypography>
-        // ),
-        // action: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     Edit
-        //   </MDTypography>
-        // ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            19/09/17
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
       },
       {
         author: <Author image={team3} name="Akash vyas" email="michael@creative-tim.com" />,
@@ -124,16 +124,16 @@ export default function data() {
             <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
           </MDBox>
         ),
-        // employed: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     24/12/08
-        //   </MDTypography>
-        // ),
-        // action: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     Edit
-        //   </MDTypography>
-        // ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            24/12/08
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
       },
       {
         author: <Author image={team3} name="Himanshu G" email="richard@creative-tim.com" />,
@@ -143,16 +143,16 @@ export default function data() {
             <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
           </MDBox>
         ),
-        // employed: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     04/10/21
-        //   </MDTypography>
-        // ),
-        // action: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     Edit
-        //   </MDTypography>
-        // ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            04/10/21
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
       },
       {
         author: <Author image={team4} name="Tushar M" email="miriam@creative-tim.com" />,
@@ -162,16 +162,149 @@ export default function data() {
             <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
           </MDBox>
         ),
-        // employed: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     14/09/20
-        //   </MDTypography>
-        // ),
-        // action: (
-        //   <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        //     Edit
-        //   </MDTypography>
-        // ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            14/09/20
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+      },
+      {
+        author: <Author image={team2} name="Ishan Gohil" email="yashbharadva@gmail.com" />,
+        function: <Job title="Manager" description="Organization" />,
+        status: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+      },
+      {
+        author: <Author image={team2} name="Ishan Gohil" email="yashbharadva@gmail.com" />,
+        function: <Job title="Manager" description="Organization" />,
+        status: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+      },
+      {
+        author: <Author image={team2} name="Ishan Gohil" email="yashbharadva@gmail.com" />,
+        function: <Job title="Manager" description="Organization" />,
+        status: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+      },
+      {
+        author: <Author image={team2} name="Ishan Gohil" email="yashbharadva@gmail.com" />,
+        function: <Job title="Manager" description="Organization" />,
+        status: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+      },
+      {
+        author: <Author image={team3} name="Vatsal Patel" email="alexa@creative-tim.com" />,
+        function: <Job title="Programator" description="Developer" />,
+        status: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            11/01/19
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+      },
+      {
+        author: <Author image={team3} name="Vatsal Patel" email="alexa@creative-tim.com" />,
+        function: <Job title="Programator" description="Developer" />,
+        status: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            11/01/19
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
+      },
+      {
+        author: <Author image={team2} name="Ishan Gohil" email="yashbharadva@gmail.com" />,
+        function: <Job title="Manager" description="Organization" />,
+        status: (
+          <MDBox ml={-1}>
+            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+          </MDBox>
+        ),
+        employed: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            23/04/18
+          </MDTypography>
+        ),
+        action: (
+          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        ),
       },
     ],
   };
