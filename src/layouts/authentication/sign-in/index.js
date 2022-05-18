@@ -17,6 +17,7 @@ import { useState, useContext } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -35,6 +36,7 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import { UserContext } from "providers/user/user.providers";
+// import logInUser from "providers/user/user.utils";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
@@ -43,14 +45,34 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 function Basic() {
+  const { LogInUser } = useContext(UserContext);
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const { LogInUser } = useContext(UserContext);
-  const [userCredentials, setUserCredentials] = useState({ email: "", password: "" });
+  const [userCredentials, setCredentials] = useState({ email: "", password: "", role: 3 });
   const { email, password } = userCredentials;
+  fetch("https://cerv-api.herokuapp.com/users/login", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(userCredentials),
+  })
+    .then(async (res) => {
+      const resData = await res.json();
+      console.log(resData);
+      if (resData.status === 0) {
+        return window.alert(resData.ErrorDescription || ReadableStream.message);
+      }
+      localStorage.setItem("user-info", JSON.stringify(resData));
+      return window.alert(resData);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
   const handleChange = (event) => {
     const { value, name } = event.target;
-    setUserCredentials({ ...userCredentials, [name]: value });
+    setCredentials({ ...userCredentials, [name]: value });
   };
 
   const handleSubmit = (event) => {
@@ -94,7 +116,7 @@ function Basic() {
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
+          <MDBox component="form" role="form" onSubmit={handleSubmit}>
             <MDBox mb={2}>
               <MDInput
                 name="email"
@@ -128,7 +150,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth onSubmit={handleSubmit}>
+              <MDButton variant="gradient" color="info" fullWidth>
                 sign in
               </MDButton>
             </MDBox>
@@ -153,5 +175,4 @@ function Basic() {
     </BasicLayout>
   );
 }
-
 export default Basic;

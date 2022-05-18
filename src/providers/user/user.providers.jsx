@@ -1,13 +1,21 @@
-import React, { useState, createContext, useMemo } from "react";
+import React, { useState, createContext, useMemo, useEffect } from "react";
 import logInUser from "./user.utils";
 
 export const UserContext = createContext({
-  user: [],
+  user: {},
   LogInUser: () => {},
 });
 
 function UserProvider(children) {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    setUser(localStorage.getItem("user-info"));
+  }, []);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const LogInUser = (userCredentials) => setUser(logInUser(userCredentials));
   const loginProviderValue = useMemo(() => ({ user, LogInUser }), [user, LogInUser]);
