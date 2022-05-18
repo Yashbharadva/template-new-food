@@ -17,7 +17,6 @@ import { useState, useContext } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
-// import { useHistory } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -34,7 +33,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
+// import MDButton from "components/MDButton";
 import { UserContext } from "providers/user/user.providers";
 // import logInUser from "providers/user/user.utils";
 
@@ -43,11 +42,35 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import { Button } from "@mui/material";
 
 function Basic() {
   const { LogInUser } = useContext(UserContext);
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const Navigate = useNavigate();
+  // useEffect(() => {
+  //   if (localStorage.getItem("user-info")) {
+  //     Navigate.push("/add");
+  //   }
+  // }, []);
+  // async function login() {
+  //   console.warn(email, password);
+  //   const item = { email, password };
+  //   let result = await fetch("https://cerv-api.herokuapp.com/users/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //       Accept: "application/json",
+  //     },
+  //     body: JSON.stringify(item),
+  //   });
+  //   result = await result.json();
+  //   localStorage.setItem("user-info", JSON.stringify(result));
+  //   Navigate.push("/add");
+  // }
   const [userCredentials, setCredentials] = useState({ email: "", password: "", role: 3 });
   const { email, password } = userCredentials;
   fetch("https://cerv-api.herokuapp.com/users/login", {
@@ -61,10 +84,10 @@ function Basic() {
       const resData = await res.json();
       console.log(resData);
       if (resData.status === 0) {
-        return window.alert(resData.ErrorDescription || ReadableStream.message);
+        return ReadableStream.message;
       }
       localStorage.setItem("user-info", JSON.stringify(resData));
-      return window.alert(resData);
+      return resData;
     })
     .catch((err) => {
       console.log(err);
@@ -78,7 +101,7 @@ function Basic() {
   const handleSubmit = (event) => {
     event.preventDefault();
     LogInUser(userCredentials);
-    console.log(userCredentials);
+    console.log(userCredentials.event);
   };
   return (
     <BasicLayout image={bgImage}>
@@ -116,7 +139,7 @@ function Basic() {
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form" onSubmit={handleSubmit}>
+          <MDBox component="form" role="form">
             <MDBox mb={2}>
               <MDInput
                 name="email"
@@ -150,9 +173,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                sign in
-              </MDButton>
+              <Button onChange={handleSubmit}> Sign In</Button>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
