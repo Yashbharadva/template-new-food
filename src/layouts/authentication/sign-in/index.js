@@ -13,10 +13,11 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useContext } from "react";
+import { useState } from "react";
+// import axios from "axios";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -34,7 +35,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 // import MDButton from "components/MDButton";
-import { UserContext } from "providers/user/user.providers";
+// import { UserContext } from "providers/user/user.providers";
 // import logInUser from "providers/user/user.utils";
 
 // Authentication layout components
@@ -45,53 +46,41 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 import { Button } from "@mui/material";
 
 function Basic() {
-  const { LogInUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
-  // const Navigate = useNavigate();
-  // useEffect(() => {
-  //   if (localStorage.getItem("user-info")) {
-  //     Navigate.push("/add");
-  //   }
-  // }, []);
-  // async function login() {
-  //   console.warn(email, password);
-  //   const item = { email, password };
-  //   let result = await fetch("https://cerv-api.herokuapp.com/users/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       Accept: "application/json",
-  //     },
-  //     body: JSON.stringify(item),
-  //   });
-  //   result = await result.json();
-  //   localStorage.setItem("user-info", JSON.stringify(result));
-  //   Navigate.push("/add");
-  // }
-  const [userCredentials, setCredentials] = useState({ email: "", password: "", role: 3 });
+  // const handleEmail = (e) => {
+  //   setEmail(e.target.value);
+  // };
+
+  // const handlePassword = (e) => {
+  //   setPassword(e.target.value);
+  // };
+
+  // const handleApi = () => {
+  //   console.log({ email, password });
+  //   axios
+  //     .post("https://cerv-api.herokuapp.com/users/login", {
+  //       email: email,
+  //       password: password,
+  //     })
+  //     .then((result) => {
+  //       console.log(result);
+  //     })
+  //     .catch((error) => {
+  //       alert("service error");
+  //       console.log(error);
+  //     });
+  // };
+  const [userCredentials, setCredentials] = useState({
+    email: "",
+    password: "",
+    role: 3,
+    device_token: "xx",
+  });
   const { email, password } = userCredentials;
-  fetch("https://cerv-api.herokuapp.com/users/login", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(userCredentials),
-  })
-    .then(async (res) => {
-      const resData = await res.json();
-      console.log(resData);
-      if (resData.status === 0) {
-        return ReadableStream.message;
-      }
-      localStorage.setItem("user-info", JSON.stringify(resData));
-      return resData;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -100,8 +89,46 @@ function Basic() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    LogInUser(userCredentials);
-    console.log(userCredentials.event);
+    fetch("https://cerv-api.herokuapp.com/users/login", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(userCredentials),
+    })
+      .then(async (res) => {
+        const resData = await res.json();
+        console.log(resData);
+        if (resData.status === 0) {
+          return ReadableStream.message;
+        }
+        localStorage.setItem("user-info", JSON.stringify(resData));
+        return window.alert(resData.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log(userCredentials);
+    navigate("/dashboard");
+  };
+
+  const handlelogout = () => {
+    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+    fetch("https://cerv-api.herokuapp.com/users/logout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedUser.token}`,
+      },
+    })
+      .then(async (res) => {
+        localStorage.clear("user-info");
+        const resJSON = await res.json();
+        window.alert(resJSON.message);
+        console.log(resJSON);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <BasicLayout image={bgImage}>
@@ -139,7 +166,7 @@ function Basic() {
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
+          <MDBox component="form" role="form" onSubmit={handleSubmit}>
             <MDBox mb={2}>
               <MDInput
                 name="email"
@@ -173,7 +200,8 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <Button onChange={handleSubmit}> Sign In</Button>
+              <Button onClick={handleSubmit}> Sign In</Button>
+              <Button onClick={handlelogout}> Log Out</Button>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">

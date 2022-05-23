@@ -123,6 +123,13 @@ const routes = [
     route: "/authentication/sign-up",
     component: <SignUp />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Log out",
+  //   key: "Log-out",
+  //   icon: <Icon fontSize="small">assignment</Icon>,
+  //   route: "/authentication/Log-out",
+  // },
 ];
 
 export default routes;
