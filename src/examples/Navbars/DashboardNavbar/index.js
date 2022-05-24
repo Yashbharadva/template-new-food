@@ -13,10 +13,10 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -53,6 +53,7 @@ import {
   setOpenConfigurator,
 } from "context";
 
+export const UserContext = createContext();
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
@@ -90,6 +91,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const navigate = useNavigate();
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -122,6 +124,26 @@ function DashboardNavbar({ absolute, light, isMini }) {
       return colorValue;
     },
   });
+
+  const handlelogout = () => {
+    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+    fetch("https://cerv-api.herokuapp.com/users/logout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedUser.token}`,
+      },
+    })
+      .then(async (res) => {
+        localStorage.clear("user-info");
+        const resJSON = await res.json();
+        window.alert(resJSON.message);
+        console.log(resJSON);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <AppBar
@@ -178,6 +200,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton>
               {renderMenu()}
             </MDBox>
+            <IconButton color="inherit" size="small" onClick={handlelogout}>
+              Log Out
+            </IconButton>
           </MDBox>
         )}
       </Toolbar>

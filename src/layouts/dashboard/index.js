@@ -34,9 +34,18 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+// import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (!localStorage.getItem("token")) {
+  //     navigate("/authentication/sign-in");
+  //   }
+  // }, []);
 
   return (
     <DashboardLayout>

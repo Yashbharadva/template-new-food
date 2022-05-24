@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React components
-
+import { useEffect } from "react";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
@@ -28,6 +28,23 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 
 export default function data() {
+  // const [customer, setCustomer] = useState([]);
+  const getCustomers = async () => {
+    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+    const response = await fetch("https://cerv-api.herokuapp.com/admin/users/2", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedUser.token}`,
+      },
+    });
+    const customersData = await response.json();
+    console.log(customersData.caterer);
+    // setCustomer(customersData.customers);
+  };
+
+  useEffect(() => {
+    getCustomers();
+  });
   const Author = ({ image, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       <MDAvatar src={image} name={name} size="sm" />

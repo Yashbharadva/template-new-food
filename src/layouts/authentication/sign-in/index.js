@@ -103,33 +103,14 @@ function Basic() {
           return ReadableStream.message;
         }
         localStorage.setItem("user-info", JSON.stringify(resData));
+        navigate("/profile");
         return window.alert(resData.message);
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log(userCredentials);
-    navigate("/dashboard");
   };
 
-  const handlelogout = () => {
-    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
-    fetch("https://cerv-api.herokuapp.com/users/logout", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${parsedUser.token}`,
-      },
-    })
-      .then(async (res) => {
-        localStorage.clear("user-info");
-        const resJSON = await res.json();
-        window.alert(resJSON.message);
-        console.log(resJSON);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   return (
     <BasicLayout image={bgImage}>
       <Card>
@@ -201,7 +182,6 @@ function Basic() {
             </MDBox>
             <MDBox mt={4} mb={1}>
               <Button onClick={handleSubmit}> Sign In</Button>
-              <Button onClick={handlelogout}> Log Out</Button>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
