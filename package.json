@@ -2,6 +2,7 @@
   "name": "material-dashboard-2-react",
   "version": "2.1.0",
   "private": true,
+  "homepage": "http://Yashbharadva.github.io/CERV-live",
   "author": "Creative Tim",
   "license": "See license in https://www.creative-tim.com/license",
   "description": "React version of Material Dashboard 2 by Creative Tim",
@@ -29,7 +30,9 @@
     "axios": "^0.27.2",
     "chart.js": "3.4.1",
     "chroma-js": "2.4.2",
+    "gh-pages": "^4.0.0",
     "i": "0.3.7",
+    "npm": "^8.11.0",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-chartjs-2": "3.0.4",
@@ -54,7 +57,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
+    "predeploy": "sudo yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
