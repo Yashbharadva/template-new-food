@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Skeleton } from "@mui/material";
 import "./authorTable.scss";
 
 export default function data() {
@@ -37,12 +38,12 @@ export default function data() {
         customers: (
           <div>
             {customer.map((item) => (
-              <div key={item.id} item={item}>
+              <Skeleton key={item.id} item={item}>
                 <img src={item.image} alt="" />
                 <div className="name">{item.name}</div>
                 <div className="email">{item.email}</div>
                 <br />
-              </div>
+              </Skeleton>
             ))}
           </div>
         ),

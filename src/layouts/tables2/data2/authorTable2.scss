@@ -6,47 +6,61 @@
     margin-top: 25px;
 }
 
-img{
+img {
     width: 50px;
     border-radius: 99px;
     margin-bottom: 20px;
     margin-top: 20px;
 }
 
-.phone-caterer{
+.phone-caterer {
     margin-top: 1.8rem;
 }
 
-.name-caterer{
+.name-caterer {
     margin-left: 60px;
     margin-top: -70px;
 }
 
-.email-caterer{
+.email-caterer {
     margin-left: 60px;
 }
 
-.image-and-logo {
-    img {
-        width: 20px;
-        height: 20px;
-        margin-top: 25px;
-        margin-left: 20px;
-        cursor: pointer;
+.dash-and-image {
 
-        &:hover {
-            padding: 2px 2px;
-            background-color: aliceblue;
+    // margin-top: -5px;
+    .image-and-logo {
+
+        input {
+            width: 20px;
+            height: 20px;
+            margin-top: 50px;
+            margin-left: 20px;
+            cursor: pointer;
+
+            &:hover {
+                padding: 2px 2px;
+                background-color: aliceblue;
+            }
         }
+    }
+
+
+    .dash {
+        margin-top: 40px;
     }
 }
 
-.dash {
-    margin-top: 20px;
-}
+.approve {
+    margin-top: -28px;
 
-.approve-img {
-    margin-top: 25px;
+    .approve-img {
+
+        input {
+            width: 20px;
+            height: 20px;
+        }
+    }
 }
 
 .button {
@@ -63,7 +77,7 @@ img{
     }
 }
 
-.active-caterer{
+.active-caterer {
     margin-top: 2.0rem;
     padding: 2px 10px;
     border-radius: 100px;
@@ -74,10 +88,14 @@ img{
     margin-top: 25px;
 }
 
-.approve-img {
-    margin-top: 25px;
-}
 
-.not-approve {
-    margin-top: 20px;
+.no-approve {
+    margin-bottom: -20px;
+    .not-approve {
+
+        input {
+            width: 20px;
+            margin-bottom: -40px;
+        }
+    }
 }
