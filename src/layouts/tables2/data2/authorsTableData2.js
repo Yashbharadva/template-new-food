@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import "./authorTable2.scss";
 import check from "../../../assets/images/check.png";
 import close from "../../../assets/images/close.png";
@@ -9,6 +9,7 @@ import cancel from "../../../assets/images/cancel.png";
 export default function data() {
   const [store, setStore] = useState([]);
   const [approve, setApprove] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   // const [reject, setReject] = useState(true);
   // const [toggle, setToggle] = useState();
   // const [visible, setVisible] = useState(true);
@@ -24,6 +25,12 @@ export default function data() {
     // console.log(customersData.caterer);
     setStore(catererData.store);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   const onPressApprove = () => {
     console.log("Approve");
@@ -56,22 +63,45 @@ export default function data() {
       {
         caterer: (
           <div>
-            {store.map((item) => (
-              <div key={item.id} item={item}>
-                <img src={item.caterer.image} alt="" />
-                <div className="name-caterer">{item.caterer.name}</div>
-                <div className="email-caterer">{item.caterer.email}</div>
-              </div>
-            ))}
+            {isLoading
+              ? [...Array(2)].map((i) => (
+                  <div className="caterer-effect" key={i}>
+                    <div className="image-caterer-effect">
+                      <Skeleton animation="wave" variant="circular" width="50px" height="50px" />
+                    </div>
+                    <h3>
+                      <Skeleton width="100px" height="25px" />
+                    </h3>
+                    <h4>
+                      <Skeleton width="150px" height="25px" />
+                    </h4>
+                    <br />
+                  </div>
+                ))
+              : store.map((item) => (
+                  <div key={item.id} item={item}>
+                    <img src={item.caterer.image} alt="" />
+                    <h3 className="name-caterer">{item.caterer.name}</h3>
+                    <h4 className="email-caterer">{item.caterer.email}</h4>
+                  </div>
+                ))}
           </div>
         ),
         Phone_Number: (
           <div>
-            {store.map((item) => (
-              <div key={item.id} item={item}>
-                <div className="phone-caterer">{item.caterer.phone_number}</div>
-              </div>
-            ))}
+            {isLoading
+              ? [...Array(2)].map((i) => (
+                  <div className="phone-number-effect" key={i}>
+                    <h3>
+                      <Skeleton width="150px" height="25px" />
+                    </h3>
+                  </div>
+                ))
+              : store.map((item) => (
+                  <div key={item.id} item={item}>
+                    <div className="phone-caterer">{item.caterer.phone_number}</div>
+                  </div>
+                ))}
           </div>
         ),
         status: (

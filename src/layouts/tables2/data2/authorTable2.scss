@@ -14,7 +14,8 @@ img {
 }
 
 .phone-caterer {
-    margin-top: 1.8rem;
+    margin-top: 2.8rem;
+    margin-bottom: 10px;
 }
 
 .name-caterer {
@@ -27,14 +28,12 @@ img {
 }
 
 .dash-and-image {
-
-    // margin-top: -5px;
     .image-and-logo {
 
         input {
             width: 20px;
             height: 20px;
-            margin-top: 50px;
+            margin-top: 45px;
             margin-left: 20px;
             cursor: pointer;
 
@@ -47,7 +46,7 @@ img {
 
 
     .dash {
-        margin-top: 40px;
+        margin-top: 45px;
     }
 }
 
@@ -60,6 +59,20 @@ img {
             width: 20px;
             height: 20px;
         }
+    }
+}
+
+.caterer-effect {
+    .image-caterer-effect {
+        margin-top: 20px;
+    }
+
+    h3{
+        margin-left: 60px;
+        margin-top: -45px;
+    }
+    h4{
+        margin-left: 60px;
     }
 }
 
@@ -78,7 +91,7 @@ img {
 }
 
 .active-caterer {
-    margin-top: 2.0rem;
+    margin-top: 2.3rem;
     padding: 2px 10px;
     border-radius: 100px;
     background-color: aliceblue;
@@ -91,6 +104,7 @@ img {
 
 .no-approve {
     margin-bottom: -20px;
+
     .not-approve {
 
         input {
