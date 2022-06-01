@@ -52,6 +52,9 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
+// import axios from "axios";
+// import App from "App";
+// import { Search } from "@mui/icons-material";
 
 export const UserContext = createContext();
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -60,6 +63,28 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const
+  // const [query, setQuery] = useState("");
+  // const [data, setData] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await axios.get(`https://cerv-api.herokuapp.com/admin/users/1?q={query}`);
+  //     setData(res.data);
+  //   };
+  //   if (query.length === 0 || query.length > 2) fetchData();
+  // }, [query]);
+
+  // App.get((req, res) => {
+  //   const { q } = req.query;
+
+  //   const keys = ["name", "image", "email", "phone_number", "is_active"];
+
+  //   const search = () => {
+  //     data.filter((item) => keys.some((key) => item[key].toLowerCase().includes(q)));
+  //   };
+  //   res.json(search().slice(0, 4));
+  // });
 
   useEffect(() => {
     // Setting the navbar type
@@ -144,7 +169,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
         console.log(err);
       });
   };
-
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}

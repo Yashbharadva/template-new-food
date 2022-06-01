@@ -106,13 +106,21 @@ export default function data() {
         ),
         status: (
           <div>
-            {store.map((item) => (
-              <div key={item.id} item={item}>
-                <div className="active-caterer">
-                  {item.caterer.is_active ? "online" : "offline"}
-                </div>
-              </div>
-            ))}
+            {isLoading
+              ? [...Array(2)].map((i) => (
+                  <div className="active-effect-onoff" key={i}>
+                    <h3>
+                      <Skeleton width="75px" height="35px" />
+                    </h3>
+                  </div>
+                ))
+              : store.map((item) => (
+                  <div key={item.id} item={item}>
+                    <div className="active-caterer">
+                      {item.caterer.is_active ? "online" : "offline"}
+                    </div>
+                  </div>
+                ))}
           </div>
         ),
         action: (

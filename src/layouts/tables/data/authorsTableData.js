@@ -4,6 +4,9 @@ import { Skeleton } from "@mui/material";
 
 export default function data() {
   const [customer, setCustomer] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [APIData, setAPIData] = useState([]);
+  const [filteredResults, setFilteredResults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const getCustomers = async () => {
     const parsedUser = JSON.parse(localStorage.getItem("user-info"));
@@ -17,6 +20,19 @@ export default function data() {
     // console.log(customersData.customers);
     setCustomer(customersData.customers);
   };
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue)
+    if (searchInput !== ""){
+      const filteredData = APIData.filter((item) => {
+        return Object.values(item).join("").toLowerCase().includes(searchInput.toLowerCase())
+      })
+      setFilteredResults(filteredData)
+    }
+    else{
+      setFilteredResults(APIData)
+    }
+  }
 
   useEffect(() => {
     setTimeout(() => {
