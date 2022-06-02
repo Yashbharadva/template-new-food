@@ -239,8 +239,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   //     .then(setGitPespos)
   //     .then(() => setIsLoading(false));
   // };
-  const [ searchQuery, setSearchQuery ] = useState('')
-  const [ searchResults, setSearchResults ] = useState([])
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = () => {
     const parsedUser = JSON.parse(localStorage.getItem("user-info"));
@@ -254,7 +254,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         const resJSON = await res.json();
         // window.alert(resJSON.message);
         console.log(resJSON);
-        setSearchResults(resJSON.results)
+        setSearchResults(resJSON.results);
       })
       .catch((err) => {
         console.log(err);
@@ -290,8 +290,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
               {/* <input type="search" onChangeText={(e) => setSearchQuery(e)}/> */}
-              <button type="button" onClick={handleSearch} >search</button>
-              <MDInput label="Search here" onChangeText={(e) => setSearchQuery(e)} />
+              <MDInput label="Search here" onChangeText={(e) => setSearchQuery(e)}>
+                <div className="drop-search">
+                  <div className="border-drop">
+                    {searchResults}
+                  </div>
+                </div>
+              </MDInput>
+              <button type="button" onClick={handleSearch}>
+                search
+              </button>
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
