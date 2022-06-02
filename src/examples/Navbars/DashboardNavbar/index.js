@@ -52,6 +52,10 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
+// import fetch from "node-fetch";
+// import data from "layouts/tables/data/authorsTableData";
+
+// import Search from "./search";
 // import axios from "axios";
 // import App from "App";
 // import { Search } from "@mui/icons-material";
@@ -63,29 +67,51 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  const
-  // const [query, setQuery] = useState("");
-  // const [data, setData] = useState([]);
+  // const filter = (e) => {
+  //   const search = fetch("https://cerv-api.herokuapp.com/admin/users/1");
+  //   const keyword = e.target.value;
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get(`https://cerv-api.herokuapp.com/admin/users/1?q={query}`);
-  //     setData(res.data);
-  //   };
-  //   if (query.length === 0 || query.length > 2) fetchData();
-  // }, [query]);
+  //   if (keyword !== "") {
+  //     const filteredData = search.filter((item) =>
+  //       Object.values(item).join("").toLowerCase().includes(keyword.toLowerCase())
+  //     );
+  //     console.log(filteredData);
+  //   }
+  // };
 
-  // App.get((req, res) => {
-  //   const { q } = req.query;
+  // const [fData] = useState("");
+  // const [setCopyData] = useState([]);
+  // const changeData = (e) => {
+  //   // console.log(e);
+  //   const getChangeData = e.toLowerCase();
 
-  //   const keys = ["name", "image", "email", "phone_number", "is_active"];
+  //   if (getChangeData === "") {
+  //     setCopyData(fData);
+  //   } else {
+  //     const storeData = ("https://cerv-api.herokuapp.com/admin/search?term=tan&key=1")
+  //     .then((response) => response.json())
+  //       .then((json) => setData(json));
+  //   }, []);
+  //     setCopyData(storeData);
+  //     console.log(storeData);
+  //   }
+  // };
 
-  //   const search = () => {
-  //     data.filter((item) => keys.some((key) => item[key].toLowerCase().includes(q)));
-  //   };
-  //   res.json(search().slice(0, 4));
-  // });
+  // const [searchItem, setSearchItem] = useState("");
+  // const [gitRepos, setGitPespos] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [lists, setLists] = useState("");
+  // const filter = (e) => {
+  //   const keyword = e.target.value;
 
+  //   if (keyword !== "") {
+  //     const filteredData = felter((ittch("https://cerv-api.herokuapp.com/admin/users/1").fiem) =>
+  //       Object.values(item).join("").toLowerCase().includes(keyword.toLowerCase())
+  //     );
+  //     setLists(filteredData);
+  //     console.log(filteredData);
+  //   }
+  // };
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -93,6 +119,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
     } else {
       setNavbarType("static");
     }
+
+    // useEffect(() => {
+    //   fetch("https://cerv-api.herokuapp.com/admin/search?term=tan&key=1")
+    //     .then((response) => response.json())
+    //     .then((json) => setData(json));
+    //   console.log(data);
+    // }, []);
 
     // A function that sets the transparent state of the navbar.
     function handleTransparentNavbar() {
@@ -169,6 +202,80 @@ function DashboardNavbar({ absolute, light, isMini }) {
         console.log(err);
       });
   };
+
+  // {
+  //   fetch("https://cerv-api.herokuapp.com/admin/users/1")
+  //     .filter((val) => {
+  //       if (searchItem === "") {
+  //         return val;
+  //       } else if (val.item.name.toLowerCase().includes(searchItem.toLowerCase())) {
+  //         return val;
+  //       }
+  //     })
+  //     .map((val, key) => {
+  //       <div key={key}>
+  //         <p>{val.item.name}</p>
+  //       </div>;
+  //     });
+  // }
+
+  // const handleSearchSubmit = () => {
+  //   setIsLoading(true);
+  //   const parsedUser = JSON.parse(localStorage.getItem("search"));
+  //   fetch(`https://cerv-api.herokuapp.com/admin/search?term=tan&key=1`, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedUser.token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then(({ items }) => items ?? [])
+  //     .then((items) =>
+  //       items.map((item) => ({
+  //         id: item.id,
+  //         name: item.name,
+  //       }))
+  //     )
+  //     .then(setGitPespos)
+  //     .then(() => setIsLoading(false));
+  // };
+  const [ searchQuery, setSearchQuery ] = useState('')
+  const [ searchResults, setSearchResults ] = useState([])
+
+  const handleSearch = () => {
+    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+    fetch(`https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`, {
+      headers: {
+        Authorization: `Bearer ${parsedUser.token}`,
+      },
+      method: "GET",
+    })
+      .then(async (res) => {
+        const resJSON = await res.json();
+        // window.alert(resJSON.message);
+        console.log(resJSON);
+        setSearchResults(resJSON.results)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // const handleSearch = async () => {
+  //   const clear = await fetch("https://cerv-api.herokuapp.com/admin/users/1");
+  //   const names = await clear.json();
+
+  //   const matching = names
+  //     .filter((item) => Object.values(item).join("").toLowerCase().includes(toLowerCase()))
+  //     .then(async (clear) => {
+  //       const clearJSON = await clear.json();
+  //       console.log(clearJSON);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -182,7 +289,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
-              <MDInput label="Search here" />
+              {/* <input type="search" onChangeText={(e) => setSearchQuery(e)}/> */}
+              <button type="button" onClick={handleSearch} >search</button>
+              <MDInput label="Search here" onChangeText={(e) => setSearchQuery(e)} />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">

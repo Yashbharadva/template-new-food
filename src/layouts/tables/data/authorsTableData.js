@@ -4,9 +4,9 @@ import { Skeleton } from "@mui/material";
 
 export default function data() {
   const [customer, setCustomer] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
-  const [APIData, setAPIData] = useState([]);
-  const [filteredResults, setFilteredResults] = useState([]);
+  // const [searchInput, setSearchInput] = useState("");
+  // const [APIData, setAPIData] = useState([]);
+  // const [filteredResults, setFilteredResults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const getCustomers = async () => {
     const parsedUser = JSON.parse(localStorage.getItem("user-info"));
@@ -21,18 +21,18 @@ export default function data() {
     setCustomer(customersData.customers);
   };
 
-  const searchItems = (searchValue) => {
-    setSearchInput(searchValue)
-    if (searchInput !== ""){
-      const filteredData = APIData.filter((item) => {
-        return Object.values(item).join("").toLowerCase().includes(searchInput.toLowerCase())
-      })
-      setFilteredResults(filteredData)
-    }
-    else{
-      setFilteredResults(APIData)
-    }
-  }
+  // const searchItems = (searchValue) => {
+  //   setSearchInput(searchValue)
+  //   if (searchInput !== ""){
+  //     const filteredData = APIData.filter((item) => {
+  //       return Object.values(item).join("").toLowerCase().includes(searchInput.toLowerCase())
+  //     })
+  //     setFilteredResults(filteredData)
+  //   }
+  //   else{
+  //     setFilteredResults(APIData)
+  //   }
+  // }
 
   useEffect(() => {
     setTimeout(() => {
@@ -53,8 +53,6 @@ export default function data() {
       { Header: "Customers", accessor: "customers", width: "40%", align: "left" },
       { Header: "phone number", accessor: "phone", align: "left" },
       { Header: "status", accessor: "status", align: "center" },
-      { Header: "employed", accessor: "employed", align: "center" },
-      { Header: "action", accessor: "action", align: "center" },
     ],
     rows: [
       {
