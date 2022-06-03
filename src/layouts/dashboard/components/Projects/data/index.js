@@ -71,15 +71,15 @@ export default function data() {
 
   return {
     columns: [
-      { Header: "companies", accessor: "companies", width: "45%", align: "left" },
-      { Header: "members", accessor: "members", width: "10%", align: "left" },
-      { Header: "budget", accessor: "budget", align: "center" },
-      { Header: "completion", accessor: "completion", align: "center" },
+      // { Header: "companies", accessor: "yash", width: "45%", align: "left" },
+      // { Header: "members", accessor: "members", width: "10%", align: "left" },
+      // { Header: "budget", accessor: "budget", align: "center" },
+      // { Header: "completion", accessor: "completion", align: "center" },
     ],
 
     rows: [
       {
-        companies: <Company image={logoXD} name="Material UI XD Version" />,
+        yash: <Company image={logoXD} name="Material UI XD Version" />,
         members: (
           <MDBox display="flex" py={1}>
             {avatars([

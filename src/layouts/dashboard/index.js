@@ -34,6 +34,9 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import "./dataIndex.css";
+// import { useNavigate } from "react-router";
+// import "./dataindex.styles.scss";
 // import { useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 
@@ -52,13 +55,13 @@ function Dashboard() {
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid className="apply" item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
-                count={281}
+                title="Customers"
+                count={4}
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -67,12 +70,12 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid className="apply-other" item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
+                title="Caterer"
+                count="2"
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -82,23 +85,11 @@ function Dashboard() {
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
-            </MDBox>
+            <MDBox mb={1.5} />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
+              {/* <ComplexStatisticsCard
                 color="primary"
                 icon="person_add"
                 title="Followers"
@@ -108,7 +99,7 @@ function Dashboard() {
                   amount: "",
                   label: "Just updated",
                 }}
-              />
+              /> */}
             </MDBox>
           </Grid>
         </Grid>

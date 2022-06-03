@@ -34,7 +34,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-// import MDButton from "components/MDButton";
+import MDButton from "components/MDButton";
 // import { UserContext } from "providers/user/user.providers";
 // import logInUser from "providers/user/user.utils";
 
@@ -43,12 +43,14 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import { Button } from "@mui/material";
+// import ClipLoader from "react-spinners/ClipLoader";
+// import { Button } from "@mui/material";
 
 function Basic() {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const [loading, setLoading] = useState(false);
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   // const handleEmail = (e) => {
@@ -88,6 +90,7 @@ function Basic() {
   };
 
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     fetch("https://cerv-api.herokuapp.com/users/login", {
       method: "POST",
@@ -99,11 +102,12 @@ function Basic() {
       .then(async (res) => {
         const resData = await res.json();
         console.log(resData);
+        setLoading(false);
         if (resData.status === 0) {
           return ReadableStream.message;
         }
         localStorage.setItem("user-info", JSON.stringify(resData));
-        navigate("/profile");
+        navigate("/dashboard");
         return window.alert(resData.message);
       })
       .catch((err) => {
@@ -181,7 +185,16 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <Button onClick={handleSubmit}> Sign In</Button>
+              {!loading && (
+                <MDButton variant="gradient" color="info" fullWidth onClick={handleSubmit}>
+                  Sign In
+                </MDButton>
+              )}
+              {loading && (
+                <MDButton variant="gradient" color="info" fullWidth disabled>
+                  Loading...
+                </MDButton>
+              )}
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">

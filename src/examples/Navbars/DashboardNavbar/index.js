@@ -150,6 +150,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const navigate = useNavigate();
+  // const navigatewith = useNavigate();
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -339,8 +340,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton>
               {renderMenu()}
             </MDBox>
-            <IconButton color="inherit" size="small" onClick={handlelogout}>
-              Log Out
+            <IconButton color="inherit" size="small">
+              {localStorage.getItem("user-info") ? (
+                <Link to="/dashboard" onClick={handlelogout}>
+                  Log Out
+                </Link>
+              ) : (
+                <Link to="/authentication/sign-in">Sign-in</Link>
+              )}
             </IconButton>
           </MDBox>
         )}
