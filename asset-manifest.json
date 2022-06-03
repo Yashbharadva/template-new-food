@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/template-new-food/static/css/main.efd1254e.css",
+    "main.js": "/template-new-food/static/js/main.ab70619f.js",
+    "static/media/home-decor-3.jpg": "/template-new-food/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
+    "static/media/home-decor-2.jpg": "/template-new-food/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
+    "static/media/home-decor-1.jpg": "/template-new-food/static/media/home-decor-1.05e218fd495ccc65c99d.jpg",
+    "static/media/bg-sign-in-basic.jpeg": "/template-new-food/static/media/bg-sign-in-basic.f327db1d0e4b00ba3c81.jpeg",
+    "static/media/bg-profile.jpeg": "/template-new-food/static/media/bg-profile.af1219a742e09fc7b612.jpeg",
+    "static/media/bg-sign-up-cover.jpeg": "/template-new-food/static/media/bg-sign-up-cover.30c5950b22e74f0d82ba.jpeg",
+    "static/media/home-decor-4.jpeg": "/template-new-food/static/media/home-decor-4.5b448fd339a14695f6aa.jpeg",
+    "static/media/team-1.jpg": "/template-new-food/static/media/team-1.0fd36e0ee93dcfacdef8.jpg",
+    "static/media/bruce-mars.jpg": "/template-new-food/static/media/bruce-mars.8a606c4a6dab54c9ceff.jpg",
+    "static/media/marie.jpg": "/template-new-food/static/media/marie.c28f32663b6432b46f78.jpg",
+    "static/media/team-2.jpg": "/template-new-food/static/media/team-2.13ae2ce3e12f4cfed420.jpg",
+    "static/media/team-3.jpg": "/template-new-food/static/media/team-3.0ef0be95e6850814c79e.jpg",
+    "static/media/ivana-square.jpg": "/template-new-food/static/media/ivana-square.f7bc23b269d1d2509c82.jpg",
+    "static/media/kal-visuals-square.jpg": "/template-new-food/static/media/kal-visuals-square.3210e28a48ff572ae88b.jpg",
+    "static/media/cancel.png": "/template-new-food/static/media/cancel.1c2963ee3467352a1681.png",
+    "static/media/team-4.jpg": "/template-new-food/static/media/team-4.85c82b6e60178804017f.jpg",
+    "static/media/mark.png": "/template-new-food/static/media/mark.b26e2ccee7ab3aad71c9.png",
+    "static/media/logo-slack.svg": "/template-new-food/static/media/logo-slack.7c47c5aa474b5c4fb39fcf05ffb8e4e7.svg",
+    "static/media/logo-xd.svg": "/template-new-food/static/media/logo-xd.6e37886f94dba0c2967ece68a152e30c.svg",
+    "static/media/logo-invision.svg": "/template-new-food/static/media/logo-invision.a1062115730dcd10e1c4f4abe7b9ab33.svg",
+    "static/media/logo-spotify.svg": "/template-new-food/static/media/logo-spotify.e83cf56c9d99a1fdf59e8deb58bbe470.svg",
+    "static/media/logo-jira.svg": "/template-new-food/static/media/logo-jira.c19fd4e416babfbd0fdb0a794188c601.svg",
+    "static/media/logo-atlassian.svg": "/template-new-food/static/media/logo-atlassian.f2b0e8570a4b4ce768854ff3dad1a6e1.svg",
+    "index.html": "/template-new-food/index.html",
+    "main.efd1254e.css.map": "/template-new-food/static/css/main.efd1254e.css.map",
+    "main.ab70619f.js.map": "/template-new-food/static/js/main.ab70619f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.efd1254e.css",
+    "static/js/main.ab70619f.js"
+  ]
+}
