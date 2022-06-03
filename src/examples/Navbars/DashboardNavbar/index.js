@@ -292,9 +292,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               {/* <input type="search" onChangeText={(e) => setSearchQuery(e)}/> */}
               <MDInput label="Search here" onChangeText={(e) => setSearchQuery(e)}>
                 <div className="drop-search">
-                  <div className="border-drop">
-                    {searchResults}
-                  </div>
+                  <div className="border-drop">{searchResults}</div>
                 </div>
               </MDInput>
               <button type="button" onClick={handleSearch}>
