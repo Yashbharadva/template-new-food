@@ -36,7 +36,7 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React layouts
-import Dashboard from "layouts/dashboard";
+// import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 
 // import Billing from "layouts/billing";
@@ -49,6 +49,10 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Tables2 from "layouts/tables2";
+// import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+import Dashboard from "layouts/dashboard";
+// import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
+// import { Link } from "react-router-dom";
 
 const routes = [
   {
@@ -56,7 +60,17 @@ const routes = [
     name: "CERV Dashboard",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
+    // route: (
+    //   <div>
+    //     {localStorage.getItem("user-info") ? (
+    //       <Link to="/dashboard" />
+    //     ) : (
+    //       <Link to="/authentication/sign-in" />
+    //     )}
+    //   </div>
+    // ),
     route: "/dashboard",
+    // component: <div>{() => <DefaultNavbar authorized={false} />}</div>,
     component: <Dashboard />,
   },
   {

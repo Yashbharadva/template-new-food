@@ -52,6 +52,9 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
+
+import search from "../../../assets/images/search.png";
+import "./index.styles.scss";
 // import fetch from "node-fetch";
 // import data from "layouts/tables/data/authorsTableData";
 
@@ -290,15 +293,26 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
-              {/* <input type="search" onChangeText={(e) => setSearchQuery(e)}/> */}
-              <MDInput label="Search here" onChangeText={(e) => setSearchQuery(e)}>
+              {/* <input type="search" onChangeText={(e) => setSearchQuery(e)} /> */}
+              <MDInput
+                className="drop-for-tab"
+                label="Search here"
+                onChangeText={(e) => setSearchQuery(e)}
+              >
                 <div className="drop-search">
                   <div className="border-drop">{searchResults}</div>
                 </div>
               </MDInput>
-              <button type="button" onClick={handleSearch}>
-                search
-              </button>
+              <div className="image-search">
+                <input
+                  type="image"
+                  src={search}
+                  alt=""
+                  onClick={handleSearch}
+                  width="20px"
+                  height="20px"
+                />
+              </div>
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
@@ -342,7 +356,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             </MDBox>
             <IconButton color="inherit" size="small">
               {localStorage.getItem("user-info") ? (
-                <Link to="/dashboard" onClick={handlelogout}>
+                <Link to="/authentication/sign-in" onClick={handlelogout}>
                   Log Out
                 </Link>
               ) : (

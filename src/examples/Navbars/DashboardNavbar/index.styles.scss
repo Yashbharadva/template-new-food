@@ -1,0 +1,27 @@
+.image-search {
+
+    input {
+        // height: 20px;
+        // width: 20px;
+        margin-bottom: 30px;
+        margin-top: -40px;
+        margin-left: 180px;
+    }
+}
+
+.border-drop{
+    height: 250px;
+    width: 250px;
+    background-color: aqua;
+    border: 1px solid black;
+}
+
+.drop-search{
+    margin-top: 5px;
+    width: 300px;
+    height: 200px;
+    background-color: aqua;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: hidden;
+    overflow-y: auto;
+  }
