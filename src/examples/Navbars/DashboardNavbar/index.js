@@ -55,6 +55,7 @@ import {
 
 import search from "../../../assets/images/search.png";
 import "./index.styles.scss";
+// import button from "assets/theme/components/button";
 // import fetch from "node-fetch";
 // import data from "layouts/tables/data/authorsTableData";
 
@@ -243,11 +244,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
   //     .then(setGitPespos)
   //     .then(() => setIsLoading(false));
   // };
+
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [show, setShow] = useState(false);
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    const searchWord = e.target.value;
+    const newFilter = axios("https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1").filter((value) => {
+      return value.name.includes(searchWord);
+    })
+
     const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+    console.log(searchQuery);
     fetch(`https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`, {
       headers: {
         Authorization: `Bearer ${parsedUser.token}`,
@@ -259,11 +268,36 @@ function DashboardNavbar({ absolute, light, isMini }) {
         // window.alert(resJSON.message);
         console.log(resJSON);
         setSearchResults(resJSON.results);
+        setShow(!show);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  // const disableSearch = () => {
+  // };
+
+  // const handleSearch = () => {
+  //   const searchResponse = fetch(
+  //     `https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`
+  //   );
+  //   if (searchResponse.message) {
+  //     setSearchResults(searchResponse.data);
+  //   } else {
+  //     console.log(searchResponse);
+  //   }
+  // };
+
+  // const response = await getRequest(`/customer/search?term=${search}`)
+  //   // console.log(`\n\n\nSearched Products  `, response.data);
+  //   if (response.success) {
+  //     setResult(response.data)
+  //     setLoading(false)
+  //   } else {
+  //     console.log(response);
+  //   }
+  // }
 
   // const handleSearch = async () => {
   //   const clear = await fetch("https://cerv-api.herokuapp.com/admin/users/1");
@@ -294,20 +328,25 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
               {/* <input type="search" onChangeText={(e) => setSearchQuery(e)} /> */}
-              <MDInput
-                className="drop-for-tab"
-                label="Search here"
-                onChangeText={(e) => setSearchQuery(e)}
-              >
+              <MDInput className="drop-for-tab" label="Search here" onChangeText={setSearchQuery} />
+              {show.length != 0 && (
                 <div className="drop-search">
-                  <div className="border-drop">{searchResults}</div>
+                  <div className="border-drop" color="aqua">
+                    {searchResults.map((object) => (
+                      // console.log(object);
+                      <div className="data-serach" key={object.id}>
+                        {object.name}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </MDInput>
+              )}
               <div className="image-search">
                 <input
                   type="image"
                   src={search}
                   alt=""
+                  // disabled={disableSearch}
                   onClick={handleSearch}
                   width="20px"
                   height="20px"

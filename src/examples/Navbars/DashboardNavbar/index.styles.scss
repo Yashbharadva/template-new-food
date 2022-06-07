@@ -9,19 +9,29 @@
     }
 }
 
-.border-drop{
-    height: 250px;
-    width: 250px;
-    background-color: aqua;
-    border: 1px solid black;
+// .border-drop{
+//     height: 250px;
+//     width: 250px;
+//     // background-color: aqua;
+//     border: 1px solid black;
+// }
+
+.drop-search {
+    margin-top: 5px;
+    width: 200px;
+    height: 80px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: auto;
+    overflow-y: auto;
+    position: absolute;
+    cursor: pointer;
+
+    .data-serach{
+        font-size: 15px;
+        margin-left: 30px;
+    }
 }
 
-.drop-search{
-    margin-top: 5px;
-    width: 300px;
-    height: 200px;
-    background-color: aqua;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    overflow: hidden;
-    overflow-y: auto;
-  }
+.drop-search::-webkit-scrollbar{
+    display: none;
+}
