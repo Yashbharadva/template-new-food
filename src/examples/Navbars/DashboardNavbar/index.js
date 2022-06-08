@@ -248,13 +248,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [show, setShow] = useState(false);
+  // const [searchItem, setSearchItem] = useState("");
 
-  const handleSearch = (e) => {
-    const searchWord = e.target.value;
-    const newFilter = axios("https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1").filter((value) => {
-      return value.name.includes(searchWord);
-    })
-
+  const handleSearch = () => {
     const parsedUser = JSON.parse(localStorage.getItem("user-info"));
     console.log(searchQuery);
     fetch(`https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`, {
@@ -328,12 +324,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
               {/* <input type="search" onChangeText={(e) => setSearchQuery(e)} /> */}
-              <MDInput className="drop-for-tab" label="Search here" onChangeText={setSearchQuery} />
-              {show.length != 0 && (
+              <MDInput
+                className="drop-for-tab"
+                label="Search here"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {show && (
                 <div className="drop-search">
                   <div className="border-drop" color="aqua">
                     {searchResults.map((object) => (
-                      // console.log(object);
                       <div className="data-serach" key={object.id}>
                         {object.name}
                       </div>
