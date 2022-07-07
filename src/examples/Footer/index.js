@@ -28,7 +28,7 @@ import MDTypography from "components/MDTypography";
 import typography from "assets/theme/base/typography";
 
 function Footer({ company, links }) {
-  const { href, name } = company;
+  const { href } = company;
   const { size } = typography;
 
   const renderLinks = () =>
@@ -60,19 +60,12 @@ function Footer({ company, links }) {
         fontSize={size.sm}
         px={1.5}
       >
-        &copy; {new Date().getFullYear()}, made with
         <MDBox fontSize={size.md} color="text" mb={-0.5} mx={0.25}>
-          <Icon color="inherit" fontSize="inherit">
-            favorite
-          </Icon>
+          <Icon color="inherit" fontSize="inherit" />
         </MDBox>
-        by
         <Link href={href} target="_blank">
-          <MDTypography variant="button" fontWeight="medium">
-            &nbsp;{name}&nbsp;
-          </MDTypography>
+          <MDTypography variant="button" fontWeight="medium" />
         </Link>
-        for a better web.
       </MDBox>
       <MDBox
         component="ul"

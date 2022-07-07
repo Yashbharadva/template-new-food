@@ -51,6 +51,7 @@ import Icon from "@mui/material/Icon";
 import Tables2 from "layouts/tables2";
 // import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import Dashboard from "layouts/dashboard";
+import Inquiry from "layouts/inquiry";
 // import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
 // import { Link } from "react-router-dom";
 
@@ -80,6 +81,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
     component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "Inquiry",
+    key: "inquiry",
+    icon: <Icon fontSize="small">inquiry</Icon>,
+    route: "/inquiry",
+    component: <Inquiry />,
   },
   {
     type: "collapse",

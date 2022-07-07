@@ -1,12 +1,12 @@
 import React from "react";
 import "./skeleton.css";
 
-const Skeleton = ({ type }) => {
-    return(
-        <div className="skeleton">
-            <div className={type}></div>
-        </div>
-    )
+function Skeleton({ type }) {
+  return (
+    <div className="skeleton">
+      <div className={type} />
+    </div>
+  );
 }
 
 export default Skeleton;
