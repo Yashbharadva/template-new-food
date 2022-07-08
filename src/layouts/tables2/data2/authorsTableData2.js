@@ -7,29 +7,29 @@ import mark from "../../../assets/images/mark.png";
 import cancel from "../../../assets/images/cancel.png";
 
 export default function data() {
-  const [store, setStore] = useState([]);
+  const [store] = useState([]);
   const [approve, setApprove] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const [reject, setReject] = useState(true);
-  // const [toggle, setToggle] = useState();
-  // const [visible, setVisible] = useState(true);
-  const getStore = async () => {
-    const parsedStore = JSON.parse(localStorage.getItem("user-info"));
-    const response = await fetch("https://cerv-api.herokuapp.com/admin/users/2", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${parsedStore.token}`,
-      },
-    });
-    const catererData = await response.json();
-    // console.log(customersData.caterer);
-    setStore(catererData.store);
-  };
+  // // const [reject, setReject] = useState(true);
+  // // const [toggle, setToggle] = useState();
+  // // const [visible, setVisible] = useState(true);
+  // const getStore = async () => {
+  //   const parsedStore = JSON.parse(localStorage.getItem("user-info"));
+  //   const response = await fetch("https://cerv-api.herokuapp.com/admin/users/2", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedStore.token}`,
+  //     },
+  //   });
+  //   const catererData = await response.json();
+  //   // console.log(customersData.caterer);
+  //   setStore(catererData.store);
+  // };
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    });
   }, []);
 
   const onPressApprove = () => {
@@ -42,13 +42,13 @@ export default function data() {
     setApprove(false);
   };
 
-  useEffect(() => {
-    getStore();
-  }, []);
+  // useEffect(() => {
+  //   getStore();
+  // }, []);
 
-  useEffect(() => {
-    console.log(store);
-  }, [store]);
+  // useEffect(() => {
+  //   console.log(store);
+  // }, [store]);
 
   return {
     columns: [

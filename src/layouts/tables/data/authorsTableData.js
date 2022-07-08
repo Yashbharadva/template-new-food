@@ -3,23 +3,23 @@ import "./authorTable.scss";
 import { Skeleton } from "@mui/material";
 
 export default function data() {
-  const [customer, setCustomer] = useState([]);
+  const [customer] = useState([]);
   // const [searchInput, setSearchInput] = useState("");
   // const [APIData, setAPIData] = useState([]);
   // const [filteredResults, setFilteredResults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const getCustomers = async () => {
-    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
-    const response = await fetch("https://cerv-api.herokuapp.com/admin/users/1", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${parsedUser.token}`,
-      },
-    });
-    const customersData = await response.json();
-    // console.log(customersData.customers);
-    setCustomer(customersData.customers);
-  };
+  // const getCustomers = async () => {
+  //   const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+  //   const response = await fetch("https://cerv-api.herokuapp.com/admin/users/1", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedUser.token}`,
+  //     },
+  //   });
+  //   const customersData = await response.json();
+  //   // console.log(customersData.customers);
+  //   setCustomer(customersData.customers);
+  // };
 
   // const searchItems = (searchValue) => {
   //   setSearchInput(searchValue)
@@ -37,12 +37,12 @@ export default function data() {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
-  }, []);
+    });
+  });
 
-  useEffect(() => {
-    getCustomers();
-  }, []);
+  // useEffect(() => {
+  //   getCustomers();
+  // }, []);
 
   useEffect(() => {
     // console.log(customer);

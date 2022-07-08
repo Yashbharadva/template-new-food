@@ -79,8 +79,8 @@ function Basic() {
   const [userCredentials, setCredentials] = useState({
     email: "",
     password: "",
-    role: 3,
-    device_token: "xx",
+    // role: 3,
+    // device_token: "xx",
   });
   const { email, password } = userCredentials;
 
@@ -92,7 +92,7 @@ function Basic() {
   const handleSubmit = (event) => {
     setLoading(true);
     event.preventDefault();
-    fetch("https://cerv-api.herokuapp.com/users/login", {
+    fetch("https://inquiry-ts.herokuapp.com/auth/login", {
       method: "POST",
       headers: {
         "content-type": "application/json",
