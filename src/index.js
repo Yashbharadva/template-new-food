@@ -24,7 +24,7 @@ import { MaterialUIControllerProvider } from "context";
 // import UserProvider from "providers/user/user.providers";
 
 ReactDOM.render(
-  <BrowserRouter basename={process.env.PUBLIC_URL || window.location.pathname || ''}>
+  <BrowserRouter basename={process.env.PUBLIC_URL || window.location.pathname || ""}>
     <MaterialUIControllerProvider>
       <App />
     </MaterialUIControllerProvider>
