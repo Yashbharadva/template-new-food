@@ -10,6 +10,23 @@ import InquiryDrawer from "./inquiryDrawer";
 
 export default function data(showDrawer) {
   const [customer] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getQuery = async () => {
+    const parsedQuery = JSON.parse(localStorage.getItem("user-info"));
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedQuery.token}`,
+      },
+    });
+    const QueryData = await response.json();
+    console.log(QueryData);
+  };
+
+  useEffect(() => {
+    getQuery();
+  }, []);
   // const [placement, setPlacement] = useState("right");
 
   // const [visible, setVisible] = useState(false);
@@ -39,7 +56,6 @@ export default function data(showDrawer) {
   // const [APIData, setAPIData] = useState([]);
   // const [filteredResults, setFilteredResults] = useState([])
   // isLoading
-  const [isLoading, setIsLoading] = useState(true);
   // const getCustomers = async () => {
   //   const parsedUser = JSON.parse(localStorage.getItem("user-info"));
   //   const response = await fetch("https://cerv-api.herokuapp.com/admin/users/1", {
