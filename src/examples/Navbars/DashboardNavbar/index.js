@@ -17,7 +17,6 @@ import { useState, useEffect, createContext } from "react";
 
 // react-router components
 import { useLocation, Link, useNavigate } from "react-router-dom";
-
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
@@ -326,7 +325,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               {/* <input type="search" onChangeText={(e) => setSearchQuery(e)} /> */}
               <MDInput
                 className="drop-for-tab"
-                label="Search here"
+                label="Search here..."
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {show && (
@@ -355,7 +354,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
             <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
+                  <Icon sx={iconsStyle} style={{ marginTop: "-30px" }}>
+                    account_circle
+                  </Icon>
                 </IconButton>
               </Link>
               <IconButton
@@ -375,6 +376,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 color="inherit"
                 sx={navbarIconButton}
                 onClick={handleConfiguratorOpen}
+                style={{ marginTop: "-30px" }}
               >
                 <Icon sx={iconsStyle}>settings</Icon>
               </IconButton>
@@ -387,12 +389,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 aria-haspopup="true"
                 variant="contained"
                 onClick={handleOpenMenu}
+                style={{ marginTop: "-30px" }}
               >
                 <Icon sx={iconsStyle}>notifications</Icon>
               </IconButton>
               {renderMenu()}
             </MDBox>
-            <IconButton color="inherit" size="small">
+            <IconButton color="inherit" size="small" style={{ marginTop: "-30px" }}>
               {localStorage.getItem("user-info") ? (
                 <Link to="/authentication/sign-in" onClick={handlelogout}>
                   Log Out
