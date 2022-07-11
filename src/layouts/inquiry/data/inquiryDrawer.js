@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "antd/dist/antd.css";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -13,7 +13,7 @@ function InquiryDrawer() {
   const [visible, setVisible] = useState(false);
   const [placement] = useState("right");
   // setMainData
-  const [mainData] = useState([]);
+  const [mainData, setMainData] = useState([]);
   // const [text, setText] = useState("");
 
   const showDrawer = () => {
@@ -28,26 +28,26 @@ function InquiryDrawer() {
     setVisible(false);
   };
 
-  // const getQuery = async () => {
-  //   const parsedQuery = await JSON.parse(localStorage.getItem("user-info"));
-  //   // console.log(parsedQuery.data);
-  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedQuery.data.accessToken}`,
-  //       "content-type": "application/json",
-  //     },
-  //     body: JSON.stringify({ query: "1nd query of the day" }),
-  //   });
-  //   const QueryData = await response.json();
-  //   // console.log(QueryData);
-  //   setMainData(QueryData);
-  // };
-  // // console.log(mainData);
+  const getQuery = async () => {
+    const parsedQuery = await JSON.parse(localStorage.getItem("user-info"));
+    // console.log(parsedQuery.data);
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedQuery.data.accessToken}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ query: "1nd query of the day" }),
+    });
+    const QueryData = await response.json();
+    // console.log(QueryData);
+    setMainData(QueryData);
+  };
+  // console.log(mainData);
 
-  // useEffect(() => {
-  //   getQuery();
-  // }, []);
+  useEffect(() => {
+    getQuery();
+  }, []);
 
   return (
     <div className="drawer-styles">
@@ -60,7 +60,7 @@ function InquiryDrawer() {
           tabIndex={0}
           style={{ cursor: "pointer" }}
         >
-          {mainData?.data?.text}1st query of the day
+          {mainData?.data?.text}
         </div>
       </Space>
       <Drawer
