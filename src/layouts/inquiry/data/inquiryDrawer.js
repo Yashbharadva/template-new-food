@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "antd/dist/antd.css";
-// import { Editor } from "react-draft-wysiwyg";
+import { Editor } from "react-draft-wysiwyg";
 // import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import button from "assets/theme/components/button";
 // import "./index.css";
@@ -10,17 +10,21 @@ import { Button, Drawer, Space } from "antd";
 // import parse from "html-react-parser";
 
 function InquiryDrawer() {
+  // visible
   const [visible, setVisible] = useState(false);
   const [childrenDrawer, setChildrenDrawer] = useState(false);
   const [placement] = useState("right");
   // setMainData
   const [mainData] = useState({});
-  const [allQueryFetch, setAllQueryFetch] = useState({});
+  // setAllQueryFetch
+  const [allQueryFetch] = useState({});
+  const [setList] = useState(false);
+  // const [setVisible] = useState(false);
   // const [text, setText] = useState("");
 
-  const showDrawer = () => {
-    setVisible(true);
-  };
+  // const showDrawer = () => {
+  //   setVisible(true);
+  // };
 
   const onClose = () => {
     setVisible(false);
@@ -32,6 +36,14 @@ function InquiryDrawer() {
 
   const onChildrenDrawerClose = () => {
     setChildrenDrawer(false);
+  };
+
+  const expandList = () => {
+    setList(true);
+  };
+
+  const showDrawer = () => {
+    setVisible(true);
   };
 
   // const getQuery = async () => {
@@ -55,23 +67,23 @@ function InquiryDrawer() {
   //   getQuery();
   // }, []);
 
-  const getAllQuery = async () => {
-    const parsedAll = JSON.parse(localStorage.getItem("user-info"));
-    const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${parsedAll.data.accessToken}`,
-      },
-    });
-    const allQueryData = await response.json();
-    console.log(allQueryData);
-    setAllQueryFetch(allQueryData);
-  };
-  // console.log(allQueryFetch);
+  // const getAllQuery = async () => {
+  //   const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedAll.data.accessToken}`,
+  //     },
+  //   });
+  //   const allQueryData = await response.json();
+  //   console.log(allQueryData);
+  //   setAllQueryFetch(allQueryData);
+  // };
+  // // console.log(allQueryFetch);
 
-  useEffect(() => {
-    getAllQuery();
-  }, []);
+  // useEffect(() => {
+  //   getAllQuery();
+  // }, []);
 
   return (
     <div className="drawer-styles">
@@ -79,14 +91,16 @@ function InquiryDrawer() {
         <div
           role="button"
           type="primary"
-          onClick={showDrawer}
-          onKeyDown={showDrawer}
+          onClick={expandList}
+          onKeyDown={expandList}
           tabIndex={0}
           style={{ cursor: "pointer" }}
         >
           {mainData?.data?.text}
-          1st query of day
         </div>
+        {/* {allQueryFetch?.data?.rooms.map((item) => (
+          <div key={item.id}>{item.text}</div>
+        ))} */}
       </Space>
       <Drawer
         title="Drawer with extra actions"
@@ -116,14 +130,23 @@ function InquiryDrawer() {
             style={{ cursor: "pointer" }}
           >
             {allQueryFetch?.data?.rooms.map((item) => (
-              <div key={item.id}>{item.text}</div>
+              <div
+                key={item.id}
+                role="button"
+                type="primary"
+                onClick={showDrawer}
+                onKeyDown={showDrawer}
+                tabIndex={0}
+              >
+                {item.text}dhfjklshgfjklh
+              </div>
             ))}
-            {/* <Editor
+            <Editor
               toolbarClassName="toolbarClassName"
               wrapperClassName="wrapperClassName"
               editorClassName="editorClassName"
               wrapperStyle={{ width: 760, border: "1px solid black", height: "700" }}
-            /> */}
+            />
             {/* <div>
               <CKEditor
                 editor={ClassicEditor}

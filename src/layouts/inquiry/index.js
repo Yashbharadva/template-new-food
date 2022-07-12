@@ -14,6 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
@@ -33,10 +34,30 @@ import DataTable from "examples/Tables/DataTable";
 
 import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
+import "antd/dist/antd.css";
+import { Button, Drawer, Radio, Space } from "antd";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+// import MDButton from "components/MDButton";
+import "./index.css";
 
 function Inquiry() {
   const { columns, rows } = inquiryData();
   const { columns: pColumns, rows: pRows } = inquiry();
+  const [visible, setVisible] = useState(false);
+  const [placement, setPlacement] = useState("right");
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onChange = (e) => {
+    setPlacement(e.target.value);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
 
   return (
     <DashboardLayout>
@@ -55,9 +76,61 @@ function Inquiry() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="h6" color="white">
+                <MDTypography variant="h6" color="white" style={{ marginRight: "-10rem" }}>
                   Inquiry Table
+                  <Space>
+                    <Radio.Group value={placement} onChange={onChange}>
+                      {/* <Radio value="top">top</Radio>
+                    <Radio value="right">right</Radio>
+                    <Radio value="bottom">bottom</Radio>
+                    <Radio value="left">left</Radio> */}
+                    </Radio.Group>
+                    <div
+                      role="button"
+                      className="open-drawer"
+                      type="primary"
+                      onClick={showDrawer}
+                      onKeyDown={showDrawer}
+                      tabIndex={0}
+                      style={{ cursor: "pointer", marginLeft: "80rem" }}
+                    >
+                      +CreateInquiry
+                    </div>
+                  </Space>
+                  <Drawer
+                    title="Drawer with extra actions"
+                    placement={placement}
+                    width={800}
+                    onClose={onClose}
+                    visible={visible}
+                    extra={
+                      <Space>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button type="primary" onClick={onClose}>
+                          OK
+                        </Button>
+                      </Space>
+                    }
+                  >
+                    Text Editor
+                    <Editor
+                      toolbarClassName="toolbarClassName"
+                      wrapperClassName="wrapperClassName"
+                      editorClassName="editorClassName"
+                      wrapperStyle={{ width: 760, border: "1px solid black", height: "700" }}
+                    />
+                  </Drawer>
                 </MDTypography>
+
+                {/* <MDTypography
+                  className="create-inquiry"
+                  variant="h6"
+                  // ml={160}
+                  // mt={-3.3}
+                  color="white"
+                >
+                  +Craete Inquiry
+                </MDTypography> */}
               </MDBox>
               <MDBox pt={3}>
                 <DataTable

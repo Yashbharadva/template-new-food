@@ -14,34 +14,45 @@ export default function data() {
   const [setIsLoading] = useState(true);
   const [mainData] = useState([]);
   const [setVisible] = useState(false);
+  // setAllQueryFetch
+  const [allQueryFetch] = useState({});
+  // const [show, setShow] = useState();
+  // const [mainData] = useState({});
   // const [placement] = useState("right");
 
   const showDrawer = () => {
     setVisible(true);
   };
 
-  // const onChange = (e) => {
-  //   setPlacement(e.target.value);
+  // const toggleShow = () => {
+  //   setShow(!show);
   // };
 
-  // const [placement, setPlacement] = useState("right");
+  // const list = show ? (
+  //   <div>
 
-  // const showDrawer = () => {
-  //   setVisible(true);
-  // };
+  //   </div>
+  // ) : (
+  //   ""
+  // );
 
-  // const onChange = (e) => {
-  //   setPlacement(e.target.value);
+  // const getAllQuery = async () => {
+  //   const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedAll.data.accessToken}`,
+  //     },
+  //   });
+  //   const allQueryData = await response.json();
+  //   console.log(allQueryData);
+  //   setAllQueryFetch(allQueryData);
   // };
+  // // console.log(allQueryFetch);
 
-  // const onChange = (e) => {
-  //   setPlacement(e.target.value);
-  // };
-
-  // const onClose = () => {
-  //   setVisible(false);
-  //   // console.log("close");
-  // };
+  // useEffect(() => {
+  //   getAllQuery();
+  // }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -68,6 +79,32 @@ export default function data() {
         inquiry: (
           // <Button onClick={showDrawer}>
           <div>
+            <div
+              role="button"
+              type="primary"
+              // onClick={toggleShow}
+              // onKeyDown={toggleShow}
+              tabIndex={0}
+              style={{ cursor: "pointer" }}
+            >
+              {/* {mainData?.data?.text}
+              2nd query of day
+              <ui>{list}</ui> */}
+              {allQueryFetch?.data?.rooms.map((item) => (
+                <div
+                  className="allquery"
+                  key={item.id}
+                  item={item}
+                  role="button"
+                  type="primary"
+                  onClick={showDrawer}
+                  onKeyDown={showDrawer}
+                  tabIndex={0}
+                >
+                  {item.text}dkfhgdjkshshdkfjhkjh
+                </div>
+              ))}
+            </div>
             {/* <div>
               <button
                 // role="button"
