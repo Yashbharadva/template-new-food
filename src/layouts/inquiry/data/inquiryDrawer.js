@@ -115,7 +115,7 @@ function InquiryDrawer() {
             onClick={showChildrenDrawer}
             style={{ cursor: "pointer" }}
           >
-            {allQueryFetch?.data.rooms.map((item) => (
+            {allQueryFetch?.data?.rooms?.map((item) => (
               <div key={item.id}>{item.text}</div>
             ))}
             {/* <Editor
