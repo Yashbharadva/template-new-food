@@ -101,14 +101,14 @@ function Basic() {
     })
       .then(async (res) => {
         const resData = await res.json();
-        console.log(resData);
+        // console.log(resData);
         setLoading(false);
         if (resData.status === 0) {
           return ReadableStream.message;
         }
         localStorage.setItem("user-info", JSON.stringify(resData));
         navigate("/profile");
-        return window.alert(resData.message);
+        return console.log(resData.message);
       })
       .catch((err) => {
         console.log(err);

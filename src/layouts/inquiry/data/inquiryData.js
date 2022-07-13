@@ -15,8 +15,8 @@ export default function data() {
   const [mainData] = useState([]);
   const [setVisible] = useState(false);
   // setAllQueryFetch
-  const [allQueryFetch] = useState({});
-  // const [show, setShow] = useState();
+  const [allQueryFetch, setAllQueryFetch] = useState({});
+  const [show, setShow] = useState(true);
   // const [mainData] = useState({});
   // const [placement] = useState("right");
 
@@ -28,31 +28,23 @@ export default function data() {
   //   setShow(!show);
   // };
 
-  // const list = show ? (
-  //   <div>
+  const getAllQuery = async () => {
+    const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedAll.data.accessToken}`,
+      },
+    });
+    const allQueryData = await response.json();
+    console.log(allQueryData);
+    setAllQueryFetch(allQueryData);
+  };
+  // console.log(allQueryFetch);
 
-  //   </div>
-  // ) : (
-  //   ""
-  // );
-
-  // const getAllQuery = async () => {
-  //   const parsedAll = JSON.parse(localStorage.getItem("user-info"));
-  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedAll.data.accessToken}`,
-  //     },
-  //   });
-  //   const allQueryData = await response.json();
-  //   console.log(allQueryData);
-  //   setAllQueryFetch(allQueryData);
-  // };
-  // // console.log(allQueryFetch);
-
-  // useEffect(() => {
-  //   getAllQuery();
-  // }, []);
+  useEffect(() => {
+    getAllQuery();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -93,15 +85,15 @@ export default function data() {
               {allQueryFetch?.data?.rooms.map((item) => (
                 <div
                   className="allquery"
-                  key={item.id}
-                  item={item}
+                  // key={item.id}
+                  // item={item}
                   role="button"
                   type="primary"
-                  onClick={showDrawer}
+                  onClick={() => setShow(() => show)}
                   onKeyDown={showDrawer}
                   tabIndex={0}
                 >
-                  {item.text}dkfhgdjkshshdkfjhkjh
+                  {show ? <div className="item-title">{item.title}</div> : null}
                 </div>
               ))}
             </div>

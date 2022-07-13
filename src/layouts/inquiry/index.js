@@ -46,20 +46,23 @@ function Inquiry() {
   const { columns: pColumns, rows: pRows } = inquiry();
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
-  // const [tags, setTags] = useState([]);
-  // const addTag = (e) => {
-  //   if (e.key === "Enter") {
-  //     if (e.target.value.length > 0) {
-  //       setTags([...tags, e.target.value]);
-  //       e.target.value = "";
-  //     }
-  //   }
-  // };
+  const [tags, setTags] = useState(["Hello"]);
+  const [temp, setTemp] = useState("");
+  // const [dataEditor] = useState([]);
 
-  // const removeTag = (removedTag) => {
-  //   const newTags = tags.filter((tag) => tag !== removedTag);
-  //   setTags(newTags);
-  // };
+  const addTag = (e) => {
+    if (e.key === "Enter") {
+      if (e.target.value.length > 0) {
+        setTags([...tags, e.target.value]);
+        e.target.value = "";
+      }
+    }
+  };
+
+  const removeTag = (removedTag) => {
+    const newTags = tags.filter((tag) => tag !== removedTag);
+    setTags(newTags);
+  };
 
   const showDrawer = () => {
     setVisible(true);
@@ -106,7 +109,12 @@ function Inquiry() {
                       onClick={showDrawer}
                       onKeyDown={showDrawer}
                       tabIndex={0}
-                      style={{ cursor: "pointer" }}
+                      style={{
+                        cursor: "pointer",
+                        position: "absolute",
+                        marginLeft: "80rem",
+                        marginTop: "-1rem",
+                      }}
                     >
                       +CreateInquiry
                     </div>
@@ -126,22 +134,51 @@ function Inquiry() {
                       </Space>
                     }
                   >
-                    {/* <div className="tag-container">
-                      {tags.map((tag, index) => {
-                        return;
-                        <div key={index} className="tag">
-                          {tag} <span onClick={() => removeTag(tag)}>X</span>
+                    <h2>Tags</h2>
+                    <div className="tag-container">
+                      {tags.map((tag) => (
+                        <div className="tag">
+                          {tag}
+                          <span
+                            onClick={() => removeTag(tag)}
+                            onKeyDown={() => removeTag(tag)}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            X
+                          </span>
                         </div>
-                      })}
+                      ))}
+
                       <input onKeyDown={addTag} />
-                    </div> */}
-                    Text Editor
+                    </div>
+                    <div className="change-editor">
+                      <h2>Text Editor</h2>
+                    </div>
                     <Editor
+                      className="editor-text"
+                      onChange={(e) => {
+                        setTemp(e);
+                      }}
                       toolbarClassName="toolbarClassName"
                       wrapperClassName="wrapperClassName"
                       editorClassName="editorClassName"
-                      wrapperStyle={{ width: 760, border: "1px solid black", height: "700" }}
+                      wrapperStyle={{
+                        width: 760,
+                        border: "1px solid black",
+                        height: "700",
+                        marginTop: "5rem",
+                      }}
                     />
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        console.log(temp);
+                      }}
+                    >
+                      SAVE
+                    </Button>
+                    {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
                   </Drawer>
                 </MDTypography>
 
