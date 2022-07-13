@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/template-new-food/static/css/main.12690830.css",
-    "main.js": "/template-new-food/static/js/main.5e050e4f.js",
+    "main.css": "/template-new-food/static/css/main.f740b5ab.css",
+    "main.js": "/template-new-food/static/js/main.36712351.js",
     "static/media/home-decor-3.jpg": "/template-new-food/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/template-new-food/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
     "static/media/home-decor-1.jpg": "/template-new-food/static/media/home-decor-1.05e218fd495ccc65c99d.jpg",
     "static/media/bg-sign-in-basic.jpeg": "/template-new-food/static/media/bg-sign-in-basic.f327db1d0e4b00ba3c81.jpeg",
     "static/media/bg-profile.jpeg": "/template-new-food/static/media/bg-profile.af1219a742e09fc7b612.jpeg",
-    "static/media/bg-sign-up-cover.jpeg": "/template-new-food/static/media/bg-sign-up-cover.30c5950b22e74f0d82ba.jpeg",
+    "static/media/coding2.jpg": "/template-new-food/static/media/coding2.afc591ed190794936a10.jpg",
     "static/media/home-decor-4.jpeg": "/template-new-food/static/media/home-decor-4.5b448fd339a14695f6aa.jpeg",
     "static/media/team-1.jpg": "/template-new-food/static/media/team-1.0fd36e0ee93dcfacdef8.jpg",
     "static/media/bruce-mars.jpg": "/template-new-food/static/media/bruce-mars.8a606c4a6dab54c9ceff.jpg",
@@ -21,11 +21,11 @@
     "static/media/mark.png": "/template-new-food/static/media/mark.b26e2ccee7ab3aad71c9.png",
     "static/media/search.png": "/template-new-food/static/media/search.a27091ef0c45faf8a66e.png",
     "index.html": "/template-new-food/index.html",
-    "main.12690830.css.map": "/template-new-food/static/css/main.12690830.css.map",
-    "main.5e050e4f.js.map": "/template-new-food/static/js/main.5e050e4f.js.map"
+    "main.f740b5ab.css.map": "/template-new-food/static/css/main.f740b5ab.css.map",
+    "main.36712351.js.map": "/template-new-food/static/js/main.36712351.js.map"
   },
   "entrypoints": [
-    "static/css/main.12690830.css",
-    "static/js/main.5e050e4f.js"
+    "static/css/main.f740b5ab.css",
+    "static/js/main.36712351.js"
   ]
 }
