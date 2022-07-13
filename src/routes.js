@@ -52,6 +52,8 @@ import Tables2 from "layouts/tables2";
 // import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 // import Dashboard from "layouts/dashboard";
 import Inquiry from "layouts/inquiry";
+import { Link } from "react-router-dom";
+import { AiOutlineProfile } from "react-icons/ai";
 // import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
 // import { Link } from "react-router-dom";
 
@@ -76,7 +78,7 @@ const routes = [
     type: "collapse",
     name: "Inquiry",
     key: "inquiry",
-    icon: <Icon fontSize="small">inquiry</Icon>,
+    icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
     route: "/inquiry",
     component: <Inquiry />,
   },
@@ -101,7 +103,7 @@ const routes = [
     name: (
       <div>
         {localStorage.getItem("user-info") ? (
-          <Link to="/authentication/sign-in" onClick={handlelogout}>
+          <Link to="/authentication/sign-in" style={{ color: "white" }}>
             Log Out
           </Link>
         ) : (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "antd/dist/antd.css";
-import { Editor } from "react-draft-wysiwyg";
+// import { Editor } from "react-draft-wysiwyg";
 // import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import button from "assets/theme/components/button";
 // import "./index.css";
@@ -141,12 +141,12 @@ function InquiryDrawer() {
                 {item.text}dhfjklshgfjklh
               </div>
             ))}
-            <Editor
+            {/* <Editor
               toolbarClassName="toolbarClassName"
               wrapperClassName="wrapperClassName"
               editorClassName="editorClassName"
               wrapperStyle={{ width: 760, border: "1px solid black", height: "700" }}
-            />
+            /> */}
             {/* <div>
               <CKEditor
                 editor={ClassicEditor}

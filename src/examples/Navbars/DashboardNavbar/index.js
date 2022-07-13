@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState, useEffect, createContext } from "react";
 
 // react-router components
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
@@ -152,7 +152,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const navigatewith = useNavigate();
 
   // Render the notifications menu
@@ -187,25 +187,25 @@ function DashboardNavbar({ absolute, light, isMini }) {
     },
   });
 
-  const handlelogout = () => {
-    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
-    fetch("https://cerv-api.herokuapp.com/users/logout", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${parsedUser.token}`,
-      },
-    })
-      .then(async (res) => {
-        localStorage.clear("user-info");
-        const resJSON = await res.json();
-        window.alert(resJSON.message);
-        console.log(resJSON);
-        navigate("/dashboard");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const handlelogout = () => {
+  //   const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+  //   fetch("https://cerv-api.herokuapp.com/users/logout", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedUser.token}`,
+  //     },
+  //   })
+  //     .then(async (res) => {
+  //       localStorage.clear("user-info");
+  //       const resJSON = await res.json();
+  //       window.alert(resJSON.message);
+  //       console.log(resJSON);
+  //       navigate("/dashboard");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   // {
   //   fetch("https://cerv-api.herokuapp.com/admin/users/1")
@@ -395,15 +395,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton>
               {renderMenu()}
             </MDBox>
-            <IconButton color="inherit" size="small" style={{ marginTop: "-30px" }}>
-              {localStorage.getItem("user-info") ? (
+            <IconButton color="inherit" size="small" style={{ marginTop: "-30px" }} />
+            {/* {localStorage.getItem("user-info") ? (
                 <Link to="/authentication/sign-in" onClick={handlelogout}>
                   Log Out
                 </Link>
               ) : (
                 <Link to="/authentication/sign-in">Sign-in</Link>
-              )}
-            </IconButton>
+              )} */}
+            {/* </IconButton> */}
           </MDBox>
         )}
       </Toolbar>

@@ -46,6 +46,20 @@ function Inquiry() {
   const { columns: pColumns, rows: pRows } = inquiry();
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
+  // const [tags, setTags] = useState([]);
+  // const addTag = (e) => {
+  //   if (e.key === "Enter") {
+  //     if (e.target.value.length > 0) {
+  //       setTags([...tags, e.target.value]);
+  //       e.target.value = "";
+  //     }
+  //   }
+  // };
+
+  // const removeTag = (removedTag) => {
+  //   const newTags = tags.filter((tag) => tag !== removedTag);
+  //   setTags(newTags);
+  // };
 
   const showDrawer = () => {
     setVisible(true);
@@ -92,7 +106,7 @@ function Inquiry() {
                       onClick={showDrawer}
                       onKeyDown={showDrawer}
                       tabIndex={0}
-                      style={{ cursor: "pointer", marginLeft: "80rem" }}
+                      style={{ cursor: "pointer" }}
                     >
                       +CreateInquiry
                     </div>
@@ -112,6 +126,15 @@ function Inquiry() {
                       </Space>
                     }
                   >
+                    {/* <div className="tag-container">
+                      {tags.map((tag, index) => {
+                        return;
+                        <div key={index} className="tag">
+                          {tag} <span onClick={() => removeTag(tag)}>X</span>
+                        </div>
+                      })}
+                      <input onKeyDown={addTag} />
+                    </div> */}
                     Text Editor
                     <Editor
                       toolbarClassName="toolbarClassName"

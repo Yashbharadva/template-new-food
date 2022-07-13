@@ -47,6 +47,7 @@ import {
   setWhiteSidenav,
 } from "context";
 import coding2 from "../../assets/images/coding2.jpg";
+// import photo from "../../assets/images/photo.png";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();

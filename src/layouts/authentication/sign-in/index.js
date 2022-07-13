@@ -107,7 +107,7 @@ function Basic() {
           return ReadableStream.message;
         }
         localStorage.setItem("user-info", JSON.stringify(resData));
-        navigate("/dashboard");
+        navigate("/profile");
         return window.alert(resData.message);
       })
       .catch((err) => {
