@@ -44,12 +44,13 @@ import "./index.css";
 function Inquiry() {
   const { columns, rows } = inquiryData();
   const { columns: pColumns, rows: pRows } = inquiry();
-  const [visible, setVisible] = useState(false);
+  const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [tags, setTags] = useState(["Hello"]);
-  const [temp, setTemp] = useState("");
-  // const [dataEditor] = useState([]);
+  const [visibility, setVisibility] = useState(false);
+  const [title, setTitle] = useState("");
 
+  // const [dataEditor] = useState([]);
   const addTag = (e) => {
     if (e.key === "Enter") {
       if (e.target.value.length > 0) {
@@ -72,8 +73,13 @@ function Inquiry() {
     setPlacement(e.target.value);
   };
 
-  const onClose = () => {
-    setVisible(false);
+  const handleTextChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleSaveClick = () => {
+    localStorage.setItem("title", title);
+    localStorage.setItem("tag", tags);
   };
 
   return (
@@ -93,7 +99,7 @@ function Inquiry() {
                 borderRadius="lg"
                 coloredShadow="info"
               >
-                <MDTypography variant="h6" color="white" style={{ marginRight: "-10rem" }}>
+                <MDTypography variant="h6" color="white">
                   Inquiry Table
                   <Space>
                     <Radio.Group value={placement} onChange={onChange}>
@@ -106,7 +112,7 @@ function Inquiry() {
                       role="button"
                       className="open-drawer"
                       type="primary"
-                      onClick={showDrawer}
+                      onClick={() => setVisibility(true)}
                       onKeyDown={showDrawer}
                       tabIndex={0}
                       style={{
@@ -123,43 +129,57 @@ function Inquiry() {
                     title="Drawer with extra actions"
                     placement={placement}
                     width={800}
-                    onClose={onClose}
-                    visible={visible}
+                    onClose={() => setVisibility(false)}
+                    visible={visibility}
                     extra={
                       <Space>
-                        <Button onClick={onClose}>Cancel</Button>
-                        <Button type="primary" onClick={onClose}>
+                        <Button onClick={() => setVisibility(false)}>Cancel</Button>
+                        <Button type="primary" onClick={() => setVisibility(false)}>
                           OK
                         </Button>
                       </Space>
                     }
+                    style={{ zIndex: 2000 }}
                   >
-                    <h2>Tags</h2>
-                    <div className="tag-container">
-                      {tags.map((tag) => (
-                        <div className="tag">
-                          {tag}
-                          <span
-                            onClick={() => removeTag(tag)}
-                            onKeyDown={() => removeTag(tag)}
-                            role="button"
-                            tabIndex={0}
-                          >
-                            X
-                          </span>
-                        </div>
-                      ))}
-
-                      <input onKeyDown={addTag} />
+                    <div className="title-drawer">
+                      <h2>Title</h2>
+                      <input
+                        type="text"
+                        style={{
+                          width: "35rem",
+                          height: "2.7rem",
+                          border: "1px solid black",
+                          borderRadius: "5px",
+                          color: "black",
+                          outline: "none",
+                        }}
+                        onChange={handleTextChange}
+                      />
+                    </div>
+                    <div className="tag-item" style={{ marginTop: "5rem" }}>
+                      <h2>Tags</h2>
+                      <div className="tag-container">
+                        {tags.map((tag) => (
+                          <div className="tag">
+                            {tag}
+                            <span
+                              onClick={() => removeTag(tag)}
+                              onKeyDown={() => removeTag(tag)}
+                              role="button"
+                              tabIndex={0}
+                            >
+                              X
+                            </span>
+                          </div>
+                        ))}
+                        <input onKeyDown={addTag} />
+                      </div>
                     </div>
                     <div className="change-editor">
                       <h2>Text Editor</h2>
                     </div>
                     <Editor
                       className="editor-text"
-                      onChange={(e) => {
-                        setTemp(e);
-                      }}
                       toolbarClassName="toolbarClassName"
                       wrapperClassName="wrapperClassName"
                       editorClassName="editorClassName"
@@ -167,15 +187,10 @@ function Inquiry() {
                         width: 760,
                         border: "1px solid black",
                         height: "700",
-                        marginTop: "5rem",
+                        color: "black",
                       }}
                     />
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        console.log(temp);
-                      }}
-                    >
+                    <Button type="button" onClick={handleSaveClick}>
                       SAVE
                     </Button>
                     {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}

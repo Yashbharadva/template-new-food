@@ -109,7 +109,6 @@ function InquiryDrawer() {
         width={window.innerWidth > 1000 ? 800 : "auto"}
         onClose={onClose}
         visible={visible}
-        style={{ zIndex: "1" }}
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>

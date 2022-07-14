@@ -16,7 +16,10 @@ export default function data() {
   const [setVisible] = useState(false);
   // setAllQueryFetch
   const [allQueryFetch, setAllQueryFetch] = useState({});
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
+  const [postMainData, setPostMainData] = useState({});
+  // const [isShow, setIsShow] = useState(false);
+  // const [show, setShow] = useState(true);
   // const [mainData] = useState({});
   // const [placement] = useState("right");
 
@@ -24,10 +27,35 @@ export default function data() {
     setVisible(true);
   };
 
-  // const toggleShow = () => {
-  //   setShow(!show);
-  // };
+  const handleShow = () => {
+    setShow((current) => !current);
+  };
 
+  const postQuery = async () => {
+    const parsedPost = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedPost);
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedPost.data.accessToken}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        users: [
+          { id: 1, username: "vatsal19", email: "vatsalp.tcs@gmail.com" },
+          { id: 2, username: "gaurang", email: "gaurangpatel.tcs@gmail.com" },
+        ],
+      }),
+    });
+    const postData = await response.json();
+    // console.log(postData);
+    setPostMainData(postData);
+  };
+  // console.log(postMainData);
+
+  useEffect(() => {
+    postQuery();
+  }, []);
   const getAllQuery = async () => {
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
@@ -79,34 +107,34 @@ export default function data() {
               tabIndex={0}
               style={{ cursor: "pointer" }}
             >
-              {/* {mainData?.data?.text}
-              2nd query of day
-              <ui>{list}</ui> */}
-              {allQueryFetch?.data?.rooms.map((item) => (
+              <div className="main">
                 <div
-                  className="allquery"
-                  // key={item.id}
-                  // item={item}
+                  className="fetch-title"
                   role="button"
-                  type="primary"
-                  onClick={() => setShow(() => show)}
-                  onKeyDown={showDrawer}
+                  onClick={handleShow}
+                  onKeyDown={handleShow}
                   tabIndex={0}
                 >
-                  {show ? <div className="item-title">{item.title}</div> : null}
+                  {allQueryFetch?.data?.rooms[0].title}
+                  {postMainData?.body?.users}
                 </div>
-              ))}
+                {show && <div>{allQueryFetch?.data?.rooms[0].description}</div>}
+              </div>
+              {/* {allQueryFetch?.data?.rooms.map((item) => (
+                <div className="main">
+                  <div
+                    className="fetch-title"
+                    role="button"
+                    onClick={handleShow}
+                    onKeyDown={handleShow}
+                    tabIndex={0}
+                  >
+                    {item.title}
+                  </div>
+                  {show && <div>{item.id}</div>}
+                </div>
+              ))} */}
             </div>
-            {/* <div>
-              <button
-                // role="button"
-                // tabIndex={0}
-                type="button"
-                className="event"
-                // onClick={showDrawer}
-                // onKeyDown={showDrawer}
-              />
-            </div> */}
             <InquiryDrawer onClick={showDrawer}>
               {/* {isLoading
                 ? [...Array(4)].map((i) => (

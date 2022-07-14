@@ -152,8 +152,31 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [show, setShow] = useState(false);
   // const navigate = useNavigate();
   // const navigatewith = useNavigate();
+
+  const handleSearchQuery = () => {
+    const parsedSearchQUery = JSON.parse(localStorage.getItem("user-info"));
+    console.log(searchQuery);
+    fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=2nd`, {
+      headers: {
+        Authorization: `Bearer ${parsedSearchQUery.token}`,
+      },
+      method: "GET",
+    })
+      .then(async (res) => {
+        const resJSON = await res.json();
+        console.log(resJSON);
+        setSearchResults(resJSON.results);
+        setShow(!show);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -243,32 +266,28 @@ function DashboardNavbar({ absolute, light, isMini }) {
   //     .then(setGitPespos)
   //     .then(() => setIsLoading(false));
   // };
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [show, setShow] = useState(false);
   // const [searchItem, setSearchItem] = useState("");
 
-  const handleSearch = () => {
-    const parsedUser = JSON.parse(localStorage.getItem("user-info"));
-    console.log(searchQuery);
-    fetch(`https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`, {
-      headers: {
-        Authorization: `Bearer ${parsedUser.token}`,
-      },
-      method: "GET",
-    })
-      .then(async (res) => {
-        const resJSON = await res.json();
-        // window.alert(resJSON.message);
-        console.log(resJSON);
-        setSearchResults(resJSON.results);
-        setShow(!show);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const handleSearch = () => {
+  //   const parsedUser = JSON.parse(localStorage.getItem("user-info"));
+  //   console.log(searchQuery);
+  //   fetch(`https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`, {
+  //     headers: {
+  //       Authorization: `Bearer ${parsedUser.token}`,
+  //     },
+  //     method: "GET",
+  //   })
+  //     .then(async (res) => {
+  //       const resJSON = await res.json();
+  //       // window.alert(resJSON.message);
+  //       console.log(resJSON);
+  //       setSearchResults(resJSON.results);
+  //       setShow(!show);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   // const disableSearch = () => {
   // };
@@ -345,7 +364,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   src={search}
                   alt=""
                   // disabled={disableSearch}
-                  onClick={handleSearch}
+                  onClick={handleSearchQuery}
                   width="20px"
                   height="20px"
                 />

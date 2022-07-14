@@ -69,3 +69,17 @@ button{
 .change-editor{
     margin-top: 10rem;
 }
+
+.ant-drawer-body {
+    /* background-color: #5340ff; */
+    color: #fff;
+    height: calc(100vh - 55px);
+    overflow: hidden;
+}
+
+.ant-drawer-header {
+    /* background-color: #5340ff; */
+    color: #fff;
+    overflow: hidden;
+}
+  
