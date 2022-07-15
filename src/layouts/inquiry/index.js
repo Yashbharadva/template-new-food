@@ -84,7 +84,7 @@ function Inquiry() {
 
   const handleSaveClick = () => {
     localStorage.setItem("title", title);
-    localStorage.setItem("tag", tags);
+    // localStorage.setItem("tag", tags);
     localStorage.setItem("editor", editor);
   };
 
