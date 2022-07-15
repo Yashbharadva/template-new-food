@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/template-new-food/static/css/main.f740b5ab.css",
-    "main.js": "/template-new-food/static/js/main.36712351.js",
+    "main.css": "/template-new-food/static/css/main.cdc1668a.css",
+    "main.js": "/template-new-food/static/js/main.c72951f5.js",
     "static/media/home-decor-3.jpg": "/template-new-food/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/template-new-food/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
     "static/media/home-decor-1.jpg": "/template-new-food/static/media/home-decor-1.05e218fd495ccc65c99d.jpg",
@@ -21,11 +21,11 @@
     "static/media/mark.png": "/template-new-food/static/media/mark.b26e2ccee7ab3aad71c9.png",
     "static/media/search.png": "/template-new-food/static/media/search.a27091ef0c45faf8a66e.png",
     "index.html": "/template-new-food/index.html",
-    "main.f740b5ab.css.map": "/template-new-food/static/css/main.f740b5ab.css.map",
-    "main.36712351.js.map": "/template-new-food/static/js/main.36712351.js.map"
+    "main.cdc1668a.css.map": "/template-new-food/static/css/main.cdc1668a.css.map",
+    "main.c72951f5.js.map": "/template-new-food/static/js/main.c72951f5.js.map"
   },
   "entrypoints": [
-    "static/css/main.f740b5ab.css",
-    "static/js/main.36712351.js"
+    "static/css/main.cdc1668a.css",
+    "static/js/main.c72951f5.js"
   ]
 }
