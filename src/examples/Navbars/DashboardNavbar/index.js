@@ -54,6 +54,7 @@ import {
 
 import search from "../../../assets/images/search.png";
 import "./index.styles.scss";
+import SearchDrop from "./searchDrop";
 // import button from "assets/theme/components/button";
 // import fetch from "node-fetch";
 // import data from "layouts/tables/data/authorsTableData";
@@ -70,6 +71,32 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const [serachPopUp, setSearchPopUp] = useState(false);
+  const [searchName] = useState([
+    "Vatsal",
+    "Yash",
+    "Tanish",
+    "Gaurang",
+    "Avin",
+    "Ishan",
+    "Pradip",
+    "Akash",
+  ]);
+
+  const [searchFieldMain, setSearchFieldMain] = useState("");
+
+  const handleSearchTab = (e) => {
+    if (e.target.value) {
+      setSearchPopUp(true);
+    } else {
+      setSearchPopUp(false);
+    }
+    setSearchFieldMain(e.target.value);
+  };
+
+  const filterdSearchName = searchName.filter((text) =>
+    text.toLowerCase().includes(searchFieldMain.toLowerCase())
+  );
   // const filter = (e) => {
   //   const search = fetch("https://cerv-api.herokuapp.com/admin/users/1");
   //   const keyword = e.target.value;
@@ -158,19 +185,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
   // const navigate = useNavigate();
   // const navigatewith = useNavigate();
 
-  const handleSearchQuery = () => {
-    const parsedSearchQUery = JSON.parse(localStorage.getItem("user-info"));
+  const handleSearchQuery = async () => {
+    const parsedSearchQUery = await JSON.parse(localStorage.getItem("user-info"));
     console.log(searchQuery);
-    fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=2nd`, {
+    fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
       headers: {
-        Authorization: `Bearer ${parsedSearchQUery.token}`,
+        Authorization: `Bearer ${parsedSearchQUery.data.accessToken}`,
       },
       method: "GET",
     })
       .then(async (res) => {
         const resJSON = await res.json();
         console.log(resJSON);
-        setSearchResults(resJSON.results);
+        setSearchResults(resJSON);
         setShow(!show);
       })
       .catch((err) => {
@@ -350,11 +377,39 @@ function DashboardNavbar({ absolute, light, isMini }) {
               {show && (
                 <div className="drop-search">
                   <div className="border-drop" color="aqua">
-                    {searchResults.map((object) => (
-                      <div className="data-serach" key={object.id}>
-                        {object.name}
+                    {searchResults?.data?.rooms?.queries?.map((object) => (
+                      <div
+                        className="data-serach"
+                        onChange={handleSearchTab}
+                        onFocus={() => setSearchPopUp(true)}
+                        key={object.id}
+                      >
+                        {object.text}
                       </div>
                     ))}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginTop: "5px",
+                      boxSHadow: "3px 3px 10px #CBC6C6",
+                      width: "25%",
+                      height: "auto",
+                      background: "white",
+                      color: "black",
+                    }}
+                  >
+                    {serachPopUp &&
+                      filterdSearchName.map((text) => (
+                        <SearchDrop
+                          text={text}
+                          search={search}
+                          // setSearch={setSearch}
+                          // setSearchPop={setSearchPop}
+                          // setSearchField={setSearchField}
+                        />
+                      ))}
                   </div>
                 </div>
               )}

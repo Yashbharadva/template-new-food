@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
@@ -40,6 +40,7 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import MDButton from "components/MDButton";
 import "./index.css";
+import TagPopupC from "./data/tagDrop";
 
 function Inquiry() {
   const { columns, rows } = inquiryData();
@@ -50,6 +51,7 @@ function Inquiry() {
   const [visibility, setVisibility] = useState(false);
   const [title, setTitle] = useState("");
   const [editor, setEditor] = useState("");
+  const [post, setPostQueryData] = useState({});
 
   // const [dataEditor] = useState([]);
   const addTag = (e) => {
@@ -60,6 +62,30 @@ function Inquiry() {
       }
     }
   };
+
+  const [tagPopUp, setTagPopUp] = useState(false);
+  const [tagName] = useState([
+    "Vatsal",
+    "Yash",
+    "Tanish",
+    "Gaurang",
+    "Avin",
+    "Ishan",
+    "Pradip",
+    "Akash",
+  ]);
+  const [searchField, setSearchField] = useState("");
+  const handleTag = (e) => {
+    if (e.target.value) {
+      setTagPopUp(true);
+    } else {
+      setTagPopUp(false);
+    }
+    setSearchField(e.target.value);
+  };
+  const filteredTagName = tagName.filter((name) =>
+    name.toLowerCase().includes(searchField.toLowerCase())
+  );
 
   const removeTag = (removedTag) => {
     const newTags = tags.filter((tag) => tag !== removedTag);
@@ -82,11 +108,39 @@ function Inquiry() {
     setEditor(e.target.value);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = (e) => {
+    e.preventDefault();
+    setTitle("");
+    setEditor("");
+    setTags("");
     localStorage.setItem("title", title);
     localStorage.setItem("tag", tags);
     localStorage.setItem("editor", editor);
+    alert(<div>{post.message}</div>);
   };
+
+  const fetchPostQuery = async () => {
+    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedPostQuery);
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: 2,
+        text: "Good Morning all",
+      }),
+    });
+    const postQueryData = await response.json();
+    console.log(postQueryData);
+    setPostQueryData(postQueryData);
+  };
+
+  useEffect(() => {
+    fetchPostQuery();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -164,20 +218,51 @@ function Inquiry() {
                     </div>
                     <div className="tag-item" style={{ marginTop: "5rem" }}>
                       <h2>Tags</h2>
-                      {tags.map((tag) => (
-                        <div className="tag">
-                          {tag}
-                          <span
-                            onClick={() => removeTag(tag)}
-                            onKeyDown={() => removeTag(tag)}
-                            role="button"
-                            tabIndex={0}
-                          >
-                            X
-                          </span>
-                        </div>
-                      ))}
-                      <input onKeyDown={addTag} />
+                      <div className="tag-container">
+                        {tags.map((tag) => (
+                          <div className="tag">
+                            {tag}
+                            <span
+                              onClick={() => removeTag(tag)}
+                              onKeyDown={() => removeTag(tag)}
+                              role="button"
+                              tabIndex={0}
+                            >
+                              X
+                            </span>
+                          </div>
+                        ))}
+                        <input
+                          onKeyDown={addTag}
+                          onChange={handleTag}
+                          style={{ color: "black" }}
+                          onFocus={() => setTagPopUp(true)}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          marginTop: "5px",
+                          boxShadow: "3px 3px 10px #CBC6C6",
+                          width: "75%",
+                          height: "auto",
+                          background: "white",
+                          color: "black",
+                        }}
+                      >
+                        {tagPopUp &&
+                          filteredTagName.map((name) => (
+                            <TagPopupC
+                              name={name}
+                              tags={tags}
+                              setTags={setTags}
+                              setTagPopUp={setTagPopUp}
+                              setSearchField={setSearchField}
+                            />
+                          ))}
+                      </div>
+                      white_check_mark eyes raised_hands
                     </div>
                     <div className="change-editor">
                       <h2>Text Editor</h2>
@@ -201,16 +286,6 @@ function Inquiry() {
                     {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
                   </Drawer>
                 </MDTypography>
-
-                {/* <MDTypography
-                  className="create-inquiry"
-                  variant="h6"
-                  // ml={160}
-                  // mt={-3.3}
-                  color="white"
-                >
-                  +Craete Inquiry
-                </MDTypography> */}
               </MDBox>
               <MDBox pt={3}>
                 <DataTable

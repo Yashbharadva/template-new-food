@@ -17,7 +17,7 @@ export default function data() {
   // setAllQueryFetch
   const [allQueryFetch, setAllQueryFetch] = useState({});
   const [show, setShow] = useState(false);
-  const [postMainData, setPostMainData] = useState({});
+  const [setPostMainData] = useState({});
   // const [isShow, setIsShow] = useState(false);
   // const [show, setShow] = useState(true);
   // const [mainData] = useState({});
@@ -29,6 +29,11 @@ export default function data() {
 
   const handleShow = () => {
     setShow((current) => !current);
+  };
+
+  const handleNot = () => {
+    alert("You are not allowed to do this operation");
+    // <div>{postMainData.message}</div>
   };
 
   const postQuery = async () => {
@@ -48,7 +53,7 @@ export default function data() {
       }),
     });
     const postData = await response.json();
-    // console.log(postData);
+    console.log(postData);
     setPostMainData(postData);
   };
   // console.log(postMainData);
@@ -56,6 +61,7 @@ export default function data() {
   useEffect(() => {
     postQuery();
   }, []);
+
   const getAllQuery = async () => {
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
@@ -107,7 +113,7 @@ export default function data() {
               tabIndex={0}
               style={{ cursor: "pointer" }}
             >
-              <div className="main">
+              {/* <div className="main">
                 <div
                   className="fetch-title"
                   role="button"
@@ -115,12 +121,23 @@ export default function data() {
                   onKeyDown={handleShow}
                   tabIndex={0}
                 >
-                  {allQueryFetch?.data?.rooms[0].title}
-                  {postMainData?.body?.users}
-                </div>
-                {show && <div>{allQueryFetch?.data?.rooms[0].description}</div>}
-              </div>
-              {/* {allQueryFetch?.data?.rooms.map((item) => (
+                  {allQueryFetch?.data?.rooms?.map((item) => (
+                    <div
+                      className="fetch-title"
+                      role="button"
+                      onClick={handleShow}
+                      onKeyDown={handleShow}
+                      tabIndex={0}
+                    >
+                      {item.title}
+                    </div>
+                  ))}
+                  {show && <div>{item.description}</div>} */}
+              {/* <div onClick={handleNot} onKeyDown={handleNot} tabIndex={0} role="button"> */}
+              {/* </div> */}
+              {/* </div> */}
+              {/* </div> */}
+              {allQueryFetch?.data?.rooms.map((item) => (
                 <div className="main">
                   <div
                     className="fetch-title"
@@ -131,9 +148,13 @@ export default function data() {
                   >
                     {item.title}
                   </div>
-                  {show && <div>{item.id}</div>}
+                  {show && (
+                    <div onClick={handleNot} onKeyDown={handleNot} tabIndex={0} role="button">
+                      {item.description}
+                    </div>
+                  )}
                 </div>
-              ))} */}
+              ))}
             </div>
             <InquiryDrawer onClick={showDrawer}>
               {/* {isLoading
