@@ -46,9 +46,10 @@ function Inquiry() {
   const { columns: pColumns, rows: pRows } = inquiry();
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
-  const [tags, setTags] = useState(["Hello"]);
+  const [tags, setTags] = useState("[Hello]");
   const [visibility, setVisibility] = useState(false);
   const [title, setTitle] = useState("");
+  const [editor, setEditor] = useState("");
 
   // const [dataEditor] = useState([]);
   const addTag = (e) => {
@@ -77,9 +78,14 @@ function Inquiry() {
     setTitle(e.target.value);
   };
 
+  const handleEditorChange = (e) => {
+    setEditor(e.target.value);
+  };
+
   const handleSaveClick = () => {
     localStorage.setItem("title", title);
     localStorage.setItem("tag", tags);
+    localStorage.setItem("editor", editor);
   };
 
   return (
@@ -189,6 +195,7 @@ function Inquiry() {
                         height: "700",
                         color: "black",
                       }}
+                      onChange={handleEditorChange}
                     />
                     <Button type="button" onClick={handleSaveClick}>
                       SAVE
