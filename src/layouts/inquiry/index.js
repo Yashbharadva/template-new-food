@@ -46,7 +46,7 @@ function Inquiry() {
   const { columns: pColumns, rows: pRows } = inquiry();
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
-  const [tags, setTags] = useState("[Hello]");
+  const [tags, setTags] = useState(["Hello"]);
   const [visibility, setVisibility] = useState(false);
   const [title, setTitle] = useState("");
   const [editor, setEditor] = useState("");
@@ -84,7 +84,7 @@ function Inquiry() {
 
   const handleSaveClick = () => {
     localStorage.setItem("title", title);
-    // localStorage.setItem("tag", tags);
+    localStorage.setItem("tag", tags);
     localStorage.setItem("editor", editor);
   };
 
@@ -164,22 +164,20 @@ function Inquiry() {
                     </div>
                     <div className="tag-item" style={{ marginTop: "5rem" }}>
                       <h2>Tags</h2>
-                      <div className="tag-container">
-                        {tags.map((tag) => (
-                          <div className="tag">
-                            {tag}
-                            <span
-                              onClick={() => removeTag(tag)}
-                              onKeyDown={() => removeTag(tag)}
-                              role="button"
-                              tabIndex={0}
-                            >
-                              X
-                            </span>
-                          </div>
-                        ))}
-                        <input onKeyDown={addTag} />
-                      </div>
+                      {tags.map((tag) => (
+                        <div className="tag">
+                          {tag}
+                          <span
+                            onClick={() => removeTag(tag)}
+                            onKeyDown={() => removeTag(tag)}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            X
+                          </span>
+                        </div>
+                      ))}
+                      <input onKeyDown={addTag} />
                     </div>
                     <div className="change-editor">
                       <h2>Text Editor</h2>
