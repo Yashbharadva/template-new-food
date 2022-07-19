@@ -51,7 +51,7 @@ function Inquiry() {
   const [visibility, setVisibility] = useState(false);
   const [title, setTitle] = useState("");
   const [editor, setEditor] = useState("");
-  const [post, setPostQueryData] = useState({});
+  const [setPostQueryData] = useState({});
 
   // const [dataEditor] = useState([]);
   const addTag = (e) => {
@@ -116,7 +116,7 @@ function Inquiry() {
     localStorage.setItem("title", title);
     localStorage.setItem("tag", tags);
     localStorage.setItem("editor", editor);
-    alert(<div>{post.message}</div>);
+    // alert(<div>{post.message}</div>);
   };
 
   const fetchPostQuery = async () => {

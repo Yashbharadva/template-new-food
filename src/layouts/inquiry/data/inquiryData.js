@@ -1,6 +1,7 @@
 // import { Button } from "antd";
 import { useEffect, useState } from "react";
 import "./inquiryData.styles.scss";
+import { Link } from "react-router-dom";
 // import { Button, Drawer, Space } from "antd";
 // import { Button, Drawer, Space } from "antd";
 // import { Radio, Space } from "antd";
@@ -29,11 +30,6 @@ export default function data() {
 
   const handleShow = () => {
     setShow((current) => !current);
-  };
-
-  const handleNot = () => {
-    alert("You are not allowed to do this operation");
-    // <div>{postMainData.message}</div>
   };
 
   const postQuery = async () => {
@@ -148,11 +144,7 @@ export default function data() {
                   >
                     {item.title}
                   </div>
-                  {show && (
-                    <div onClick={handleNot} onKeyDown={handleNot} tabIndex={0} role="button">
-                      {item.description}
-                    </div>
-                  )}
+                  {show && <Link to="/allquery">{item.description}</Link>}
                 </div>
               ))}
             </div>
