@@ -49,9 +49,8 @@ function Inquiry() {
   const [placement, setPlacement] = useState("right");
   const [tags, setTags] = useState(["Hello"]);
   const [visibility, setVisibility] = useState(false);
-  const [title, setTitle] = useState("");
-  const [editor, setEditor] = useState("");
-  const [setPostQueryData] = useState({});
+  const [setPostTheData] = useState("");
+  // postTheData
 
   // const [dataEditor] = useState([]);
   const addTag = (e) => {
@@ -100,46 +99,48 @@ function Inquiry() {
     setPlacement(e.target.value);
   };
 
-  const handleTextChange = (e) => {
-    setTitle(e.target.value);
-  };
+  // const handleTextChange = (e) => {
+  //   setTitle(e.target.value);
+  // };
 
-  const handleEditorChange = (e) => {
-    setEditor(e.target.value);
-  };
+  // const handleEditorChange = (e) => {
+  //   setEditor(e.target.value);
+  // };
 
-  const handleSaveClick = (e) => {
-    e.preventDefault();
-    setTitle("");
-    setEditor("");
-    setTags("");
-    localStorage.setItem("title", title);
-    localStorage.setItem("tag", tags);
-    localStorage.setItem("editor", editor);
-    // alert(<div>{post.message}</div>);
-  };
+  // const handleSaveClick = (e) => {
+  //   e.preventDefault();
+  //   setTitle("");
+  //   setTags("");
+  //   localStorage.setItem("title", title);
+  //   localStorage.setItem("tag", tags);
+  //   // alert(<div>{post.message}</div>);
+  // };
 
-  const fetchPostQuery = async () => {
-    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-    console.log(parsedPostQuery);
-    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        roomId: 2,
-        text: "Good Morning all",
-      }),
-    });
-    const postQueryData = await response.json();
-    console.log(postQueryData);
-    setPostQueryData(postQueryData);
+  const postTheQuery = async () => {
+    try {
+      const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+      console.log(parsedPostQuery);
+      const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          roomId: 2,
+          text: "Good Morning all",
+        }),
+      });
+      const postQueryData = await response.json();
+      console.log(postQueryData);
+      setPostTheData(postQueryData);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
-    fetchPostQuery();
+    postTheQuery();
   }, []);
 
   return (
@@ -185,106 +186,96 @@ function Inquiry() {
                       +CreateInquiry
                     </div>
                   </Space>
-                  <Drawer
-                    title="Drawer with extra actions"
-                    placement={placement}
-                    width={800}
-                    onClose={() => setVisibility(false)}
-                    visible={visibility}
-                    extra={
-                      <Space>
-                        <Button onClick={() => setVisibility(false)}>Cancel</Button>
-                        <Button type="primary" onClick={() => setVisibility(false)}>
-                          OK
-                        </Button>
-                      </Space>
-                    }
-                    style={{ zIndex: 2000 }}
-                  >
-                    <div className="title-drawer">
-                      <h2>Title</h2>
-                      <input
-                        type="text"
-                        style={{
-                          width: "35rem",
-                          height: "2.7rem",
-                          border: "1px solid black",
-                          borderRadius: "5px",
-                          color: "black",
-                          outline: "none",
-                        }}
-                        onChange={handleTextChange}
-                      />
-                    </div>
-                    <div className="tag-item" style={{ marginTop: "5rem" }}>
-                      <h2>Tags</h2>
-                      <div className="tag-container">
-                        {tags.map((tag) => (
-                          <div className="tag">
-                            {tag}
-                            <span
-                              onClick={() => removeTag(tag)}
-                              onKeyDown={() => removeTag(tag)}
-                              role="button"
-                              tabIndex={0}
-                            >
-                              X
-                            </span>
-                          </div>
-                        ))}
+                  <form onSubmit={postTheQuery}>
+                    <Drawer
+                      title="Send Your Queriy"
+                      placement={placement}
+                      width={800}
+                      onClose={() => setVisibility(false)}
+                      visible={visibility}
+                      style={{ zIndex: 2000 }}
+                    >
+                      <div className="title-drawer">
+                        <h2>Title</h2>
                         <input
-                          onKeyDown={addTag}
-                          onChange={handleTag}
-                          style={{ color: "black" }}
-                          onFocus={() => setTagPopUp(true)}
+                          type="text"
+                          style={{
+                            width: "35rem",
+                            height: "2.7rem",
+                            border: "1px solid black",
+                            borderRadius: "5px",
+                            color: "black",
+                            outline: "none",
+                          }}
                         />
                       </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          marginTop: "5px",
-                          boxShadow: "3px 3px 10px #CBC6C6",
-                          width: "75%",
-                          height: "auto",
-                          background: "white",
+                      <div className="tag-item" style={{ marginTop: "1rem" }}>
+                        <h2>Tags</h2>
+                        <div className="tag-container">
+                          {tags.map((tag) => (
+                            <div className="tag">
+                              {tag}
+                              <span
+                                onClick={() => removeTag(tag)}
+                                onKeyDown={() => removeTag(tag)}
+                                role="button"
+                                tabIndex={0}
+                              >
+                                X
+                              </span>
+                            </div>
+                          ))}
+                          <input
+                            onKeyDown={addTag}
+                            onChange={handleTag}
+                            style={{ color: "black" }}
+                            onFocus={() => setTagPopUp(true)}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            marginTop: "5px",
+                            boxShadow: "3px 3px 10px #CBC6C6",
+                            width: "75%",
+                            height: "auto",
+                            background: "white",
+                            color: "black",
+                          }}
+                        >
+                          {tagPopUp &&
+                            filteredTagName.map((name) => (
+                              <TagPopupC
+                                name={name}
+                                tags={tags}
+                                setTags={setTags}
+                                setTagPopUp={setTagPopUp}
+                                setSearchField={setSearchField}
+                              />
+                            ))}
+                        </div>
+                        white_check_mark eyes raised_hands
+                      </div>
+                      <div className="change-editor">
+                        <h2>Text Editor</h2>
+                      </div>
+                      <Editor
+                        className="editor-text"
+                        toolbarClassName="toolbarClassName"
+                        wrapperClassName="wrapperClassName"
+                        editorClassName="editorClassName"
+                        wrapperStyle={{
+                          width: 760,
+                          border: "1px solid black",
+                          height: "700",
                           color: "black",
                         }}
-                      >
-                        {tagPopUp &&
-                          filteredTagName.map((name) => (
-                            <TagPopupC
-                              name={name}
-                              tags={tags}
-                              setTags={setTags}
-                              setTagPopUp={setTagPopUp}
-                              setSearchField={setSearchField}
-                            />
-                          ))}
-                      </div>
-                      white_check_mark eyes raised_hands
-                    </div>
-                    <div className="change-editor">
-                      <h2>Text Editor</h2>
-                    </div>
-                    <Editor
-                      className="editor-text"
-                      toolbarClassName="toolbarClassName"
-                      wrapperClassName="wrapperClassName"
-                      editorClassName="editorClassName"
-                      wrapperStyle={{
-                        width: 760,
-                        border: "1px solid black",
-                        height: "700",
-                        color: "black",
-                      }}
-                      onChange={handleEditorChange}
-                    />
-                    <Button type="button" onClick={handleSaveClick}>
-                      SAVE
-                    </Button>
-                    {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
-                  </Drawer>
+                      />
+                      <Button type="button">SAVE</Button>
+                      {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
+                    </Drawer>
+                  </form>
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

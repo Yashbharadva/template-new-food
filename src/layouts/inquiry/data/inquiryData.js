@@ -1,7 +1,10 @@
 // import { Button } from "antd";
 import { useEffect, useState } from "react";
 import "./inquiryData.styles.scss";
-import { Link } from "react-router-dom";
+import { Button, Drawer } from "antd";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import TagPopupC from "./tagDrop";
 // import { Button, Drawer, Space } from "antd";
 // import { Button, Drawer, Space } from "antd";
 // import { Radio, Space } from "antd";
@@ -19,14 +22,55 @@ export default function data() {
   const [allQueryFetch, setAllQueryFetch] = useState({});
   const [show, setShow] = useState(false);
   const [setPostMainData] = useState({});
-  // const [isShow, setIsShow] = useState(false);
-  // const [show, setShow] = useState(true);
-  // const [mainData] = useState({});
-  // const [placement] = useState("right");
+  const [placement] = useState("right");
+  const [visibility, setVisibility] = useState(false);
+  const [tags, setTags] = useState(["Hello"]);
+
+  const addTag = (e) => {
+    if (e.key === "Enter") {
+      if (e.target.value.length > 0) {
+        setTags([...tags, e.target.value]);
+        e.target.value = "";
+      }
+    }
+  };
+
+  const [tagPopUp, setTagPopUp] = useState(false);
+  const [tagName] = useState([
+    "Vatsal",
+    "Yash",
+    "Tanish",
+    "Gaurang",
+    "Avin",
+    "Ishan",
+    "Pradip",
+    "Akash",
+  ]);
+  const [searchField, setSearchField] = useState("");
+  const handleTag = (e) => {
+    if (e.target.value) {
+      setTagPopUp(true);
+    } else {
+      setTagPopUp(false);
+    }
+    setSearchField(e.target.value);
+  };
+  const filteredTagName = tagName.filter((name) =>
+    name.toLowerCase().includes(searchField.toLowerCase())
+  );
+
+  const removeTag = (removedTag) => {
+    const newTags = tags.filter((tag) => tag !== removedTag);
+    setTags(newTags);
+  };
 
   const showDrawer = () => {
     setVisible(true);
   };
+  // const [isShow, setIsShow] = useState(false);
+  // const [show, setShow] = useState(true);
+  // const [mainData] = useState({});
+  // const [placement] = useState("right");
 
   const handleShow = () => {
     setShow((current) => !current);
@@ -144,10 +188,119 @@ export default function data() {
                   >
                     {item.title}
                   </div>
-                  {show && <Link to="/allquery">{item.description}</Link>}
+                  {show && (
+                    <div
+                      onClick={() => setVisibility(true)}
+                      onKeyDown={showDrawer}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      {item.description}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
+            <form>
+              <Drawer
+                title="Send Your Queriy"
+                placement={placement}
+                width={800}
+                onClose={() => setVisibility(false)}
+                visible={visibility}
+                style={{ zIndex: 2000 }}
+              >
+                <div className="title-drawer">
+                  <h2>Title</h2>
+                  <input
+                    type="text"
+                    style={{
+                      width: "35rem",
+                      height: "2.7rem",
+                      border: "1px solid black",
+                      borderRadius: "5px",
+                      color: "black",
+                      outline: "none",
+                    }}
+                  />
+                </div>
+                <div className="tag-item" style={{ marginTop: "1rem" }}>
+                  <h2>Tags</h2>
+                  <div className="tag-container">
+                    {tags.map((tag) => (
+                      <div className="tag">
+                        {tag}
+                        <span
+                          onClick={() => removeTag(tag)}
+                          onKeyDown={() => removeTag(tag)}
+                          role="button"
+                          tabIndex={0}
+                        >
+                          X
+                        </span>
+                      </div>
+                    ))}
+                    <input
+                      onKeyDown={addTag}
+                      onChange={handleTag}
+                      style={{ color: "black" }}
+                      onFocus={() => setTagPopUp(true)}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginTop: "5px",
+                      boxShadow: "3px 3px 10px #CBC6C6",
+                      width: "75%",
+                      height: "auto",
+                      background: "white",
+                      color: "black",
+                    }}
+                  >
+                    {tagPopUp &&
+                      filteredTagName.map((name) => (
+                        <TagPopupC
+                          name={name}
+                          tags={tags}
+                          setTags={setTags}
+                          setTagPopUp={setTagPopUp}
+                          setSearchField={setSearchField}
+                        />
+                      ))}
+                  </div>
+                  white_check_mark eyes raised_hands
+                </div>
+                <div className="change-editor">
+                  <h2>Text Editor</h2>
+                </div>
+                <Editor
+                  className="editor-text"
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName="editorClassName"
+                  wrapperStyle={{
+                    width: 760,
+                    border: "1px solid black",
+                    height: "700",
+                    color: "black",
+                  }}
+                />
+                <Button type="button" onClick={postQuery}>
+                  SAVE
+                </Button>
+                {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
+                <div>
+                  <h2 style={{ color: "black", marginTop: "1.5rem" }}>Query:-</h2>
+                  <div>
+                    {allQueryFetch?.data?.rooms.map((item) => (
+                      <div style={{ color: "black" }}>{item.description}</div>
+                    ))}
+                  </div>
+                </div>
+              </Drawer>
+            </form>
             <InquiryDrawer onClick={showDrawer}>
               {/* {isLoading
                 ? [...Array(4)].map((i) => (
