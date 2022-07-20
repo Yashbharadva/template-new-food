@@ -144,6 +144,7 @@ export default function data() {
     console.log(parsedPostQuery);
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
       method: "POST",
+      mode: "cors",
       headers: {
         Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
         "Content-Type": "application/json",
@@ -303,11 +304,11 @@ export default function data() {
                 <div>
                   <h2 style={{ color: "black", marginTop: "1.5rem" }}>Query:-</h2>
                   <div>
-                    <div style={{ color: "black" }}>
+                    {/* <div style={{ color: "black" }}>
                       {allQueryFetch?.data?.rooms.map((item) => (
                         <div>{item.queries.map((items) => items.text)}</div>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div>
