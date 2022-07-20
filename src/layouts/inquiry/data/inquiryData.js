@@ -21,10 +21,14 @@ export default function data() {
   // setAllQueryFetch
   const [allQueryFetch, setAllQueryFetch] = useState({});
   const [show, setShow] = useState(false);
-  const [setPostMainData] = useState({});
+  // const [setPostMainData] = useState({});
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
   const [tags, setTags] = useState(["Hello"]);
+  const [temp, setTemp] = useState("");
+  const [postdata, setPostTheData] = useState("");
+
+  const teess = temp?.blocks?.map((item) => item.text);
 
   const addTag = (e) => {
     if (e.key === "Enter") {
@@ -67,6 +71,7 @@ export default function data() {
   const showDrawer = () => {
     setVisible(true);
   };
+
   // const [isShow, setIsShow] = useState(false);
   // const [show, setShow] = useState(true);
   // const [mainData] = useState({});
@@ -76,31 +81,31 @@ export default function data() {
     setShow((current) => !current);
   };
 
-  const postQuery = async () => {
-    const parsedPost = JSON.parse(localStorage.getItem("user-info"));
-    console.log(parsedPost);
-    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${parsedPost.data.accessToken}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        users: [
-          { id: 1, username: "vatsal19", email: "vatsalp.tcs@gmail.com" },
-          { id: 2, username: "gaurang", email: "gaurangpatel.tcs@gmail.com" },
-        ],
-      }),
-    });
-    const postData = await response.json();
-    console.log(postData);
-    setPostMainData(postData);
-  };
+  // const postQuery = async () => {
+  //   const parsedPost = JSON.parse(localStorage.getItem("user-info"));
+  //   console.log(parsedPost);
+  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedPost.data.accessToken}`,
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       users: [
+  //         { id: 1, username: "vatsal19", email: "vatsalp.tcs@gmail.com" },
+  //         { id: 2, username: "gaurang", email: "gaurangpatel.tcs@gmail.com" },
+  //       ],
+  //     }),
+  //   });
+  //   const postData = await response.json();
+  //   console.log(postData);
+  //   setPostMainData(postData);
+  // };
   // console.log(postMainData);
 
-  useEffect(() => {
-    postQuery();
-  }, []);
+  // useEffect(() => {
+  //   postQuery();
+  // }, []);
 
   const getAllQuery = async () => {
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
@@ -134,12 +139,30 @@ export default function data() {
     // console.log(customer);
   }, [customer]);
 
+  const postTheQuery = async (text) => {
+    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedPostQuery);
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: 2,
+        text: `${text}`,
+      }),
+    });
+    // const postQueryData = await JSON.parse(response);
+    // console.log(postQueryData);
+    setPostTheData(response);
+    console.log(postdata);
+    console.log(response);
+    setVisible(false);
+  };
+
   return {
-    columns: [
-      { Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" },
-      // { Header: "phone number", accessor: "phone", align: "left" },
-      // { Header: "status", accessor: "status", align: "center" },
-    ],
+    columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
     rows: [
       {
         inquiry: (
@@ -153,30 +176,6 @@ export default function data() {
               tabIndex={0}
               style={{ cursor: "pointer" }}
             >
-              {/* <div className="main">
-                <div
-                  className="fetch-title"
-                  role="button"
-                  onClick={handleShow}
-                  onKeyDown={handleShow}
-                  tabIndex={0}
-                >
-                  {allQueryFetch?.data?.rooms?.map((item) => (
-                    <div
-                      className="fetch-title"
-                      role="button"
-                      onClick={handleShow}
-                      onKeyDown={handleShow}
-                      tabIndex={0}
-                    >
-                      {item.title}
-                    </div>
-                  ))}
-                  {show && <div>{item.description}</div>} */}
-              {/* <div onClick={handleNot} onKeyDown={handleNot} tabIndex={0} role="button"> */}
-              {/* </div> */}
-              {/* </div> */}
-              {/* </div> */}
               {allQueryFetch?.data?.rooms.map((item) => (
                 <div className="main">
                   <div
@@ -195,7 +194,17 @@ export default function data() {
                       role="button"
                       tabIndex={0}
                     >
-                      {item.description}
+                      {item.queries.map((items) => (
+                        <div>
+                          {items.text}
+                          {"-->"}
+                          {items.sender.username}
+                          {"--->"}
+                          {items.sender.createdAt.split("T")[0]}
+                          {"--->"}
+                          {items.sender.createdAt.split("T")[1].split(".")[0]}
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -222,6 +231,7 @@ export default function data() {
                       color: "black",
                       outline: "none",
                     }}
+                    value={allQueryFetch?.data?.rooms[0].title}
                   />
                 </div>
                 <div className="tag-item" style={{ marginTop: "1rem" }}>
@@ -277,6 +287,9 @@ export default function data() {
                 </div>
                 <Editor
                   className="editor-text"
+                  onChange={(e) => {
+                    setTemp(e);
+                  }}
                   toolbarClassName="toolbarClassName"
                   wrapperClassName="wrapperClassName"
                   editorClassName="editorClassName"
@@ -287,18 +300,29 @@ export default function data() {
                     color: "black",
                   }}
                 />
-                <Button type="button" onClick={postQuery}>
-                  SAVE
-                </Button>
-                {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
                 <div>
                   <h2 style={{ color: "black", marginTop: "1.5rem" }}>Query:-</h2>
                   <div>
-                    {allQueryFetch?.data?.rooms.map((item) => (
-                      <div style={{ color: "black" }}>{item.description}</div>
-                    ))}
+                    <div style={{ color: "black" }}>
+                      {allQueryFetch?.data?.rooms.map((item) => (
+                        <div>{item.queries.map((items) => items.text)}</div>
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <div>
+                  <h2 style={{ color: "black", marginTop: "1.5rem" }}>Posted Query:-</h2>
+                  <div>
+                    <div style={{ color: "black" }}>
+                      {temp?.blocks?.map((item) => (
+                        <div>{item.text}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <Button type="button" onClick={() => postTheQuery(teess)}>
+                  SAVE
+                </Button>
               </Drawer>
             </form>
             <InquiryDrawer onClick={showDrawer}>

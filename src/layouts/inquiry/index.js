@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
@@ -139,9 +139,9 @@ function Inquiry() {
     }
   };
 
-  useEffect(() => {
-    postTheQuery();
-  }, []);
+  // useEffect(() => {
+  //   postTheQuery();
+  // }, []);
 
   return (
     <DashboardLayout>
