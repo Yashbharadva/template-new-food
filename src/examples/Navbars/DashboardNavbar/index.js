@@ -71,7 +71,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  const [serachPopUp, setSearchPopUp] = useState(false);
+  const [serachPopUp] = useState(false);
   const [searchName] = useState([
     "Vatsal",
     "Yash",
@@ -83,16 +83,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
     "Akash",
   ]);
 
-  const [searchFieldMain, setSearchFieldMain] = useState("");
+  const [searchFieldMain] = useState("");
 
-  const handleSearchTab = (e) => {
-    if (e.target.value) {
-      setSearchPopUp(true);
-    } else {
-      setSearchPopUp(false);
-    }
-    setSearchFieldMain(e.target.value);
-  };
+  // const handleSearchTab = (e) => {
+  //   if (e.target.value) {
+  //     setSearchPopUp(true);
+  //   } else {
+  //     setSearchPopUp(false);
+  //   }
+  //   setSearchFieldMain(e.target.value);
+  // };
 
   const filterdSearchName = searchName.filter((text) =>
     text.toLowerCase().includes(searchFieldMain.toLowerCase())
@@ -186,17 +186,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
   // const navigatewith = useNavigate();
 
   const handleSearchQuery = async () => {
-    const parsedSearchQUery = await JSON.parse(localStorage.getItem("user-info"));
+    const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
     console.log(searchQuery);
     fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
       headers: {
-        Authorization: `Bearer ${parsedSearchQUery.data.accessToken}`,
+        Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
       },
       method: "GET",
     })
       .then(async (res) => {
         const resJSON = await res.json();
-        console.log(resJSON);
+        console.log("-------->", resJSON);
         setSearchResults(resJSON);
         setShow(!show);
       })
@@ -376,15 +376,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
               />
               {show && (
                 <div className="drop-search">
-                  <div className="border-drop" color="aqua">
-                    {searchResults?.data?.rooms?.queries?.map((object) => (
-                      <div
-                        className="data-serach"
-                        onChange={handleSearchTab}
-                        onFocus={() => setSearchPopUp(true)}
-                        key={object.id}
-                      >
-                        {object.text}
+                  <div className="border-drop">
+                    {searchResults?.data?.rooms?.map((object) => (
+                      <div className="data-serach" key={object.id} style={{ color: "black" }}>
+                        {object.title}
                       </div>
                     ))}
                   </div>
@@ -393,7 +388,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                       display: "flex",
                       flexDirection: "column",
                       marginTop: "5px",
-                      boxSHadow: "3px 3px 10px #CBC6C6",
+                      boxShadow: "3px 3px 10px #CBC6C6",
                       width: "25%",
                       height: "auto",
                       background: "white",

@@ -1,8 +1,9 @@
 // import { Button } from "antd";
 import { useEffect, useState } from "react";
 import "./inquiryData.styles.scss";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, Space } from "antd";
 import { Editor } from "react-draft-wysiwyg";
+import MDInput from "components/MDInput";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import TagPopupC from "./tagDrop";
 // import { Button, Drawer, Space } from "antd";
@@ -27,6 +28,8 @@ export default function data() {
   const [tags, setTags] = useState(["Hello"]);
   const [temp, setTemp] = useState("");
   const [postdata, setPostTheData] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const teess = temp?.blocks?.map((item) => item.text);
 
@@ -107,6 +110,26 @@ export default function data() {
   //   postQuery();
   // }, []);
 
+  const handleSearchQuery = async () => {
+    const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
+    // console.log(searchQuery);
+    fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
+      headers: {
+        Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
+      },
+      method: "GET",
+    })
+      .then(async (res) => {
+        const resJSON = await res.json();
+        console.log("--------->>>>>>", resJSON);
+        setSearchResults(resJSON);
+        setShow(!show);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const getAllQuery = async () => {
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
@@ -144,13 +167,12 @@ export default function data() {
     console.log(parsedPostQuery);
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
       method: "POST",
-      mode: "cors",
       headers: {
         Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        roomId: 2,
+        roomId: 1,
         text: `${text}`,
       }),
     });
@@ -159,7 +181,7 @@ export default function data() {
     setPostTheData(response);
     console.log(postdata);
     console.log(response);
-    setVisible(false);
+    setVisibility(false);
   };
 
   return {
@@ -185,6 +207,7 @@ export default function data() {
                     onClick={handleShow}
                     onKeyDown={handleShow}
                     tabIndex={0}
+                    style={{ width: "1000px" }}
                   >
                     {item.title}
                   </div>
@@ -197,13 +220,16 @@ export default function data() {
                     >
                       {item.queries.map((items) => (
                         <div>
-                          {items.text}
-                          {"-->"}
-                          {items.sender.username}
-                          {"--->"}
-                          {items.sender.createdAt.split("T")[0]}
-                          {"--->"}
-                          {items.sender.createdAt.split("T")[1].split(".")[0]}
+                          <li>
+                            {items.text}
+                            {"\t--->"}
+                            {items.sender.username}
+                            <div style={{ textAlign: "right" }}>
+                              {items.sender.createdAt.split("T")[0]}
+                              {"\t--->"}
+                              {items.sender.createdAt.split("T")[1].split(".")[0]}
+                            </div>
+                          </li>
                         </div>
                       ))}
                     </div>
@@ -212,119 +238,155 @@ export default function data() {
               ))}
             </div>
             <form>
-              <Drawer
-                title="Send Your Queriy"
-                placement={placement}
-                width={800}
-                onClose={() => setVisibility(false)}
-                visible={visibility}
-                style={{ zIndex: 2000 }}
-              >
-                <div className="title-drawer">
-                  <h2>Title</h2>
-                  <input
-                    type="text"
-                    style={{
-                      width: "35rem",
-                      height: "2.7rem",
-                      border: "1px solid black",
-                      borderRadius: "5px",
-                      color: "black",
-                      outline: "none",
-                    }}
-                    value={allQueryFetch?.data?.rooms[0].title}
-                  />
-                </div>
-                <div className="tag-item" style={{ marginTop: "1rem" }}>
-                  <h2>Tags</h2>
-                  <div className="tag-container">
-                    {tags.map((tag) => (
-                      <div className="tag">
-                        {tag}
-                        <span
-                          onClick={() => removeTag(tag)}
-                          onKeyDown={() => removeTag(tag)}
-                          role="button"
-                          tabIndex={0}
-                        >
-                          X
-                        </span>
-                      </div>
-                    ))}
+              <div>
+                <Drawer
+                  title="Post Your Queriy"
+                  placement={placement}
+                  width={800}
+                  onClose={() => setVisibility(false)}
+                  visible={visibility}
+                  style={{ zIndex: 2000 }}
+                  extra={
+                    <Space>
+                      <MDInput type="search" onChange={(e) => setSearchQuery(e.target.value)} />
+                      <button type="button" onClick={handleSearchQuery}>
+                        Search
+                      </button>
+                      {show && (
+                        <div className="drop-drawer-search">
+                          <div className="border-drawer-drop">
+                            {/* {searchResults?.data?.rooms?.queries?.map((item) => (
+                              <div
+                                className="drawer-search"
+                                key={item.id}
+                                style={{ color: "black" }}
+                              >
+                                {item.text}
+                              </div>
+                            ))} */}
+                            {searchResults?.data?.rooms[0]?.queries?.map((item) => (
+                              <div>{item.text}</div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </Space>
+                  }
+                >
+                  {/* <input
+                    type="search"
+                    placeholder="search here.."
+                    style={{ border: "1px solid grey" }}
+                  /> */}
+                  <div className="title-drawer">
+                    <h2>Title</h2>
                     <input
-                      onKeyDown={addTag}
-                      onChange={handleTag}
-                      style={{ color: "black" }}
-                      onFocus={() => setTagPopUp(true)}
+                      type="text"
+                      style={{
+                        width: "35rem",
+                        height: "2.7rem",
+                        border: "1px solid black",
+                        borderRadius: "5px",
+                        color: "black",
+                        outline: "none",
+                      }}
+                      value={allQueryFetch?.data?.rooms[0].title}
                     />
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      marginTop: "5px",
-                      boxShadow: "3px 3px 10px #CBC6C6",
-                      width: "75%",
-                      height: "auto",
-                      background: "white",
+                  <div className="tag-item" style={{ marginTop: "1rem" }}>
+                    <h2>Tags</h2>
+                    <div className="tag-container">
+                      {tags.map((tag) => (
+                        <div className="tag">
+                          {tag}
+                          <span
+                            onClick={() => removeTag(tag)}
+                            onKeyDown={() => removeTag(tag)}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            X
+                          </span>
+                        </div>
+                      ))}
+                      <input
+                        onKeyDown={addTag}
+                        onChange={handleTag}
+                        style={{ color: "black" }}
+                        onFocus={() => setTagPopUp(true)}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginTop: "5px",
+                        boxShadow: "3px 3px 10px #CBC6C6",
+                        width: "75%",
+                        height: "auto",
+                        background: "white",
+                        color: "black",
+                      }}
+                    >
+                      {tagPopUp &&
+                        filteredTagName.map((name) => (
+                          <TagPopupC
+                            name={name}
+                            tags={tags}
+                            setTags={setTags}
+                            setTagPopUp={setTagPopUp}
+                            setSearchField={setSearchField}
+                          />
+                        ))}
+                    </div>
+                    white_check_mark eyes raised_hands
+                  </div>
+                  <div className="change-editor">
+                    <h2>Text Editor</h2>
+                  </div>
+                  <Editor
+                    className="editor-text"
+                    onChange={(e) => {
+                      setTemp(e);
+                    }}
+                    toolbarClassName="toolbarClassName"
+                    wrapperClassName="wrapperClassName"
+                    editorClassName="editorClassName"
+                    wrapperStyle={{
+                      width: 760,
+                      border: "1px solid black",
+                      height: "700",
                       color: "black",
                     }}
-                  >
-                    {tagPopUp &&
-                      filteredTagName.map((name) => (
-                        <TagPopupC
-                          name={name}
-                          tags={tags}
-                          setTags={setTags}
-                          setTagPopUp={setTagPopUp}
-                          setSearchField={setSearchField}
-                        />
-                      ))}
-                  </div>
-                  white_check_mark eyes raised_hands
-                </div>
-                <div className="change-editor">
-                  <h2>Text Editor</h2>
-                </div>
-                <Editor
-                  className="editor-text"
-                  onChange={(e) => {
-                    setTemp(e);
-                  }}
-                  toolbarClassName="toolbarClassName"
-                  wrapperClassName="wrapperClassName"
-                  editorClassName="editorClassName"
-                  wrapperStyle={{
-                    width: 760,
-                    border: "1px solid black",
-                    height: "700",
-                    color: "black",
-                  }}
-                />
-                <div>
-                  <h2 style={{ color: "black", marginTop: "1.5rem" }}>Query:-</h2>
+                  />
                   <div>
-                    {/* <div style={{ color: "black" }}>
+                    <h2 style={{ color: "black", marginTop: "1.5rem" }}>Query:-</h2>
+                    <div>
+                      {/* <div style={{ color: "black" }}>
                       {allQueryFetch?.data?.rooms.map((item) => (
                         <div>{item.queries.map((items) => items.text)}</div>
                       ))}
                     </div> */}
-                  </div>
-                </div>
-                <div>
-                  <h2 style={{ color: "black", marginTop: "1.5rem" }}>Posted Query:-</h2>
-                  <div>
-                    <div style={{ color: "black" }}>
-                      {temp?.blocks?.map((item) => (
-                        <div>{item.text}</div>
-                      ))}
                     </div>
                   </div>
-                </div>
-                <Button type="button" onClick={() => postTheQuery(teess)}>
-                  SAVE
-                </Button>
-              </Drawer>
+                  <div>
+                    <h2 style={{ color: "black", marginTop: "1.5rem" }}>Posted Query:-</h2>
+                    <div>
+                      <div style={{ color: "black" }}>
+                        {temp?.blocks?.map((item) => (
+                          <div>{item.text}</div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <Button type="button" onClick={() => postTheQuery(teess)}>
+                    SAVE
+                  </Button>
+                  {/* <Button type="button" visible={visible} onClick={() => setVisibility(false)}>
+                    save
+                  </Button> */}
+                </Drawer>
+              </div>
             </form>
             <InquiryDrawer onClick={showDrawer}>
               {/* {isLoading
