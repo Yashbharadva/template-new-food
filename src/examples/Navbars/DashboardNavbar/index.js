@@ -52,6 +52,7 @@ import {
   setOpenConfigurator,
 } from "context";
 
+// import { GrFormClose } from "react-icons/gr";
 import search from "../../../assets/images/search.png";
 import "./index.styles.scss";
 import SearchDrop from "./searchDrop";
@@ -182,6 +183,35 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [show, setShow] = useState(false);
+  // const [closeShow, setCloseShow] = useState(false);
+  // const [isExpanded, setExpanded] = useState(false);
+  // const isEmpty = searchResults === 0;
+
+  // const onCloseCross = () => {
+  //   setCloseShow(!closeShow);
+  // };
+
+  // const expandContainer = () => {
+  //   setExpanded(true);
+  // };
+
+  // const changeHandler = (e) => {
+  //   e.preventDefault();
+  //   if (e.target.value === "") setSearchQuery(e.target.value);
+  // };
+
+  // const commonContainer = () => {
+  //   setCloseShow(false);
+  //   setShow(false);
+  //   setSearchQuery("");
+  //   setSearchResults([]);
+  //   setOpenMenu(false);
+  //   setNavbarType();
+  // };
+
+  // useEffect(() => {
+  //   if (isClickedOutside) commonContainer();
+  // }, [isClickedOutside]);
   // const navigate = useNavigate();
   // const navigatewith = useNavigate();
 
@@ -369,51 +399,65 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
               {/* <input type="search" onChangeText={(e) => setSearchQuery(e)} /> */}
-              <MDInput
-                className="drop-for-tab"
-                label="Search here..."
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {show && (
-                <div className="drop-search">
-                  <div className="border-drop">
-                    {searchResults?.data?.rooms?.map((object) => (
-                      <div className="data-serach" key={object.id} style={{ color: "black" }}>
-                        {object.title}
-                      </div>
-                    ))}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      marginTop: "5px",
-                      boxShadow: "3px 3px 10px #CBC6C6",
-                      width: "25%",
-                      height: "auto",
-                      background: "white",
-                      color: "black",
-                    }}
-                  >
-                    {serachPopUp &&
-                      filterdSearchName.map((text) => (
-                        <SearchDrop
-                          text={text}
-                          search={search}
-                          // setSearch={setSearch}
-                          // setSearchPop={setSearchPop}
-                          // setSearchField={setSearchField}
-                        />
-                      ))}
-                  </div>
+              <div>
+                <MDInput
+                  className="drop-for-tab"
+                  label="Search here..."
+                  // onChange={changeHandler}
+                  style={{ marginRight: "-1.3rem", marginTop: "-0.5rem" }}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  // onClick={() => onCloseCross()}
+                  // animate={isExpanded ? "collapsed" : "expanded"}
+                  // onFocus={expandContainer}
+                />
+                {/* <GrFormClose /> */}
+                {/* {isEmpty && <div style={{ color: "black" }}>Start search..</div>} */}
+                {/* <MDInput
+                  className="drop-for-tab"
+                  label="Search here..."
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{ marginRight: "-1.3rem", marginTop: "-0.5rem" }}
+                  onClick={() => onCloseCross()}
+                /> */}
+              </div>
+              {/* {isExpanded && ( */}
+              <div className="drop-search">
+                <div className="border-drop">
+                  {searchResults?.data?.rooms?.map((object) => (
+                    <div className="data-serach" key={object.id} style={{ color: "black" }}>
+                      {object.title}
+                    </div>
+                  ))}
                 </div>
-              )}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginTop: "5px",
+                    boxShadow: "3px 3px 10px #CBC6C6",
+                    width: "25%",
+                    height: "auto",
+                    background: "white",
+                    color: "black",
+                  }}
+                >
+                  {serachPopUp &&
+                    filterdSearchName.map((text) => (
+                      <SearchDrop
+                        text={text}
+                        search={search}
+                        // setSearch={setSearch}
+                        // setSearchPop={setSearchPop}
+                        // setSearchField={setSearchField}
+                      />
+                    ))}
+                </div>
+              </div>
               <div className="image-search">
                 <input
                   type="image"
                   src={search}
                   alt=""
-                  // disabled={disableSearch}
                   onClick={handleSearchQuery}
                   width="20px"
                   height="20px"

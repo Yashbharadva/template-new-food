@@ -30,6 +30,7 @@ export default function data() {
   const [postdata, setPostTheData] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   const teess = temp?.blocks?.map((item) => item.text);
 
@@ -163,6 +164,7 @@ export default function data() {
   }, [customer]);
 
   const postTheQuery = async (text) => {
+    setLoader(true);
     const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
     console.log(parsedPostQuery);
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
@@ -182,7 +184,13 @@ export default function data() {
     console.log(postdata);
     console.log(response);
     setVisibility(false);
+    window.location.reload(false);
+    setLoader(false);
   };
+
+  // const buttonLoader = () => {
+  //   setLoader(true);
+  // };
 
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
@@ -364,8 +372,20 @@ export default function data() {
                       color: "black",
                     }}
                   />
+                  {!loader && (
+                    <Button type="button" onClick={() => postTheQuery(teess)}>
+                      SAVE
+                    </Button>
+                  )}
+                  {loader && (
+                    <Button type="button" disabled>
+                      Loading...
+                    </Button>
+                  )}
+                  {/* {!loader && <Button onClick={() => buttonLoader()}>SAVE</Button>}
+                  {loader && <Button disabled>Loading....</Button>} */}
                   <div>
-                    <h2 style={{ color: "black", marginTop: "1.5rem" }}>Query:-</h2>
+                    {/* <h2 style={{ color: "black", marginTop: "1.5rem" }}>Message:-</h2> */}
                     <div>
                       {/* <div style={{ color: "black" }}>
                         {allQueryFetch?.data?.rooms.map((item) => (
@@ -390,17 +410,27 @@ export default function data() {
                             onKeyDown={showDrawer}
                             role="button"
                             tabIndex={0}
+                            style={{
+                              border: "1px solid black",
+                              marginTop: "1rem",
+                              padding: "15px 15px",
+                            }}
                           >
                             {item.queries.map((items) => (
-                              <div style={{ color: "black" }}>
+                              <div
+                                style={{
+                                  color: "black",
+                                  paddingTop: "20px",
+                                  cursor: "pointer",
+                                }}
+                              >
                                 <li>
-                                  {items.text}
-                                  {"\t--->"}
                                   {items.sender.username}
+                                  {items.sender.createdAt.split("T")[0]}
+                                  {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                  <div style={{ marginLeft: "1rem" }}>{items.text}</div>
                                   <div style={{ textAlign: "right" }}>
-                                    {items.sender.createdAt.split("T")[0]}
-                                    {"\t--->"}
-                                    {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                    {/* {"\t------------->"} */}
                                   </div>
                                 </li>
                               </div>
@@ -420,9 +450,6 @@ export default function data() {
                       </div>
                     </div>
                   </div>
-                  <Button type="button" onClick={() => postTheQuery(teess)}>
-                    SAVE
-                  </Button>
                   {/* <Button type="button" visible={visible} onClick={() => setVisibility(false)}>
                     save
                   </Button> */}
