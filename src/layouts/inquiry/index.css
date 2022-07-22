@@ -22,8 +22,8 @@ h1 {
 }
 
 .tag-container {
-    min-width: 60%;
-    max-width: 75%;
+    min-width: 50%;
+    max-width: 100%;
     display: flex;
     flex-wrap: wrap;
     min-height: 30px;
@@ -71,7 +71,6 @@ button{
     /* background-color: #5340ff; */
     color: #fff;
     height: calc(100vh - 55px);
-    overflow: hidden;
 }
 
 .ant-drawer-header {

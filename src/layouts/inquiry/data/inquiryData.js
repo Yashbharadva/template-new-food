@@ -80,9 +80,9 @@ export default function data() {
   // const [mainData] = useState({});
   // const [placement] = useState("right");
 
-  const handleShow = () => {
-    setShow((current) => !current);
-  };
+  // const handleShow = () => {
+  //   setShow((current) => !current);
+  // };
 
   // const postQuery = async () => {
   //   const parsedPost = JSON.parse(localStorage.getItem("user-info"));
@@ -204,15 +204,16 @@ export default function data() {
                   <div
                     className="fetch-title"
                     role="button"
-                    onClick={handleShow}
-                    onKeyDown={handleShow}
+                    onClick={() => setVisibility(true)}
+                    onKeyDown={showDrawer}
                     tabIndex={0}
-                    style={{ width: "1000px" }}
+                    style={{ width: "1000px", color: "black" }}
                   >
                     {item.title}
                   </div>
-                  {show && (
+                  {/* {show && (
                     <div
+                      className="item-sender"
                       onClick={() => setVisibility(true)}
                       onKeyDown={showDrawer}
                       role="button"
@@ -233,7 +234,7 @@ export default function data() {
                         </div>
                       ))}
                     </div>
-                  )}
+                  )} */}
                 </div>
               ))}
             </div>
@@ -249,12 +250,12 @@ export default function data() {
                   extra={
                     <Space>
                       <MDInput type="search" onChange={(e) => setSearchQuery(e.target.value)} />
-                      <button type="button" onClick={handleSearchQuery}>
+                      <Button type="button" onClick={handleSearchQuery}>
                         Search
-                      </button>
+                      </Button>
                       {show && (
                         <div className="drop-drawer-search">
-                          <div className="border-drawer-drop">
+                          <div className="border-drawer-drop" style={{ color: "black" }}>
                             {/* {searchResults?.data?.rooms?.queries?.map((item) => (
                               <div
                                 className="drawer-search"
@@ -278,70 +279,74 @@ export default function data() {
                     placeholder="search here.."
                     style={{ border: "1px solid grey" }}
                   /> */}
-                  <div className="title-drawer">
-                    <h2>Title</h2>
-                    <input
-                      type="text"
-                      style={{
-                        width: "35rem",
-                        height: "2.7rem",
-                        border: "1px solid black",
-                        borderRadius: "5px",
-                        color: "black",
-                        outline: "none",
-                      }}
-                      value={allQueryFetch?.data?.rooms[0].title}
-                    />
-                  </div>
-                  <div className="tag-item" style={{ marginTop: "1rem" }}>
-                    <h2>Tags</h2>
-                    <div className="tag-container">
-                      {tags.map((tag) => (
-                        <div className="tag">
-                          {tag}
-                          <span
-                            onClick={() => removeTag(tag)}
-                            onKeyDown={() => removeTag(tag)}
-                            role="button"
-                            tabIndex={0}
-                          >
-                            X
-                          </span>
-                        </div>
-                      ))}
+                  <div
+                    className="title-tags"
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <div className="title-drawer">
+                      <h2>Title</h2>
                       <input
-                        onKeyDown={addTag}
-                        onChange={handleTag}
-                        style={{ color: "black" }}
-                        onFocus={() => setTagPopUp(true)}
+                        type="text"
+                        style={{
+                          width: "15rem",
+                          height: "2.7rem",
+                          border: "1px solid black",
+                          borderRadius: "5px",
+                          color: "black",
+                          outline: "none",
+                        }}
+                        value={allQueryFetch?.data?.rooms[0].title}
                       />
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginTop: "5px",
-                        boxShadow: "3px 3px 10px #CBC6C6",
-                        width: "75%",
-                        height: "auto",
-                        background: "white",
-                        color: "black",
-                      }}
-                    >
-                      {tagPopUp &&
-                        filteredTagName.map((name) => (
-                          <TagPopupC
-                            name={name}
-                            tags={tags}
-                            setTags={setTags}
-                            setTagPopUp={setTagPopUp}
-                            setSearchField={setSearchField}
-                          />
+                    <div className="tag-item">
+                      <h2>Tags</h2>
+                      <div className="tag-container">
+                        {tags.map((tag) => (
+                          <div className="tag">
+                            {tag}
+                            <span
+                              onClick={() => removeTag(tag)}
+                              onKeyDown={() => removeTag(tag)}
+                              role="button"
+                              tabIndex={0}
+                            >
+                              X
+                            </span>
+                          </div>
                         ))}
+                        <input
+                          onKeyDown={addTag}
+                          onChange={handleTag}
+                          style={{ color: "black" }}
+                          onFocus={() => setTagPopUp(true)}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          marginTop: "5px",
+                          boxShadow: "3px 3px 10px #CBC6C6",
+                          width: "100%",
+                          height: "auto",
+                          background: "white",
+                          color: "black",
+                        }}
+                      >
+                        {tagPopUp &&
+                          filteredTagName.map((name) => (
+                            <TagPopupC
+                              name={name}
+                              tags={tags}
+                              setTags={setTags}
+                              setTagPopUp={setTagPopUp}
+                              setSearchField={setSearchField}
+                            />
+                          ))}
+                      </div>
                     </div>
-                    white_check_mark eyes raised_hands
                   </div>
-                  <div className="change-editor">
+                  <div className="change-editor" style={{ marginTop: "1rem" }}>
                     <h2>Text Editor</h2>
                   </div>
                   <Editor
@@ -363,10 +368,46 @@ export default function data() {
                     <h2 style={{ color: "black", marginTop: "1.5rem" }}>Query:-</h2>
                     <div>
                       {/* <div style={{ color: "black" }}>
+                        {allQueryFetch?.data?.rooms.map((item) => (
+                          <div>{item.queries.map((items) => items.text)}</div>
+                        ))}
+                      </div> */}
                       {allQueryFetch?.data?.rooms.map((item) => (
-                        <div>{item.queries.map((items) => items.text)}</div>
+                        <div className="main">
+                          {/* <div
+                    className="fetch-title"
+                    role="button"
+                    onClick={handleShow}
+                    onKeyDown={handleShow}
+                    tabIndex={0}
+                    style={{ width: "1000px" }}
+                  >
+                    {item.title}
+                  </div> */}
+                          <div
+                            className="item-sender"
+                            onClick={() => setVisibility(true)}
+                            onKeyDown={showDrawer}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            {item.queries.map((items) => (
+                              <div style={{ color: "black" }}>
+                                <li>
+                                  {items.text}
+                                  {"\t--->"}
+                                  {items.sender.username}
+                                  <div style={{ textAlign: "right" }}>
+                                    {items.sender.createdAt.split("T")[0]}
+                                    {"\t--->"}
+                                    {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                  </div>
+                                </li>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       ))}
-                    </div> */}
                     </div>
                   </div>
                   <div>
