@@ -6,6 +6,7 @@
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
 * Copyright 2022 Creative Tim (https://www.creative-tim.com)
 
+
 Coded by www.creative-tim.com
 
  =========================================================
@@ -29,7 +30,7 @@ import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDInput from "components/MDInput";
+// import MDInput from "components/MDInput";
 
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
@@ -53,9 +54,14 @@ import {
 } from "context";
 
 // import { GrFormClose } from "react-icons/gr";
-import search from "../../../assets/images/search.png";
+// import { useDebounce } from "../DashboardNavbar/debounceHook";
+import axios from "axios";
+// import search from "../../../assets/images/search.png";
 import "./index.styles.scss";
-import SearchDrop from "./searchDrop";
+import MDInput from "components/MDInput";
+import useDebounce from "./debounceHook";
+// import TvShow from "./tvshow";
+// import SearchDrop from "./searchDrop";
 // import button from "assets/theme/components/button";
 // import fetch from "node-fetch";
 // import data from "layouts/tables/data/authorsTableData";
@@ -65,6 +71,54 @@ import SearchDrop from "./searchDrop";
 // import App from "App";
 // import { Search } from "@mui/icons-material";
 
+// const SearchBarContainer = () => {
+//   <div className="searchbarcontainer" />;
+// };
+
+// const SearchInputContainer = () => {
+//   <div className="searchinputcontainer" />;
+// };
+
+// const SearchInput = () => {
+//   <div className="searchinput" />;
+// };
+
+// const SearchIcon = () => {
+//   <div className="searchicon" />;
+// };
+
+// const CloseIcon = () => {
+//   <div className="closeicon" />;
+// };
+
+// const LineSeperator = () => {
+//   <div className="lineseperator" />;
+// };
+
+// const SearchContent = () => {
+//   <div
+//     style={{
+//       width: "100%",
+//       height: "100%",
+//       display: "flex",
+//       flexDirection: "column",
+//       padding: "1em",
+//       overflowY: "auto",
+//     }}
+//   >
+//     j
+//   </div>;
+// };
+
+const containerVariants = {
+  expanded: {
+    height: "30em",
+  },
+  collapsed: {
+    height: "3.8em",
+  },
+};
+
 export const UserContext = createContext();
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -72,19 +126,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  const [serachPopUp] = useState(false);
-  const [searchName] = useState([
-    "Vatsal",
-    "Yash",
-    "Tanish",
-    "Gaurang",
-    "Avin",
-    "Ishan",
-    "Pradip",
-    "Akash",
-  ]);
+  // const [serachPopUp] = useState(false);
+  // const [searchName] = useState([
+  //   "Vatsal",
+  //   "Yash",
+  //   "Tanish",
+  //   "Gaurang",
+  //   "Avin",
+  //   "Ishan",
+  //   "Pradip",
+  //   "Akash",
+  // ]);
 
-  const [searchFieldMain] = useState("");
+  // const [searchFieldMain] = useState("");
 
   // const handleSearchTab = (e) => {
   //   if (e.target.value) {
@@ -95,54 +149,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
   //   setSearchFieldMain(e.target.value);
   // };
 
-  const filterdSearchName = searchName.filter((text) =>
-    text.toLowerCase().includes(searchFieldMain.toLowerCase())
-  );
-  // const filter = (e) => {
-  //   const search = fetch("https://cerv-api.herokuapp.com/admin/users/1");
-  //   const keyword = e.target.value;
+  // const filterdSearchName = searchName.filter((text) =>
+  //   text.toLowerCase().includes(searchFieldMain.toLowerCase())
+  // );
 
-  //   if (keyword !== "") {
-  //     const filteredData = search.filter((item) =>
-  //       Object.values(item).join("").toLowerCase().includes(keyword.toLowerCase())
-  //     );
-  //     console.log(filteredData);
-  //   }
-  // };
-
-  // const [fData] = useState("");
-  // const [setCopyData] = useState([]);
-  // const changeData = (e) => {
-  //   // console.log(e);
-  //   const getChangeData = e.toLowerCase();
-
-  //   if (getChangeData === "") {
-  //     setCopyData(fData);
-  //   } else {
-  //     const storeData = ("https://cerv-api.herokuapp.com/admin/search?term=tan&key=1")
-  //     .then((response) => response.json())
-  //       .then((json) => setData(json));
-  //   }, []);
-  //     setCopyData(storeData);
-  //     console.log(storeData);
-  //   }
-  // };
-
-  // const [searchItem, setSearchItem] = useState("");
-  // const [gitRepos, setGitPespos] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [lists, setLists] = useState("");
-  // const filter = (e) => {
-  //   const keyword = e.target.value;
-
-  //   if (keyword !== "") {
-  //     const filteredData = felter((ittch("https://cerv-api.herokuapp.com/admin/users/1").fiem) =>
-  //       Object.values(item).join("").toLowerCase().includes(keyword.toLowerCase())
-  //     );
-  //     setLists(filteredData);
-  //     console.log(filteredData);
-  //   }
-  // };
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -181,59 +191,76 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [show, setShow] = useState(false);
-  // const [closeShow, setCloseShow] = useState(false);
-  // const [isExpanded, setExpanded] = useState(false);
-  // const isEmpty = searchResults === 0;
+  // const [searchResults, setSearchResults] = useState([]);
+  // const [show, setShow] = useState(false);
+  const [isExpanded, setExpanded] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [tvShows, setTvShows] = useState([]);
+  const [noTvShows, setNoTvShows] = useState(false);
 
-  // const onCloseCross = () => {
-  //   setCloseShow(!closeShow);
-  // };
+  const changeHandler = (e) => {
+    e.preventDefault();
+    if (e.target.value.trim() === "") setNoTvShows(false);
+    setSearchQuery(e.target.value);
+    console.log(noTvShows);
+  };
 
-  // const expandContainer = () => {
-  //   setExpanded(true);
-  // };
+  const expandContainer = () => {
+    setExpanded(true);
+  };
 
-  // const changeHandler = (e) => {
-  //   e.preventDefault();
-  //   if (e.target.value === "") setSearchQuery(e.target.value);
-  // };
+  const prepareSearchQuery = (query) => {
+    const url = `https://inquiry-ts.herokuapp.com/user/search-query?term=${query}`;
 
-  // const commonContainer = () => {
-  //   setCloseShow(false);
-  //   setShow(false);
-  //   setSearchQuery("");
-  //   setSearchResults([]);
-  //   setOpenMenu(false);
-  //   setNavbarType();
-  // };
+    return encodeURI(url);
+  };
 
-  // useEffect(() => {
-  //   if (isClickedOutside) commonContainer();
-  // }, [isClickedOutside]);
-  // const navigate = useNavigate();
-  // const navigatewith = useNavigate();
+  const searchTvShow = async () => {
+    if (!searchQuery || searchQuery.trim() === "") return;
+    setLoading(true);
+    setNoTvShows(false);
 
-  const handleSearchQuery = async () => {
-    const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
-    console.log(searchQuery);
-    fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
-      headers: {
-        Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
-      },
-      method: "GET",
-    })
-      .then(async (res) => {
-        const resJSON = await res.json();
-        console.log("-------->", resJSON);
-        setSearchResults(resJSON);
-        setShow(!show);
+    console.log(prepareSearchQuery(searchQuery));
+
+    const response = await axios
+      .get(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2FkZWRVc2VyIjp7ImlkIjoxLCJlbWFpbCI6InZhdHNhbHAudGNzQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoidmF0c2FsMTkiLCJyb2xlIjoyLCJpc19hY3RpdmUiOnRydWUsInJlc2V0VG9rZW4iOm51bGwsInJlc2V0VG9rZW5FeHBpcmF0aW9uIjpudWxsLCJjcmVhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjA0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjE5LjAwMFoifSwiaWF0IjoxNjU4NDk3MjEzLCJleHAiOjE2NTkxMDIwMTN9.U2ApxPDs-aDfNyez3leHp3F7JcMMQc0EIGLDhN7RHnw`,
+        },
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Error: ", err);
       });
+    console.log(response);
+
+    if (response) {
+      console.log("Response: ", response.data.data.rooms[0].title);
+      if (response.data) setNoTvShows(true);
+      setTvShows(response?.data?.data?.rooms);
+    }
+    setLoading(false);
   };
+  useDebounce(searchQuery, 100, searchTvShow);
+
+  // const handleSearchQuery = async () => {
+  //   const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
+  //   console.log(searchQuery);
+  //   fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
+  //     },
+  //     method: "GET",
+  //   })
+  //     .then(async (res) => {
+  //       const resJSON = await res.json();
+  //       console.log("-------->", resJSON);
+  //       setSearchResults(resJSON);
+  //       setShow(!show);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -398,29 +425,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
-              {/* <input type="search" onChangeText={(e) => setSearchQuery(e)} /> */}
-              <div>
+              {/* <div style={{ color: "aqua" }}>
                 <MDInput
                   className="drop-for-tab"
                   label="Search here..."
-                  // onChange={changeHandler}
                   style={{ marginRight: "-1.3rem", marginTop: "-0.5rem" }}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  // onClick={() => onCloseCross()}
-                  // animate={isExpanded ? "collapsed" : "expanded"}
-                  // onFocus={expandContainer}
                 />
-                {/* <GrFormClose /> */}
-                {/* {isEmpty && <div style={{ color: "black" }}>Start search..</div>} */}
-                {/* <MDInput
-                  className="drop-for-tab"
-                  label="Search here..."
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{ marginRight: "-1.3rem", marginTop: "-0.5rem" }}
-                  onClick={() => onCloseCross()}
-                /> */}
               </div>
-              {/* {isExpanded && ( */}
               <div className="drop-search">
                 <div className="border-drop">
                   {searchResults?.data?.rooms?.map((object) => (
@@ -429,28 +441,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     </div>
                   ))}
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginTop: "5px",
-                    boxShadow: "3px 3px 10px #CBC6C6",
-                    width: "25%",
-                    height: "auto",
-                    background: "white",
-                    color: "black",
-                  }}
-                >
+                <div>
                   {serachPopUp &&
-                    filterdSearchName.map((text) => (
-                      <SearchDrop
-                        text={text}
-                        search={search}
-                        // setSearch={setSearch}
-                        // setSearchPop={setSearchPop}
-                        // setSearchField={setSearchField}
-                      />
-                    ))}
+                    filterdSearchName.map((text) => <SearchDrop text={text} search={search} />)}
                 </div>
               </div>
               <div className="image-search">
@@ -462,6 +455,42 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   width="20px"
                   height="20px"
                 />
+              </div> */}
+              <div animate={isExpanded ? "expanded" : "collapsed"} variants={containerVariants}>
+                <div>
+                  {/* <SearchIcon /> */}
+                  <MDInput
+                    placeholder="Search here"
+                    onFocus={expandContainer}
+                    value={searchQuery}
+                    onChange={changeHandler}
+                  />
+                  <div>
+                    {isExpanded && (
+                      <div
+                        // className="drop-search"
+                        key="close-icon"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    )}
+                  </div>
+                </div>
+                {isExpanded && (
+                  <div>
+                    {!isLoading && (
+                      <div className="drop-search">
+                        <div>
+                          {tvShows.map((object) => (
+                            <div> {object.title} </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
