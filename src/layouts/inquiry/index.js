@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
@@ -48,8 +48,12 @@ function Inquiry() {
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [tags, setTags] = useState(["Hello"]);
+  const [postdata, setPostTheData] = useState("");
   const [visibility, setVisibility] = useState(false);
-  const [setPostTheData] = useState("");
+  const [temp, setTemp] = useState("");
+  // const [setPostTheData] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [allQueryFetch, setAllQueryFetch] = useState({});
   // postTheData
 
   // const [dataEditor] = useState([]);
@@ -61,6 +65,8 @@ function Inquiry() {
       }
     }
   };
+
+  const teess = temp?.blocks?.map((item) => item.text);
 
   const [tagPopUp, setTagPopUp] = useState(false);
   const [tagName] = useState([
@@ -115,8 +121,24 @@ function Inquiry() {
   //   localStorage.setItem("tag", tags);
   //   // alert(<div>{post.message}</div>);
   // };
+  const getAllQuery = async () => {
+    const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedAll.data.accessToken}`,
+      },
+    });
+    const allQueryData = await response.json();
+    console.log(allQueryData);
+    setAllQueryFetch(allQueryData);
+  };
+  useEffect(() => {
+    getAllQuery();
+  }, []);
 
-  const postTheQuery = async () => {
+  const postTheQuery = async (text) => {
+    setLoader(true);
     try {
       const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
       console.log(parsedPostQuery);
@@ -127,13 +149,16 @@ function Inquiry() {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          roomId: 2,
-          text: "Good Morning all",
+          roomId: 1,
+          text: `${text}`,
         }),
       });
-      const postQueryData = await response.json();
-      console.log(postQueryData);
-      setPostTheData(postQueryData);
+      setPostTheData(response);
+      console.log(postdata);
+      console.log(response);
+      setVisibility(false);
+      window.location.reload(false);
+      setLoader(false);
     } catch (err) {
       console.log(err);
     }
@@ -186,7 +211,7 @@ function Inquiry() {
                       +CreateInquiry
                     </div>
                   </Space>
-                  <form onSubmit={postTheQuery}>
+                  <form>
                     <Drawer
                       title="Send Your Queriy"
                       placement={placement}
@@ -207,6 +232,7 @@ function Inquiry() {
                             color: "black",
                             outline: "none",
                           }}
+                          // value={allQueryFetch?.data?.rooms[0].title}
                         />
                       </div>
                       <div className="tag-item" style={{ marginTop: "1rem" }}>
@@ -262,6 +288,9 @@ function Inquiry() {
                       </div>
                       <Editor
                         className="editor-text"
+                        onChange={(e) => {
+                          setTemp(e);
+                        }}
                         toolbarClassName="toolbarClassName"
                         wrapperClassName="wrapperClassName"
                         editorClassName="editorClassName"
@@ -272,7 +301,58 @@ function Inquiry() {
                           color: "black",
                         }}
                       />
-                      <Button type="button">SAVE</Button>
+                      {!loader && (
+                        <Button type="button" onClick={() => postTheQuery(teess)}>
+                          SAVE
+                        </Button>
+                      )}
+                      {loader && (
+                        <Button type="button" disabled>
+                          Loading...
+                        </Button>
+                      )}
+                      <div style={{ border: "1px solid black" }}>
+                        {/* <h2 style={{ color: "black", marginTop: "1.5rem" }}>Message:-</h2> */}
+                        <div>
+                          {/* <div style={{ color: "black" }}>
+                        {allQueryFetch?.data?.rooms.map((item) => (
+                          <div>{item.queries.map((items) => items.text)}</div>
+                        ))}
+                      </div> */}
+                          {allQueryFetch?.data?.rooms.map((item) => (
+                            // <div className="main">
+                            <div
+                              className="item-sender"
+                              onClick={() => setVisibility(true)}
+                              onKeyDown={showDrawer}
+                              role="button"
+                              tabIndex={0}
+                              style={{ padding: "15px 15px" }}
+                            >
+                              {item.queries.map((items) => (
+                                <div
+                                  style={{
+                                    color: "black",
+                                    paddingTop: "20px",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <li>
+                                    {items.sender.username}
+                                    {items.sender.createdAt.split("T")[0]}
+                                    {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                    <div style={{ marginLeft: "1rem" }}>{items.text}</div>
+                                    <div style={{ textAlign: "right" }}>
+                                      {/* {"\t------------->"} */}
+                                    </div>
+                                  </li>
+                                </div>
+                              ))}
+                            </div>
+                            // </div>
+                          ))}
+                        </div>
+                      </div>
                       {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
                     </Drawer>
                   </form>

@@ -5,6 +5,8 @@ import { Button, Drawer, Space } from "antd";
 import { Editor } from "react-draft-wysiwyg";
 import MDInput from "components/MDInput";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import useDebounce from "examples/Navbars/DashboardNavbar/debounceHook";
+import axios from "axios";
 import TagPopupC from "./tagDrop";
 // import { Button, Drawer, Space } from "antd";
 // import { Button, Drawer, Space } from "antd";
@@ -21,7 +23,6 @@ export default function data() {
   const [setVisible] = useState(false);
   // setAllQueryFetch
   const [allQueryFetch, setAllQueryFetch] = useState({});
-  const [show, setShow] = useState(false);
   // const [setPostMainData] = useState({});
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
@@ -29,8 +30,11 @@ export default function data() {
   const [temp, setTemp] = useState("");
   const [postdata, setPostTheData] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [isExpanded, setExpanded] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [tvShows, setTvShows] = useState([]);
+  const [noTvShows, setNoTvShows] = useState(false);
 
   const teess = temp?.blocks?.map((item) => item.text);
 
@@ -111,25 +115,68 @@ export default function data() {
   //   postQuery();
   // }, []);
 
-  const handleSearchQuery = async () => {
-    const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
-    // console.log(searchQuery);
-    fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
-      headers: {
-        Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
-      },
-      method: "GET",
-    })
-      .then(async (res) => {
-        const resJSON = await res.json();
-        console.log("--------->>>>>>", resJSON);
-        setSearchResults(resJSON);
-        setShow(!show);
+  // const handleSearchQuery = async () => {
+  //   const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
+  //   // console.log(searchQuery);
+  //   fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
+  //     },
+  //     method: "GET",
+  //   })
+  //     .then(async (res) => {
+  //       const resJSON = await res.json();
+  //       console.log("--------->>>>>>", resJSON);
+  //       setSearchResults(resJSON);
+  //       setShow(!show);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  const changeHandler = (e) => {
+    e.preventDefault();
+    if (e.target.value.trim() === "") setNoTvShows(false);
+    setSearchQuery(e.target.value);
+    console.log(noTvShows);
+  };
+
+  const expandContainer = () => {
+    setExpanded(true);
+  };
+
+  const prepareSearchQuery = (query) => {
+    const url = `https://inquiry-ts.herokuapp.com/user/search-query?term=${query}`;
+    return encodeURI(url);
+  };
+
+  const searchTvShow = async () => {
+    if (!searchQuery || searchQuery.trim() === "") return;
+    setLoading(true);
+    setNoTvShows(false);
+
+    console.log("-------------------->>>>>>>>>", prepareSearchQuery(searchQuery));
+
+    const response = await axios
+      .get(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2FkZWRVc2VyIjp7ImlkIjoxLCJlbWFpbCI6InZhdHNhbHAudGNzQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoidmF0c2FsMTkiLCJyb2xlIjoyLCJpc19hY3RpdmUiOnRydWUsInJlc2V0VG9rZW4iOm51bGwsInJlc2V0VG9rZW5FeHBpcmF0aW9uIjpudWxsLCJjcmVhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjA0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjE5LjAwMFoifSwiaWF0IjoxNjU4NDk3MjEzLCJleHAiOjE2NTkxMDIwMTN9.U2ApxPDs-aDfNyez3leHp3F7JcMMQc0EIGLDhN7RHnw`,
+        },
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Error: ", err);
       });
+    console.log(response);
+
+    if (response) {
+      console.log("Response: ", response.data.data.rooms[0]?.queries);
+      if (response.data) setNoTvShows(true);
+      setTvShows(response?.data?.data?.rooms[0]?.queries);
+    }
+    setLoading(false);
   };
+  useDebounce(searchQuery, 100, searchTvShow);
 
   const getAllQuery = async () => {
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
@@ -183,8 +230,8 @@ export default function data() {
     setPostTheData(response);
     console.log(postdata);
     console.log(response);
-    setVisibility(false);
-    window.location.reload(false);
+    window.location.reload();
+    setVisibility(true);
     setLoader(false);
   };
 
@@ -199,15 +246,8 @@ export default function data() {
         inquiry: (
           // <Button onClick={showDrawer}>
           <div>
-            <div
-              role="button"
-              type="primary"
-              // onClick={toggleShow}
-              // onKeyDown={toggleShow}
-              tabIndex={0}
-              style={{ cursor: "pointer" }}
-            >
-              {allQueryFetch?.data?.rooms.map((item) => (
+            <div role="button" type="primary" tabIndex={0} style={{ cursor: "pointer" }}>
+              {allQueryFetch?.data?.rooms?.map((item) => (
                 <div className="main">
                   <div
                     className="fetch-title"
@@ -219,30 +259,6 @@ export default function data() {
                   >
                     {item.title}
                   </div>
-                  {/* {show && (
-                    <div
-                      className="item-sender"
-                      onClick={() => setVisibility(true)}
-                      onKeyDown={showDrawer}
-                      role="button"
-                      tabIndex={0}
-                    >
-                      {item.queries.map((items) => (
-                        <div>
-                          <li>
-                            {items.text}
-                            {"\t--->"}
-                            {items.sender.username}
-                            <div style={{ textAlign: "right" }}>
-                              {items.sender.createdAt.split("T")[0]}
-                              {"\t--->"}
-                              {items.sender.createdAt.split("T")[1].split(".")[0]}
-                            </div>
-                          </li>
-                        </div>
-                      ))}
-                    </div>
-                  )} */}
                 </div>
               ))}
             </div>
@@ -257,36 +273,57 @@ export default function data() {
                   style={{ zIndex: 2000 }}
                   extra={
                     <Space>
-                      <MDInput type="search" onChange={(e) => setSearchQuery(e.target.value)} />
-                      <Button type="button" onClick={handleSearchQuery}>
+                      <div>
+                        <MDInput
+                          type="search"
+                          placeholder="Search Here..."
+                          onChange={changeHandler}
+                          value={searchQuery}
+                          onFocus={expandContainer}
+                          freeSolo
+                          autoComplete
+                          autoHighlight
+                        />
+                        <div>
+                          {isExpanded && (
+                            <div
+                              key="close-icon"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      {isExpanded && (
+                        <div>
+                          {!isLoading && (
+                            <div className="drop-inq-search">
+                              <div>
+                                {tvShows.map((object) => (
+                                  <div> {object.text} </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {/* <Button type="button" onClick={handleSearchQuery}>
                         Search
                       </Button>
                       {show && (
                         <div className="drop-drawer-search">
                           <div className="border-drawer-drop" style={{ color: "black" }}>
-                            {/* {searchResults?.data?.rooms?.queries?.map((item) => (
-                              <div
-                                className="drawer-search"
-                                key={item.id}
-                                style={{ color: "black" }}
-                              >
-                                {item.text}
-                              </div>
-                            ))} */}
                             {searchResults?.data?.rooms[0]?.queries?.map((item) => (
                               <div>{item.text}</div>
                             ))}
                           </div>
                         </div>
-                      )}
+                      )} */}
                     </Space>
                   }
                 >
-                  {/* <input
-                    type="search"
-                    placeholder="search here.."
-                    style={{ border: "1px solid grey" }}
-                  /> */}
                   <div
                     className="title-tags"
                     style={{ display: "flex", justifyContent: "space-between" }}
@@ -384,7 +421,7 @@ export default function data() {
                   )}
                   {/* {!loader && <Button onClick={() => buttonLoader()}>SAVE</Button>}
                   {loader && <Button disabled>Loading....</Button>} */}
-                  <div>
+                  <div style={{ border: "1px solid black", marginTop: "1rem" }}>
                     {/* <h2 style={{ color: "black", marginTop: "1.5rem" }}>Message:-</h2> */}
                     <div>
                       {/* <div style={{ color: "black" }}>
@@ -393,50 +430,36 @@ export default function data() {
                         ))}
                       </div> */}
                       {allQueryFetch?.data?.rooms.map((item) => (
-                        <div className="main">
-                          {/* <div
-                    className="fetch-title"
-                    role="button"
-                    onClick={handleShow}
-                    onKeyDown={handleShow}
-                    tabIndex={0}
-                    style={{ width: "1000px" }}
-                  >
-                    {item.title}
-                  </div> */}
-                          <div
-                            className="item-sender"
-                            onClick={() => setVisibility(true)}
-                            onKeyDown={showDrawer}
-                            role="button"
-                            tabIndex={0}
-                            style={{
-                              border: "1px solid black",
-                              marginTop: "1rem",
-                              padding: "15px 15px",
-                            }}
-                          >
-                            {item.queries.map((items) => (
-                              <div
-                                style={{
-                                  color: "black",
-                                  paddingTop: "20px",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <li>
-                                  {items.sender.username}
-                                  {items.sender.createdAt.split("T")[0]}
-                                  {items.sender.createdAt.split("T")[1].split(".")[0]}
-                                  <div style={{ marginLeft: "1rem" }}>{items.text}</div>
-                                  <div style={{ textAlign: "right" }}>
-                                    {/* {"\t------------->"} */}
-                                  </div>
-                                </li>
-                              </div>
-                            ))}
-                          </div>
+                        // <div className="main">
+                        <div
+                          className="item-sender"
+                          onClick={() => setVisibility(true)}
+                          onKeyDown={showDrawer}
+                          role="button"
+                          tabIndex={0}
+                          style={{ padding: "15px 15px" }}
+                        >
+                          {item.queries.map((items) => (
+                            <div
+                              style={{
+                                color: "black",
+                                paddingTop: "20px",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <li>
+                                {items.sender.username}
+                                {items.sender.createdAt.split("T")[0]}
+                                {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                <div style={{ marginLeft: "1rem" }}>{items.text}</div>
+                                <div style={{ textAlign: "right" }}>
+                                  {/* {"\t------------->"} */}
+                                </div>
+                              </li>
+                            </div>
+                          ))}
                         </div>
+                        // </div>
                       ))}
                     </div>
                   </div>

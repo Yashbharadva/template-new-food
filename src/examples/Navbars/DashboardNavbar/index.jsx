@@ -458,7 +458,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </div> */}
               <div animate={isExpanded ? "expanded" : "collapsed"} variants={containerVariants}>
                 <div>
-                  {/* <SearchIcon /> */}
                   <MDInput
                     placeholder="Search here"
                     onFocus={expandContainer}
