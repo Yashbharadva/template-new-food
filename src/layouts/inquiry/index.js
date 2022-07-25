@@ -53,7 +53,7 @@ function Inquiry() {
   const [temp, setTemp] = useState("");
   // const [setPostTheData] = useState("");
   const [loader, setLoader] = useState(false);
-  const [allQueryFetch, setAllQueryFetch] = useState({});
+  const [setAllQueryFetch] = useState({});
   // postTheData
 
   // const [dataEditor] = useState([]);
@@ -105,22 +105,6 @@ function Inquiry() {
     setPlacement(e.target.value);
   };
 
-  // const handleTextChange = (e) => {
-  //   setTitle(e.target.value);
-  // };
-
-  // const handleEditorChange = (e) => {
-  //   setEditor(e.target.value);
-  // };
-
-  // const handleSaveClick = (e) => {
-  //   e.preventDefault();
-  //   setTitle("");
-  //   setTags("");
-  //   localStorage.setItem("title", title);
-  //   localStorage.setItem("tag", tags);
-  //   // alert(<div>{post.message}</div>);
-  // };
   const getAllQuery = async () => {
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
@@ -232,7 +216,6 @@ function Inquiry() {
                             color: "black",
                             outline: "none",
                           }}
-                          // value={allQueryFetch?.data?.rooms[0].title}
                         />
                       </div>
                       <div className="tag-item" style={{ marginTop: "1rem" }}>
@@ -281,7 +264,6 @@ function Inquiry() {
                               />
                             ))}
                         </div>
-                        white_check_mark eyes raised_hands
                       </div>
                       <div className="change-editor">
                         <h2>Text Editor</h2>
@@ -311,16 +293,9 @@ function Inquiry() {
                           Loading...
                         </Button>
                       )}
-                      <div style={{ border: "1px solid black" }}>
-                        {/* <h2 style={{ color: "black", marginTop: "1.5rem" }}>Message:-</h2> */}
+                      {/* <div style={{ border: "1px solid black" }}>
                         <div>
-                          {/* <div style={{ color: "black" }}>
-                        {allQueryFetch?.data?.rooms.map((item) => (
-                          <div>{item.queries.map((items) => items.text)}</div>
-                        ))}
-                      </div> */}
                           {allQueryFetch?.data?.rooms.map((item) => (
-                            // <div className="main">
                             <div
                               className="item-sender"
                               onClick={() => setVisibility(true)}
@@ -343,17 +318,14 @@ function Inquiry() {
                                     {items.sender.createdAt.split("T")[1].split(".")[0]}
                                     <div style={{ marginLeft: "1rem" }}>{items.text}</div>
                                     <div style={{ textAlign: "right" }}>
-                                      {/* {"\t------------->"} */}
                                     </div>
                                   </li>
                                 </div>
                               ))}
                             </div>
-                            // </div>
                           ))}
                         </div>
-                      </div>
-                      {/* <div className="Apply">{temp?.blocks?.inlineStyleRanges}</div> */}
+                      </div> */}
                     </Drawer>
                   </form>
                 </MDTypography>

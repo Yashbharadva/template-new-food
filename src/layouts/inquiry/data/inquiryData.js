@@ -203,7 +203,6 @@ export default function data() {
     console.log(allQueryData);
     setAllQueryFetch(allQueryData);
   };
-  // console.log(allQueryFetch);
 
   useEffect(() => {
     getAllQuery();
@@ -320,18 +319,6 @@ export default function data() {
                           )}
                         </div>
                       )}
-                      {/* <Button type="button" onClick={handleSearchQuery}>
-                        Search
-                      </Button>
-                      {show && (
-                        <div className="drop-drawer-search">
-                          <div className="border-drawer-drop" style={{ color: "black" }}>
-                            {searchResults?.data?.rooms[0]?.queries?.map((item) => (
-                              <div>{item.text}</div>
-                            ))}
-                          </div>
-                        </div>
-                      )} */}
                     </Space>
                   }
                 >
