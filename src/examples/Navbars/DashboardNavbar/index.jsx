@@ -27,6 +27,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
+import { useClickOutside } from "react-click-outside-hook";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -60,55 +61,6 @@ import axios from "axios";
 import "./index.styles.scss";
 import MDInput from "components/MDInput";
 import useDebounce from "./debounceHook";
-// import TvShow from "./tvshow";
-// import SearchDrop from "./searchDrop";
-// import button from "assets/theme/components/button";
-// import fetch from "node-fetch";
-// import data from "layouts/tables/data/authorsTableData";
-
-// import Search from "./search";
-// import axios from "axios";
-// import App from "App";
-// import { Search } from "@mui/icons-material";
-
-// const SearchBarContainer = () => {
-//   <div className="searchbarcontainer" />;
-// };
-
-// const SearchInputContainer = () => {
-//   <div className="searchinputcontainer" />;
-// };
-
-// const SearchInput = () => {
-//   <div className="searchinput" />;
-// };
-
-// const SearchIcon = () => {
-//   <div className="searchicon" />;
-// };
-
-// const CloseIcon = () => {
-//   <div className="closeicon" />;
-// };
-
-// const LineSeperator = () => {
-//   <div className="lineseperator" />;
-// };
-
-// const SearchContent = () => {
-//   <div
-//     style={{
-//       width: "100%",
-//       height: "100%",
-//       display: "flex",
-//       flexDirection: "column",
-//       padding: "1em",
-//       overflowY: "auto",
-//     }}
-//   >
-//     j
-//   </div>;
-// };
 
 const containerVariants = {
   expanded: {
@@ -191,12 +143,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const [searchQuery, setSearchQuery] = useState("");
-  // const [searchResults, setSearchResults] = useState([]);
-  // const [show, setShow] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [tvShows, setTvShows] = useState([]);
   const [noTvShows, setNoTvShows] = useState(false);
+  const [parentRef, isClickedOutside] = useClickOutside();
+
+  const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
+  console.log(tvShows);
+
+  const collapseContainer = () => {
+    setExpanded(false);
+  };
+
+  useEffect(() => {
+    if (isClickedOutside) collapseContainer();
+  }, [isClickedOutside]);
 
   const changeHandler = (e) => {
     e.preventDefault();
@@ -463,21 +425,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     onFocus={expandContainer}
                     value={searchQuery}
                     onChange={changeHandler}
+                    ref={parentRef}
                   />
-                  <div>
-                    {isExpanded && (
-                      <div
-                        // className="drop-search"
-                        key="close-icon"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                      />
-                    )}
-                  </div>
                 </div>
-                {isExpanded && (
+                {isExpanded && !isEmpty && (
                   <div>
                     {!isLoading && (
                       <div className="drop-search">

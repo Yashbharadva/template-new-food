@@ -52,7 +52,6 @@ import Tables2 from "layouts/tables2";
 // import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 // import Dashboard from "layouts/dashboard";
 import Inquiry from "layouts/inquiry";
-import Allqueries from "layouts/allquery";
 import { Link } from "react-router-dom";
 import { AiOutlineProfile } from "react-icons/ai";
 // import Inquiry2 from "layouts/inquiry2";
@@ -83,14 +82,6 @@ const routes = [
     icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
     route: "/inquiry",
     component: <Inquiry />,
-  },
-  {
-    type: "collapse",
-    name: "AllQueries",
-    key: "inquiry2",
-    icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
-    route: "/allquery",
-    component: <Allqueries />,
   },
   {
     type: "collapse",

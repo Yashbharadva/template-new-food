@@ -3,18 +3,13 @@ import { useEffect, useState } from "react";
 import "./inquiryData.styles.scss";
 import { Button, Drawer, Space } from "antd";
 import { Editor } from "react-draft-wysiwyg";
+import { useClickOutside } from "react-click-outside-hook";
 import MDInput from "components/MDInput";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import useDebounce from "examples/Navbars/DashboardNavbar/debounceHook";
 import axios from "axios";
 import TagPopupC from "./tagDrop";
-// import { Button, Drawer, Space } from "antd";
-// import { Button, Drawer, Space } from "antd";
-// import { Radio, Space } from "antd";
-// import InquiryDrawer from "./inquiryDrawer";
-// import { Skeleton } from "@mui/material";
 import InquiryDrawer from "./inquiryDrawer";
-// import InquiryDrawer from "./inquiryDrawer";
 
 export default function data() {
   const [customer] = useState([]);
@@ -23,7 +18,6 @@ export default function data() {
   const [setVisible] = useState(false);
   // setAllQueryFetch
   const [allQueryFetch, setAllQueryFetch] = useState({});
-  // const [setPostMainData] = useState({});
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
   const [tags, setTags] = useState(["Hello"]);
@@ -35,8 +29,19 @@ export default function data() {
   const [isLoading, setLoading] = useState(false);
   const [tvShows, setTvShows] = useState([]);
   const [noTvShows, setNoTvShows] = useState(false);
+  const [parentRef, isClickedOutside] = useClickOutside();
 
   const teess = temp?.blocks?.map((item) => item.text);
+
+  const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
+
+  const collapseContainer = () => {
+    setExpanded(false);
+  };
+
+  useEffect(() => {
+    if (isClickedOutside) collapseContainer();
+  }, [isClickedOutside]);
 
   const addTag = (e) => {
     if (e.key === "Enter") {
@@ -79,6 +84,14 @@ export default function data() {
   const showDrawer = () => {
     setVisible(true);
   };
+
+  // const closeField = () => {
+  //   if (tvShows.length || !tvShows === 0) {
+  //     setExpanded(false);
+  //   } else {
+  //     setExpanded(true);
+  //   }
+  // };
 
   // const [isShow, setIsShow] = useState(false);
   // const [show, setShow] = useState(true);
@@ -230,7 +243,7 @@ export default function data() {
     setPostTheData(response);
     console.log(postdata);
     console.log(response);
-    window.location.reload();
+    window.location.reload(false);
     setVisibility(true);
     setLoader(false);
   };
@@ -280,12 +293,10 @@ export default function data() {
                           onChange={changeHandler}
                           value={searchQuery}
                           onFocus={expandContainer}
-                          freeSolo
-                          autoComplete
-                          autoHighlight
+                          ref={parentRef}
                         />
                         <div>
-                          {isExpanded && (
+                          {/* {isExpanded && (
                             <div
                               key="close-icon"
                               initial={{ opacity: 0 }}
@@ -293,10 +304,10 @@ export default function data() {
                               exit={{ opacity: 0 }}
                               transition={{ duration: 0.2 }}
                             />
-                          )}
+                          )} */}
                         </div>
                       </div>
-                      {isExpanded && (
+                      {isExpanded && !isEmpty && (
                         <div>
                           {!isLoading && (
                             <div className="drop-inq-search">
