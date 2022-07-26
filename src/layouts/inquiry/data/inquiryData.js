@@ -29,6 +29,7 @@ export default function data() {
   const [tvShows, setTvShows] = useState([]);
   const [noTvShows, setNoTvShows] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
+  const [selectedTitle, setSelectedTitle] = useState(null);
 
   const teess = temp?.blocks?.map((item) => item.text);
   // console.log(temp);
@@ -246,24 +247,22 @@ export default function data() {
     setLoader(false);
   };
 
-  // const buttonLoader = () => {
-  //   setLoader(true);
-  // };
-
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
     rows: [
       {
         inquiry: (
-          // <Button onClick={showDrawer}>
           <div>
             <div role="button" type="primary" tabIndex={0} style={{ cursor: "pointer" }}>
-              {allQueryFetch?.data?.rooms?.map((item) => (
+              {allQueryFetch?.data?.rooms?.map((item, index) => (
                 <div className="main">
                   <div
                     className="fetch-title"
                     role="button"
-                    onClick={() => setVisibility(true)}
+                    onClick={() => {
+                      setVisibility(true);
+                      setSelectedTitle(index);
+                    }}
                     onKeyDown={showDrawer}
                     tabIndex={0}
                     style={{ width: "1000px", color: "black" }}
@@ -322,11 +321,12 @@ export default function data() {
                           borderRadius: "5px",
                           color: "black",
                           outline: "none",
+                          paddingLeft: "10px",
                         }}
-                        // value={allQueryFetch?.data?.rooms[0].title}
+                        value={allQueryFetch?.data?.rooms[selectedTitle]?.title}
                       />
                     </div>
-                    <div className="tag-item">
+                    <div className="tag-item" style={{ marginLeft: "30px" }}>
                       <h2>Tags</h2>
                       <div className="tag-container">
                         {tags.map((tag) => (
@@ -390,6 +390,7 @@ export default function data() {
                       border: "1px solid black",
                       height: "700",
                       color: "black",
+                      paddingLeft: "10px",
                     }}
                   />
                   {!loader && (
@@ -422,34 +423,34 @@ export default function data() {
                               }}
                             >
                               <li>
+                                {/* <div
+                                  style={{
+                                    paddingLeft: "20px",
+                                    marginTop: "-20px",
+                                  }}
+                                >
+                                  {items.sender.username}
+                                </div>
+                                <div style={{ paddingLeft: "100px", marginTop: "-22px" }}>
+                                  {items.sender.createdAt.split("T")[0]}
+                                </div>
+                                <div style={{ paddingLeft: "200px", marginTop: "-22px" }}>
+                                  {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                </div>
+                                <div style={{ marginLeft: "1rem", paddingTop: "10px" }}>
+                                  {items.text}
+                                </div> */}
                                 {items.sender.username}
                                 {items.sender.createdAt.split("T")[0]}
                                 {items.sender.createdAt.split("T")[1].split(".")[0]}
-                                <div style={{ marginLeft: "1rem" }}>{items.text}</div>
-                                <div style={{ textAlign: "right" }}>
-                                  {/* {"\t------------->"} */}
-                                </div>
+                                {items.text}
                               </li>
                             </div>
                           ))}
                         </div>
-                        // </div>
                       ))}
                     </div>
                   </div>
-                  {/* <div>
-                    <h2 style={{ color: "black", marginTop: "1.5rem" }}>Posted Query:-</h2>
-                    <div>
-                      <div style={{ color: "black" }}>
-                        {temp?.blocks?.map((item) => (
-                          <div>{item.text}</div>
-                        ))}
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* <Button type="button" visible={visible} onClick={() => setVisibility(false)}>
-                    save
-                  </Button> */}
                 </Drawer>
               </div>
             </form>

@@ -71,6 +71,31 @@
     margin-top: 1.5rem;
 }
 
+.tag-container-output{
+    min-width: 50%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    height: 2.8rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    color: black;
+    // width: 50rem;
+    padding-left: 15px;
+}
+
+.tag-output{
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    height: 25px;
+    margin: 2px 5px 2px 0px;
+    color: black;
+}
+
 .border-drawer-drop {
     // margin-top: 20px;
     text-align: center;

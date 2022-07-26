@@ -51,14 +51,15 @@ function Inquiry() {
   // const [postdata, setPostTheData] = useState("");
   const [postQueryRooms, setPostQueryRooms] = useState("");
   const [visibility, setVisibility] = useState(false);
-  const [setTemp] = useState("");
+  const [temp, setTemp] = useState("");
   const [loader, setLoader] = useState(false);
-  const [setAllQueryFetch] = useState({});
+  const [allQueryFetch, setAllQueryFetch] = useState({});
   const [tempTitle, setTempTitle] = useState("");
   const [tempDes, setTempDes] = useState("");
 
   const titlePost = tempTitle?.target?.value;
   const desPost = tempDes?.target?.value;
+  const editorPost = temp?.blocks?.map((item) => item.text);
 
   const addTag = (e) => {
     if (e.key === "Enter") {
@@ -117,6 +118,7 @@ function Inquiry() {
     const allQueryData = await response.json();
     // console.log(allQueryData);
     setAllQueryFetch(allQueryData);
+    console.log(allQueryFetch);
   };
   useEffect(() => {
     getAllQuery();
@@ -195,6 +197,11 @@ function Inquiry() {
                       onClose={() => setVisibility(false)}
                       visible={visibility}
                       style={{ zIndex: 2000 }}
+                      extra={
+                        <Space>
+                          <Button>SAVE</Button>
+                        </Space>
+                      }
                     >
                       <div className="title-des" style={{ justifyContent: "space-between" }}>
                         <div className="title-drawer">
@@ -211,10 +218,16 @@ function Inquiry() {
                               borderRadius: "5px",
                               color: "black",
                               outline: "none",
+                              paddingLeft: "10px",
                             }}
                           />
                         </div>
-                        <div style={{ marginTop: "-5.40rem", marginLeft: "25rem" }}>
+                        <div
+                          style={{
+                            marginTop: "-5.40rem",
+                            marginLeft: "25rem",
+                          }}
+                        >
                           <h2>Description</h2>
                           <input
                             type="text"
@@ -228,13 +241,14 @@ function Inquiry() {
                               borderRadius: "5px",
                               color: "black",
                               outline: "none",
+                              paddingLeft: "10px",
                             }}
                           />
                         </div>
                       </div>
                       <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
-                        <div className="tag-container-inquiry">
+                        <div className="tag-container">
                           {tags.map((tag) => (
                             <div className="tag">
                               {tag}
@@ -261,7 +275,7 @@ function Inquiry() {
                             flexDirection: "column",
                             marginTop: "5px",
                             boxShadow: "3px 3px 10px #CBC6C6",
-                            width: "75%",
+                            width: "100%",
                             height: "auto",
                             background: "white",
                             color: "black",
@@ -290,15 +304,19 @@ function Inquiry() {
                           wrapperClassName="wrapperClassName"
                           editorClassName="editorClassName"
                           wrapperStyle={{
-                            width: 760,
+                            width: 745,
                             border: "1px solid black",
                             height: "700",
                             color: "black",
+                            paddingLeft: "10px",
                           }}
                         />
                       </div>
                       {!loader && (
-                        <Button type="button" onClick={() => postQueryRoom(titlePost, desPost)}>
+                        <Button
+                          type="button"
+                          onClick={() => postQueryRoom(titlePost, desPost, editorPost)}
+                        >
                           SAVE
                         </Button>
                       )}
@@ -307,6 +325,30 @@ function Inquiry() {
                           Loading...
                         </Button>
                       )}
+                      <div
+                        style={{
+                          color: "black",
+                          marginTop: "2rem",
+                        }}
+                      >
+                        Title: {tempTitle?.target?.value}
+                      </div>
+                      <div
+                        style={{
+                          color: "black",
+                          paddingTop: "10px",
+                        }}
+                      >
+                        Description: {tempDes?.target?.value}
+                      </div>
+                      <div
+                        style={{
+                          color: "black",
+                          paddingTop: "10px",
+                        }}
+                      >
+                        Text Editor: {temp?.blocks?.map((item) => item.text)}
+                      </div>
                     </Drawer>
                   </form>
                 </MDTypography>
