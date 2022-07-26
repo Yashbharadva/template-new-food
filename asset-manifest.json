@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/template-new-food/static/css/main.e3ed40d5.css",
-    "main.js": "/template-new-food/static/js/main.366d4569.js",
+    "main.js": "/template-new-food/static/js/main.26d087ee.js",
     "static/media/home-decor-3.jpg": "/template-new-food/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/template-new-food/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
     "static/media/home-decor-1.jpg": "/template-new-food/static/media/home-decor-1.05e218fd495ccc65c99d.jpg",
@@ -21,10 +21,10 @@
     "static/media/mark.png": "/template-new-food/static/media/mark.b26e2ccee7ab3aad71c9.png",
     "index.html": "/template-new-food/index.html",
     "main.e3ed40d5.css.map": "/template-new-food/static/css/main.e3ed40d5.css.map",
-    "main.366d4569.js.map": "/template-new-food/static/js/main.366d4569.js.map"
+    "main.26d087ee.js.map": "/template-new-food/static/js/main.26d087ee.js.map"
   },
   "entrypoints": [
     "static/css/main.e3ed40d5.css",
-    "static/js/main.366d4569.js"
+    "static/js/main.26d087ee.js"
   ]
 }
