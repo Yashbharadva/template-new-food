@@ -386,7 +386,7 @@ export default function data() {
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
                     wrapperStyle={{
-                      width: 760,
+                      width: 735,
                       border: "1px solid black",
                       height: "700",
                       color: "black",
@@ -418,6 +418,7 @@ export default function data() {
                                 color: "black",
                                 paddingTop: "20px",
                                 cursor: "pointer",
+                                marginLeft: "1rem",
                               }}
                             >
                               <li>

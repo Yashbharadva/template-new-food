@@ -234,7 +234,7 @@ function Inquiry() {
                       </div>
                       <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
-                        <div className="tag-container">
+                        <div className="tag-container-inquiry">
                           {tags.map((tag) => (
                             <div className="tag">
                               {tag}
