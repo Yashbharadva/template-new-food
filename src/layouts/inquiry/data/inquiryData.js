@@ -16,7 +16,6 @@ export default function data() {
   const [setIsLoading] = useState(true);
   const [mainData] = useState([]);
   const [setVisible] = useState(false);
-  // setAllQueryFetch
   const [allQueryFetch, setAllQueryFetch] = useState({});
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
@@ -32,6 +31,7 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
 
   const teess = temp?.blocks?.map((item) => item.text);
+  // console.log(temp);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
 
@@ -200,12 +200,13 @@ export default function data() {
       },
     });
     const allQueryData = await response.json();
-    console.log(allQueryData);
+    // console.log(allQueryData);
     setAllQueryFetch(allQueryData);
   };
 
   useEffect(() => {
     getAllQuery();
+    // console.log(getAllQuery);
   }, []);
 
   useEffect(() => {
@@ -237,8 +238,6 @@ export default function data() {
         text: `${text}`,
       }),
     });
-    // const postQueryData = await JSON.parse(response);
-    // console.log(postQueryData);
     setPostTheData(response);
     console.log(postdata);
     console.log(response);
@@ -294,17 +293,6 @@ export default function data() {
                           onFocus={expandContainer}
                           ref={parentRef}
                         />
-                        <div>
-                          {/* {isExpanded && (
-                            <div
-                              key="close-icon"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                            />
-                          )} */}
-                        </div>
                       </div>
                       {isExpanded && !isEmpty && (
                         <div>
@@ -322,23 +310,20 @@ export default function data() {
                     </Space>
                   }
                 >
-                  <div
-                    className="title-tags"
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
+                  <div className="title-tags" style={{ display: "flex" }}>
                     <div className="title-drawer">
                       <h2>Title</h2>
                       <input
                         type="text"
                         style={{
-                          width: "15rem",
+                          width: "22rem",
                           height: "2.7rem",
                           border: "1px solid black",
                           borderRadius: "5px",
                           color: "black",
                           outline: "none",
                         }}
-                        value={allQueryFetch?.data?.rooms[0].title}
+                        // value={allQueryFetch?.data?.rooms[0].title}
                       />
                     </div>
                     <div className="tag-item">
@@ -417,25 +402,15 @@ export default function data() {
                       Loading...
                     </Button>
                   )}
-                  {/* {!loader && <Button onClick={() => buttonLoader()}>SAVE</Button>}
-                  {loader && <Button disabled>Loading....</Button>} */}
                   <div style={{ border: "1px solid black", marginTop: "1rem" }}>
-                    {/* <h2 style={{ color: "black", marginTop: "1.5rem" }}>Message:-</h2> */}
                     <div>
-                      {/* <div style={{ color: "black" }}>
-                        {allQueryFetch?.data?.rooms.map((item) => (
-                          <div>{item.queries.map((items) => items.text)}</div>
-                        ))}
-                      </div> */}
                       {allQueryFetch?.data?.rooms.map((item) => (
-                        // <div className="main">
                         <div
                           className="item-sender"
                           onClick={() => setVisibility(true)}
                           onKeyDown={showDrawer}
                           role="button"
                           tabIndex={0}
-                          style={{ padding: "15px 15px" }}
                         >
                           {item.queries.map((items) => (
                             <div
@@ -461,7 +436,7 @@ export default function data() {
                       ))}
                     </div>
                   </div>
-                  <div>
+                  {/* <div>
                     <h2 style={{ color: "black", marginTop: "1.5rem" }}>Posted Query:-</h2>
                     <div>
                       <div style={{ color: "black" }}>
@@ -470,7 +445,7 @@ export default function data() {
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   {/* <Button type="button" visible={visible} onClick={() => setVisibility(false)}>
                     save
                   </Button> */}

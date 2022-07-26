@@ -48,15 +48,18 @@ function Inquiry() {
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [tags, setTags] = useState(["Hello"]);
-  const [postdata, setPostTheData] = useState("");
+  // const [postdata, setPostTheData] = useState("");
+  const [postQueryRooms, setPostQueryRooms] = useState("");
   const [visibility, setVisibility] = useState(false);
-  const [temp, setTemp] = useState("");
-  // const [setPostTheData] = useState("");
+  const [setTemp] = useState("");
   const [loader, setLoader] = useState(false);
   const [setAllQueryFetch] = useState({});
-  // postTheData
+  const [tempTitle, setTempTitle] = useState("");
+  const [tempDes, setTempDes] = useState("");
 
-  // const [dataEditor] = useState([]);
+  const titlePost = tempTitle?.target?.value;
+  const desPost = tempDes?.target?.value;
+
   const addTag = (e) => {
     if (e.key === "Enter") {
       if (e.target.value.length > 0) {
@@ -65,8 +68,6 @@ function Inquiry() {
       }
     }
   };
-
-  const teess = temp?.blocks?.map((item) => item.text);
 
   const [tagPopUp, setTagPopUp] = useState(false);
   const [tagName] = useState([
@@ -114,43 +115,39 @@ function Inquiry() {
       },
     });
     const allQueryData = await response.json();
-    console.log(allQueryData);
+    // console.log(allQueryData);
     setAllQueryFetch(allQueryData);
   };
   useEffect(() => {
     getAllQuery();
   }, []);
 
-  const postTheQuery = async (text) => {
+  const postQueryRoom = async (title, description) => {
     setLoader(true);
-    try {
-      const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-      console.log(parsedPostQuery);
-      const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          roomId: 1,
-          text: `${text}`,
-        }),
-      });
-      setPostTheData(response);
-      console.log(postdata);
-      console.log(response);
-      setVisibility(false);
-      window.location.reload(false);
-      setLoader(false);
-    } catch (err) {
-      console.log(err);
-    }
+    const parsedPostQueryRoom = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedPostQueryRoom);
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedPostQueryRoom.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: `${title}`,
+        description: `${description}`,
+        users: [
+          { id: 1, username: "vatsal19", email: "vatsalp.tcs@gmail.com" },
+          { id: 2, username: "gaurang", email: "gaurangpatel.tcs@gmail.com" },
+        ],
+      }),
+    });
+    setPostQueryRooms(response);
+    console.log(postQueryRooms);
+    console.log("---------->>>>>>", response);
+    setLoader(false);
+    window.location.reload(false);
   };
-
-  // useEffect(() => {
-  //   postTheQuery();
-  // }, []);
+  // console.log(postQueryRoom);
 
   return (
     <DashboardLayout>
@@ -172,12 +169,7 @@ function Inquiry() {
                 <MDTypography variant="h6" color="white">
                   Inquiry Table
                   <Space>
-                    <Radio.Group value={placement} onChange={onChange}>
-                      {/* <Radio value="top">top</Radio>
-                    <Radio value="right">right</Radio>
-                    <Radio value="bottom">bottom</Radio>
-                    <Radio value="left">left</Radio> */}
-                    </Radio.Group>
+                    <Radio.Group value={placement} onChange={onChange} />
                     <div
                       role="button"
                       className="open-drawer"
@@ -204,19 +196,41 @@ function Inquiry() {
                       visible={visibility}
                       style={{ zIndex: 2000 }}
                     >
-                      <div className="title-drawer">
-                        <h2>Title</h2>
-                        <input
-                          type="text"
-                          style={{
-                            width: "35rem",
-                            height: "2.7rem",
-                            border: "1px solid black",
-                            borderRadius: "5px",
-                            color: "black",
-                            outline: "none",
-                          }}
-                        />
+                      <div className="title-des" style={{ justifyContent: "space-between" }}>
+                        <div className="title-drawer">
+                          <h2>Title</h2>
+                          <input
+                            type="text"
+                            onChange={(e) => {
+                              setTempTitle(e);
+                            }}
+                            style={{
+                              width: "22rem",
+                              height: "2.7rem",
+                              border: "1px solid black",
+                              borderRadius: "5px",
+                              color: "black",
+                              outline: "none",
+                            }}
+                          />
+                        </div>
+                        <div style={{ marginTop: "-5.40rem", marginLeft: "25rem" }}>
+                          <h2>Description</h2>
+                          <input
+                            type="text"
+                            onChange={(e) => {
+                              setTempDes(e);
+                            }}
+                            style={{
+                              width: "22rem",
+                              height: "2.7rem",
+                              border: "1px solid black",
+                              borderRadius: "5px",
+                              color: "black",
+                              outline: "none",
+                            }}
+                          />
+                        </div>
                       </div>
                       <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
@@ -265,26 +279,26 @@ function Inquiry() {
                             ))}
                         </div>
                       </div>
-                      <div className="change-editor">
+                      <div className="change-editor" style={{ marginTop: "1rem" }}>
                         <h2>Text Editor</h2>
+                        <Editor
+                          className="editor-text"
+                          onChange={(e) => {
+                            setTemp(e);
+                          }}
+                          toolbarClassName="toolbarClassName"
+                          wrapperClassName="wrapperClassName"
+                          editorClassName="editorClassName"
+                          wrapperStyle={{
+                            width: 760,
+                            border: "1px solid black",
+                            height: "700",
+                            color: "black",
+                          }}
+                        />
                       </div>
-                      <Editor
-                        className="editor-text"
-                        onChange={(e) => {
-                          setTemp(e);
-                        }}
-                        toolbarClassName="toolbarClassName"
-                        wrapperClassName="wrapperClassName"
-                        editorClassName="editorClassName"
-                        wrapperStyle={{
-                          width: 760,
-                          border: "1px solid black",
-                          height: "700",
-                          color: "black",
-                        }}
-                      />
                       {!loader && (
-                        <Button type="button" onClick={() => postTheQuery(teess)}>
+                        <Button type="button" onClick={() => postQueryRoom(titlePost, desPost)}>
                           SAVE
                         </Button>
                       )}
@@ -293,39 +307,6 @@ function Inquiry() {
                           Loading...
                         </Button>
                       )}
-                      {/* <div style={{ border: "1px solid black" }}>
-                        <div>
-                          {allQueryFetch?.data?.rooms.map((item) => (
-                            <div
-                              className="item-sender"
-                              onClick={() => setVisibility(true)}
-                              onKeyDown={showDrawer}
-                              role="button"
-                              tabIndex={0}
-                              style={{ padding: "15px 15px" }}
-                            >
-                              {item.queries.map((items) => (
-                                <div
-                                  style={{
-                                    color: "black",
-                                    paddingTop: "20px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <li>
-                                    {items.sender.username}
-                                    {items.sender.createdAt.split("T")[0]}
-                                    {items.sender.createdAt.split("T")[1].split(".")[0]}
-                                    <div style={{ marginLeft: "1rem" }}>{items.text}</div>
-                                    <div style={{ textAlign: "right" }}>
-                                    </div>
-                                  </li>
-                                </div>
-                              ))}
-                            </div>
-                          ))}
-                        </div>
-                      </div> */}
                     </Drawer>
                   </form>
                 </MDTypography>

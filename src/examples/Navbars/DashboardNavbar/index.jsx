@@ -150,7 +150,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [parentRef, isClickedOutside] = useClickOutside();
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
-  console.log(tvShows);
+  // console.log(tvShows);
 
   const collapseContainer = () => {
     setExpanded(false);
