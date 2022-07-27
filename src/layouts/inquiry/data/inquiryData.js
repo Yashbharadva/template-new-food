@@ -423,7 +423,7 @@ export default function data() {
                               }}
                             >
                               <li>
-                                {/* <div
+                                <div
                                   style={{
                                     paddingLeft: "20px",
                                     marginTop: "-20px",
@@ -439,11 +439,11 @@ export default function data() {
                                 </div>
                                 <div style={{ marginLeft: "1rem", paddingTop: "10px" }}>
                                   {items.text}
-                                </div> */}
-                                {items.sender.username}
+                                </div>
+                                {/* {items.sender.username}
                                 {items.sender.createdAt.split("T")[0]}
                                 {items.sender.createdAt.split("T")[1].split(".")[0]}
-                                {items.text}
+                                {items.text} */}
                               </li>
                             </div>
                           ))}

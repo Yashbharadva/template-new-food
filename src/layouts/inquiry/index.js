@@ -48,7 +48,7 @@ function Inquiry() {
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [tags, setTags] = useState(["Hello"]);
-  // const [postdata, setPostTheData] = useState("");
+  const [postTheData, setPostTheData] = useState("");
   const [postQueryRooms, setPostQueryRooms] = useState("");
   const [visibility, setVisibility] = useState(false);
   const [temp, setTemp] = useState("");
@@ -81,6 +81,7 @@ function Inquiry() {
     "Pradip",
     "Akash",
   ]);
+
   const [searchField, setSearchField] = useState("");
   const handleTag = (e) => {
     if (e.target.value) {
@@ -151,6 +152,29 @@ function Inquiry() {
   };
   // console.log(postQueryRoom);
 
+  const postTheQuery = async () => {
+    setLoader(true);
+    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedPostQuery);
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: 2,
+        text: `${editorPost}`,
+      }),
+    });
+    setPostTheData(response);
+    console.log(postTheData);
+    console.log(response);
+    window.location.reload(false);
+    setVisibility(true);
+    setLoader(false);
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -199,7 +223,22 @@ function Inquiry() {
                       style={{ zIndex: 2000 }}
                       extra={
                         <Space>
-                          <Button>SAVE</Button>
+                          {!loader && (
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                postTheQuery(editorPost);
+                                postQueryRoom(titlePost, desPost, editorPost);
+                              }}
+                            >
+                              SAVE
+                            </Button>
+                          )}
+                          {loader && (
+                            <Button type="button" disabled>
+                              Loading...
+                            </Button>
+                          )}
                         </Space>
                       }
                     >
@@ -264,7 +303,7 @@ function Inquiry() {
                           ))}
                           <input
                             onKeyDown={addTag}
-                            onChange={handleTag}
+                            onChange={() => handleTag}
                             style={{ color: "black" }}
                             onFocus={() => setTagPopUp(true)}
                           />
@@ -312,7 +351,7 @@ function Inquiry() {
                           }}
                         />
                       </div>
-                      {!loader && (
+                      {/* {!loader && (
                         <Button
                           type="button"
                           onClick={() => postQueryRoom(titlePost, desPost, editorPost)}
@@ -324,7 +363,7 @@ function Inquiry() {
                         <Button type="button" disabled>
                           Loading...
                         </Button>
-                      )}
+                      )} */}
                       <div
                         style={{
                           color: "black",
