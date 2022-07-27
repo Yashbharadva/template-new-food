@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/template-new-food/static/css/main.0d4657ad.css",
-    "main.js": "/template-new-food/static/js/main.1dcd0197.js",
+    "main.css": "/template-new-food/static/css/main.7fed489c.css",
+    "main.js": "/template-new-food/static/js/main.c9f3288e.js",
     "static/media/home-decor-3.jpg": "/template-new-food/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
     "static/media/home-decor-2.jpg": "/template-new-food/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
     "static/media/home-decor-1.jpg": "/template-new-food/static/media/home-decor-1.05e218fd495ccc65c99d.jpg",
@@ -20,11 +20,11 @@
     "static/media/team-4.jpg": "/template-new-food/static/media/team-4.85c82b6e60178804017f.jpg",
     "static/media/mark.png": "/template-new-food/static/media/mark.b26e2ccee7ab3aad71c9.png",
     "index.html": "/template-new-food/index.html",
-    "main.0d4657ad.css.map": "/template-new-food/static/css/main.0d4657ad.css.map",
-    "main.1dcd0197.js.map": "/template-new-food/static/js/main.1dcd0197.js.map"
+    "main.7fed489c.css.map": "/template-new-food/static/css/main.7fed489c.css.map",
+    "main.c9f3288e.js.map": "/template-new-food/static/js/main.c9f3288e.js.map"
   },
   "entrypoints": [
-    "static/css/main.0d4657ad.css",
-    "static/js/main.1dcd0197.js"
+    "static/css/main.7fed489c.css",
+    "static/js/main.c9f3288e.js"
   ]
 }
