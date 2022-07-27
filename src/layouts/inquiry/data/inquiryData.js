@@ -169,9 +169,7 @@ export default function data() {
     if (!searchQuery || searchQuery.trim() === "") return;
     setLoading(true);
     setNoTvShows(false);
-
-    console.log("-------------------->>>>>>>>>", prepareSearchQuery(searchQuery));
-
+    console.log(prepareSearchQuery);
     const response = await axios
       .get(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
         headers: {

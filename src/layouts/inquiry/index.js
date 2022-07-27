@@ -34,7 +34,7 @@ import DataTable from "examples/Tables/DataTable";
 
 import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { Button, Drawer, Radio, Space } from "antd";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
