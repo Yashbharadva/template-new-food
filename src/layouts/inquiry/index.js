@@ -56,6 +56,14 @@ function Inquiry() {
   const [allQueryFetch, setAllQueryFetch] = useState({});
   const [tempTitle, setTempTitle] = useState("");
   const [tempDes, setTempDes] = useState("");
+  // const [saveTitle, setSaveTitle] = useState("");
+  // const [saveDes, setSaveDes] = useState("");
+  // const [saveEd, setSaveEd] = useState("");
+  const [saveShow, setSaveShow] = useState(false);
+
+  // console.log(saveTitle);
+  // console.log(saveDes);
+  // console.log(saveEd);
 
   const titlePost = tempTitle?.target?.value;
   const desPost = tempDes?.target?.value;
@@ -249,6 +257,7 @@ function Inquiry() {
                             type="text"
                             onChange={(e) => {
                               setTempTitle(e);
+                              // setSaveTitle(e);
                             }}
                             style={{
                               width: "22rem",
@@ -272,6 +281,7 @@ function Inquiry() {
                             type="text"
                             onChange={(e) => {
                               setTempDes(e);
+                              // setSaveDes(e);
                             }}
                             style={{
                               width: "22rem",
@@ -338,6 +348,7 @@ function Inquiry() {
                           className="editor-text"
                           onChange={(e) => {
                             setTemp(e);
+                            // setSaveEd(e);
                           }}
                           toolbarClassName="toolbarClassName"
                           wrapperClassName="wrapperClassName"
@@ -351,43 +362,104 @@ function Inquiry() {
                           }}
                         />
                       </div>
-                      {/* {!loader && (
-                        <Button
-                          type="button"
-                          onClick={() => postQueryRoom(titlePost, desPost, editorPost)}
-                        >
-                          SAVE
-                        </Button>
+                      <div
+                        className="button-save"
+                        style={{
+                          border: "1px solid black",
+                          padding: "10px 10px",
+                          width: "3.7rem",
+                          marginTop: "1rem",
+                          color: "black",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          setSaveShow(true);
+                        }}
+                        onKeyDown={() => {
+                          setSaveShow(true);
+                        }}
+                        tabIndex={0}
+                        role="button"
+                      >
+                        SAVE
+                      </div>
+                      {saveShow && (
+                        <div>
+                          {/* <div
+                            style={{
+                              color: "black",
+                              marginTop: "2rem",
+                            }}
+                          >
+                            {tempTitle?.target?.value}
+                          </div>
+                          <div
+                            style={{
+                              color: "black",
+                              paddingTop: "10px",
+                            }}
+                          >
+                            {tempDes?.target?.value}
+                          </div> */}
+
+                          <div style={{ marginTop: "1rem" }}>
+                            <div>
+                              {/* {allQueryFetch?.data?.rooms?.map(() => ( */}
+                              <div
+                                className="item-sender"
+                                onClick={() => setVisibility(true)}
+                                onKeyDown={showDrawer}
+                                role="button"
+                                tabIndex={0}
+                                style={{ color: "black" }}
+                              >
+                                vatsal19
+                                {/* {item?.queries[0]?.sender?.username} */}
+                                {/* {item?.queries?.map((items) => (
+                                    <div  
+                                      style={{
+                                        color: "black",
+                                        paddingTop: "20px",
+                                        cursor: "pointer",
+                                        marginLeft: "1rem",
+                                      }}
+                                    >
+                                      <li>
+                                        <div
+                                          style={{
+                                            paddingLeft: "20px",
+                                            marginTop: "-20px",
+                                          }}
+                                        >
+                                          {items?.sender?.username}
+                                        </div>
+                                        <div
+                                          style={{
+                                            color: "black",
+                                            paddingTop: "10px",
+                                          }}
+                                        >
+                                          {temp?.blocks?.map(() => item.text)}
+                                        </div>
+                                      </li>
+                                    </div>
+                                  ))} */}
+                              </div>
+                              {/* ))} */}
+                            </div>
+                            <div
+                              style={{
+                                color: "black",
+                                // paddingTop: "10px",
+                                marginLeft: "5rem",
+                                marginTop: "-21px",
+                              }}
+                            >
+                              {temp?.blocks?.map((obj) => obj.text)}
+                            </div>
+                          </div>
+                        </div>
                       )}
-                      {loader && (
-                        <Button type="button" disabled>
-                          Loading...
-                        </Button>
-                      )} */}
-                      <div
-                        style={{
-                          color: "black",
-                          marginTop: "2rem",
-                        }}
-                      >
-                        Title: {tempTitle?.target?.value}
-                      </div>
-                      <div
-                        style={{
-                          color: "black",
-                          paddingTop: "10px",
-                        }}
-                      >
-                        Description: {tempDes?.target?.value}
-                      </div>
-                      <div
-                        style={{
-                          color: "black",
-                          paddingTop: "10px",
-                        }}
-                      >
-                        Text Editor: {temp?.blocks?.map((item) => item.text)}
-                      </div>
                     </Drawer>
                   </form>
                 </MDTypography>
