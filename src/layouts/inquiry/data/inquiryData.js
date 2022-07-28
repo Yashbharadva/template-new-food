@@ -32,7 +32,6 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
-  const [queryResults, setQueryResults] = useState({});
 
   const teess = temp?.blocks?.map((item) => item.text);
   // console.log(selectedTitle);
@@ -239,13 +238,6 @@ export default function data() {
                       setVisibility(true);
                       setSelectedTitle(index);
                       setSelectedRoom(item);
-                      console.log(allQueryFetch?.data?.rooms[index].queries);
-                      setQueryResults(
-                        allQueryFetch?.data?.queries.find(
-                          (query) => query.roomId === selectedRoom.id
-                        )
-                      );
-                      console.log(queryResults);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}

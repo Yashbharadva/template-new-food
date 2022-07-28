@@ -156,7 +156,7 @@ function Inquiry() {
     console.log(postQueryRooms);
     console.log("---------->>>>>>", response);
     setLoader(false);
-    // window.location.reload(false);
+    window.location.reload(false);
   };
   // console.log(postQueryRoom);
 
