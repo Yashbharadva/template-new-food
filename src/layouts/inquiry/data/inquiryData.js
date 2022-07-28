@@ -244,6 +244,7 @@ export default function data() {
                     style={{ width: "1000px", color: "black" }}
                   >
                     {item.title}
+                    <div style={{ color: "grey" }}>{item.description}</div>
                   </div>
                 </div>
               ))}
