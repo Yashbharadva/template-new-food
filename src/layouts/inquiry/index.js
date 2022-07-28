@@ -36,77 +36,79 @@ import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
 import "antd/dist/antd.min.css";
 import { Button, Drawer, Radio, Space } from "antd";
-import { Editor } from "react-draft-wysiwyg";
+// import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import MDButton from "components/MDButton";
 import "./index.css";
-import TagPopupC from "./data/tagDrop";
+// import TagPopupC from "./data/tagDrop";
 
 function Inquiry() {
   const { columns, rows } = inquiryData();
   const { columns: pColumns, rows: pRows } = inquiry();
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
-  const [tags, setTags] = useState(["Hello"]);
-  const [postTheData, setPostTheData] = useState("");
+  // const [tags, setTags] = useState([]);
+  // const [postTheData, setPostTheData] = useState("");
   const [postQueryRooms, setPostQueryRooms] = useState("");
   const [visibility, setVisibility] = useState(false);
-  const [temp, setTemp] = useState("");
+  // const [temp, setTemp] = useState("");
   const [loader, setLoader] = useState(false);
   const [allQueryFetch, setAllQueryFetch] = useState({});
   const [tempTitle, setTempTitle] = useState("");
   const [tempDes, setTempDes] = useState("");
+  const [tagedUsers, setTagedUsers] = useState([]);
+  const [searchElement, setSearchElement] = useState("");
+  const [show, setShow] = useState(true);
+  const [filteredTagName, setFilteredTagName] = useState([]);
+  // const [selectUser, setSelectUser] = useState("");
+  // console.log(selectUser.bubble);
+  // console.log(searchElement.bubble);
+  // console.log(tagedUsers.bubble);
   // const [saveTitle, setSaveTitle] = useState("");
   // const [saveDes, setSaveDes] = useState("");
   // const [saveEd, setSaveEd] = useState("");
-  const [saveShow, setSaveShow] = useState(false);
+  // const [saveShow, setSaveShow] = useState(false);
 
   // console.log(saveTitle);
   // console.log(saveDes);
   // console.log(saveEd);
 
   const titlePost = tempTitle?.target?.value;
+  // console.log(titlePost, searchElement);
   const desPost = tempDes?.target?.value;
-  const editorPost = temp?.blocks?.map((item) => item.text);
+  // console.log(desPost);
+  const userPost = tagedUsers;
+  console.log(searchElement);
+  // const editorPost = temp?.blocks?.map((item) => item.text);
 
-  const addTag = (e) => {
-    if (e.key === "Enter") {
-      if (e.target.value.length > 0) {
-        setTags([...tags, e.target.value]);
-        e.target.value = "";
-      }
-    }
-  };
+  // const addTag = (e) => {
+  //   if (e.key === "Enter") {
+  //     if (e.target.value.length > 0) {
+  //       setTags([...tags, e.target.value]);
+  //       e.target.value = "";
+  //     }
+  //   }
+  // };
 
-  const [tagPopUp, setTagPopUp] = useState(false);
-  const [tagName] = useState([
-    "Vatsal",
-    "Yash",
-    "Tanish",
-    "Gaurang",
-    "Avin",
-    "Ishan",
-    "Pradip",
-    "Akash",
-  ]);
+  // const [tagPopUp, setTagPopUp] = useState(false);
 
-  const [searchField, setSearchField] = useState("");
-  const handleTag = (e) => {
-    if (e.target.value) {
-      setTagPopUp(true);
-    } else {
-      setTagPopUp(false);
-    }
-    setSearchField(e.target.value);
-  };
-  const filteredTagName = tagName.filter((name) =>
-    name.toLowerCase().includes(searchField.toLowerCase())
-  );
+  // const [searchField, setSearchField] = useState("");
+  // const handleTag = (e) => {
+  //   if (e.target.value) {
+  //     setTagPopUp(true);
+  //   } else {
+  //     setTagPopUp(false);
+  //   }
+  //   // setTagName(e);
+  // };
+  // const filteredTagName = tagName.filter((name) =>
+  //   name.toString().toLowerCase().includes(searchField.toLowerCase())
+  // );
 
-  const removeTag = (removedTag) => {
-    const newTags = tags.filter((tag) => tag !== removedTag);
-    setTags(newTags);
-  };
+  // const removeTag = (removedTag) => {
+  //   const newTags = tags.filter((tag) => tag !== removedTag);
+  //   setTags(newTags);
+  // };
 
   const showDrawer = () => {
     setVisible(true);
@@ -133,11 +135,11 @@ function Inquiry() {
     getAllQuery();
   }, []);
 
-  const postQueryRoom = async (title, description) => {
+  const postQueryRoom = async (title, description, user) => {
     setLoader(true);
     const parsedPostQueryRoom = JSON.parse(localStorage.getItem("user-info"));
-    console.log(parsedPostQueryRoom);
-    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
+    console.log(title, description, user);
+    const res = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${parsedPostQueryRoom.data.accessToken}`,
@@ -146,42 +148,67 @@ function Inquiry() {
       body: JSON.stringify({
         title: `${title}`,
         description: `${description}`,
-        users: [
-          { id: 1, username: "vatsal19", email: "vatsalp.tcs@gmail.com" },
-          { id: 2, username: "gaurang", email: "gaurangpatel.tcs@gmail.com" },
-        ],
+        users: user,
       }),
     });
+    const response = await res.json();
     setPostQueryRooms(response);
     console.log(postQueryRooms);
     console.log("---------->>>>>>", response);
     setLoader(false);
-    window.location.reload(false);
+    // window.location.reload(false);
   };
   // console.log(postQueryRoom);
 
-  const postTheQuery = async () => {
-    setLoader(true);
-    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-    console.log(parsedPostQuery);
-    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-      method: "POST",
+  // const postTheQuery = async () => {
+  //   setLoader(true);
+  //   const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+  //   console.log(parsedPostQuery);
+  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       roomId: 2,
+  //       text: `${editorPost}`,
+  //     }),
+  //   });
+  //   setPostTheData(response);
+  //   console.log(postTheData);
+  //   console.log(response);
+  //   window.location.reload(false);
+  //   setVisibility(true);
+  //   setLoader(false);
+  // };
+
+  const searchTag = async (tagSearch) => {
+    console.log(tagSearch);
+    const parsedSearchTag = await JSON.parse(localStorage.getItem("user-info"));
+    fetch(`https://inquiry-ts.herokuapp.com/user/search-user?term=${tagSearch}`, {
       headers: {
-        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${parsedSearchTag.data.accessToken}`,
       },
-      body: JSON.stringify({
-        roomId: 2,
-        text: `${editorPost}`,
-      }),
-    });
-    setPostTheData(response);
-    console.log(postTheData);
-    console.log(response);
-    window.location.reload(false);
-    setVisibility(true);
-    setLoader(false);
+      method: "GET",
+    })
+      .then(async (res) => {
+        const resJSON = await res.json();
+        // console.log("==-=-=-=-=-=-", resJSON.data);
+        setFilteredTagName(resJSON.data?.users);
+        console.log(setFilteredTagName);
+        // console.log(tagSearch);
+        setSearchElement(resJSON);
+        setShow(!show);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  // useEffect(() => {
+  //   searchTag();
+  // }, []);
 
   return (
     <DashboardLayout>
@@ -218,37 +245,17 @@ function Inquiry() {
                         marginTop: "-1rem",
                       }}
                     >
-                      +CreateInquiry
+                      +CreateRoom
                     </div>
                   </Space>
                   <form>
                     <Drawer
-                      title="Send Your Queriy"
+                      title="Create Room"
                       placement={placement}
                       width={800}
                       onClose={() => setVisibility(false)}
                       visible={visibility}
                       style={{ zIndex: 2000 }}
-                      extra={
-                        <Space>
-                          {!loader && (
-                            <Button
-                              type="button"
-                              onClick={() => {
-                                postTheQuery(editorPost);
-                                postQueryRoom(titlePost, desPost, editorPost);
-                              }}
-                            >
-                              SAVE
-                            </Button>
-                          )}
-                          {loader && (
-                            <Button type="button" disabled>
-                              Loading...
-                            </Button>
-                          )}
-                        </Space>
-                      }
                     >
                       <div className="title-des" style={{ justifyContent: "space-between" }}>
                         <div className="title-drawer">
@@ -260,7 +267,7 @@ function Inquiry() {
                               // setSaveTitle(e);
                             }}
                             style={{
-                              width: "22rem",
+                              width: "47rem",
                               height: "2.7rem",
                               border: "1px solid black",
                               borderRadius: "5px",
@@ -270,12 +277,7 @@ function Inquiry() {
                             }}
                           />
                         </div>
-                        <div
-                          style={{
-                            marginTop: "-5.40rem",
-                            marginLeft: "25rem",
-                          }}
-                        >
+                        <div style={{ marginTop: "2rem" }}>
                           <h2>Description</h2>
                           <input
                             type="text"
@@ -284,7 +286,7 @@ function Inquiry() {
                               // setSaveDes(e);
                             }}
                             style={{
-                              width: "22rem",
+                              width: "47rem",
                               height: "2.7rem",
                               border: "1px solid black",
                               borderRadius: "5px",
@@ -295,7 +297,51 @@ function Inquiry() {
                           />
                         </div>
                       </div>
-                      <div className="tag-item" style={{ marginTop: "1rem" }}>
+                      <div style={{ color: "black", marginTop: "1rem" }}>
+                        <h2>User</h2>
+                        <input
+                          type="text"
+                          onChange={(e) => {
+                            searchTag(e.target.value);
+                          }}
+                          value={tagedUsers[0]?.username}
+                          style={{
+                            width: "47rem",
+                            height: "2.7rem",
+                            border: "1px solid black",
+                            borderRadius: "5px",
+                            color: "black",
+                            outline: "none",
+                            paddingLeft: "10px",
+                          }}
+                        />
+                        {!show && (
+                          <div style={{ border: "1px solid black" }}>
+                            {filteredTagName.map((user) => (
+                              <div
+                                style={{
+                                  color: "black",
+                                  marginLeft: "22rem",
+                                  paddingTop: "10px",
+                                }}
+                                tabIndex={0}
+                                onKeyDown={() => {
+                                  // setSelectUser(user);
+                                  setTagedUsers((oldArray) => [...oldArray, user]);
+                                }}
+                                role="button"
+                                onClick={() => {
+                                  // setSelectUser(user);
+                                  setTagedUsers((oldArray) => [...oldArray, user]);
+                                }}
+                              >
+                                {user.username}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      {/* <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
                         <div className="tag-container">
                           {tags.map((tag) => (
@@ -313,39 +359,53 @@ function Inquiry() {
                           ))}
                           <input
                             onKeyDown={addTag}
-                            onChange={() => handleTag}
+                            onChange={(e) => {
+                              setTagPopUp(true);
+                              searchTag(e.target.value);
+                            }}
                             style={{ color: "black" }}
                             onFocus={() => setTagPopUp(true)}
                           />
                         </div>
                         <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            marginTop: "5px",
-                            boxShadow: "3px 3px 10px #CBC6C6",
-                            width: "100%",
-                            height: "auto",
-                            background: "white",
-                            color: "black",
-                          }}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          marginTop: "5px",
+                          boxShadow: "3px 3px 10px #CBC6C6",
+                          width: "100%",
+                          height: "auto",
+                          background: "white",
+                          color: "black",
+                        }}
                         >
                           {tagPopUp &&
-                            filteredTagName.map((name) => (
-                              <TagPopupC
-                                name={name}
-                                tags={tags}
-                                setTags={setTags}
-                                setTagPopUp={setTagPopUp}
-                                setSearchField={setSearchField}
-                              />
-                            ))}
+                          {filteredTagName.map((user) => (
+                            <div>{user.username}</div>
+                          ))}
                         </div>
+                      </div> */}
+                      <div style={{ marginTop: "2rem" }}>
+                        {!loader && (
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              postQueryRoom(titlePost, desPost, userPost);
+                            }}
+                          >
+                            CREATE
+                          </Button>
+                        )}
+                        {loader && (
+                          <Button type="button" disabled>
+                            Loading...
+                          </Button>
+                        )}
                       </div>
-                      <div className="change-editor" style={{ marginTop: "1rem" }}>
+                      {/* <div className="change-editor" style={{ marginTop: "1rem" }}>
                         <h2>Text Editor</h2>
                         <Editor
-                          className="editor-text"
+                        className="editor-text"
                           onChange={(e) => {
                             setTemp(e);
                             // setSaveEd(e);
@@ -361,8 +421,8 @@ function Inquiry() {
                             paddingLeft: "10px",
                           }}
                         />
-                      </div>
-                      <div
+                      </div> */}
+                      {/* <div
                         className="button-save"
                         style={{
                           border: "1px solid black",
@@ -382,10 +442,10 @@ function Inquiry() {
                         role="button"
                       >
                         SAVE
-                      </div>
-                      {saveShow && (
+                      </div> */}
+                      {/* {saveShow && (
                         <div>
-                          {/* <div
+                          <div
                             style={{
                               color: "black",
                               marginTop: "2rem",
@@ -400,11 +460,11 @@ function Inquiry() {
                             }}
                           >
                             {tempDes?.target?.value}
-                          </div> */}
+                          </div>
 
                           <div style={{ marginTop: "1rem" }}>
                             <div>
-                              {/* {allQueryFetch?.data?.rooms?.map(() => ( */}
+                              {allQueryFetch?.data?.rooms?.map(() => (
                               <div
                                 className="item-sender"
                                 onClick={() => setVisibility(true)}
@@ -414,8 +474,8 @@ function Inquiry() {
                                 style={{ color: "black" }}
                               >
                                 vatsal19
-                                {/* {item?.queries[0]?.sender?.username} */}
-                                {/* {item?.queries?.map((items) => (
+                                {item?.queries[0]?.sender?.username}
+                                {item?.queries?.map((items) => (
                                     <div  
                                       style={{
                                         color: "black",
@@ -443,9 +503,9 @@ function Inquiry() {
                                         </div>
                                       </li>
                                     </div>
-                                  ))} */}
+                                  ))}
                               </div>
-                              {/* ))} */}
+                              ))}
                             </div>
                             <div
                               style={{
@@ -459,7 +519,7 @@ function Inquiry() {
                             </div>
                           </div>
                         </div>
-                      )}
+                      )} */}
                     </Drawer>
                   </form>
                 </MDTypography>

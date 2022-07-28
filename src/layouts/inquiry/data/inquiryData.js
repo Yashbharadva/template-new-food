@@ -17,6 +17,7 @@ export default function data() {
   const [mainData] = useState([]);
   const [setVisible] = useState(false);
   const [allQueryFetch, setAllQueryFetch] = useState({});
+  // console.log(allQueryFetch?.data?.rooms?.queries[2]?.text);
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
   const [tags, setTags] = useState(["Hello"]);
@@ -30,9 +31,11 @@ export default function data() {
   const [noTvShows, setNoTvShows] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState({});
+  const [queryResults, setQueryResults] = useState({});
 
   const teess = temp?.blocks?.map((item) => item.text);
-  // console.log(temp);
+  // console.log(selectedTitle);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
 
@@ -66,14 +69,14 @@ export default function data() {
     "Nidhi",
   ]);
   const [searchField, setSearchField] = useState("");
-  const handleTag = (e) => {
-    if (e.target.value) {
-      setTagPopUp(true);
-    } else {
-      setTagPopUp(false);
-    }
-    setSearchField(e.target.value);
-  };
+  // const handleTag = (e) => {
+  //   if (e.target.value) {
+  //     setTagPopUp(true);
+  //   } else {
+  //     setTagPopUp(false);
+  //   }
+  //   setSearchField(e.target.value);
+  // };
   const filteredTagName = tagName.filter((name) =>
     name.toLowerCase().includes(searchField.toLowerCase())
   );
@@ -103,32 +106,6 @@ export default function data() {
   // const handleShow = () => {
   //   setShow((current) => !current);
   // };
-
-  // const postQuery = async () => {
-  //   const parsedPost = JSON.parse(localStorage.getItem("user-info"));
-  //   console.log(parsedPost);
-  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedPost.data.accessToken}`,
-  //       "content-type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       users: [
-  //         { id: 1, username: "vatsal19", email: "vatsalp.tcs@gmail.com" },
-  //         { id: 2, username: "gaurang", email: "gaurangpatel.tcs@gmail.com" },
-  //       ],
-  //     }),
-  //   });
-  //   const postData = await response.json();
-  //   console.log(postData);
-  //   setPostMainData(postData);
-  // };
-  // console.log(postMainData);
-
-  // useEffect(() => {
-  //   postQuery();
-  // }, []);
 
   // const handleSearchQuery = async () => {
   //   const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
@@ -234,7 +211,7 @@ export default function data() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        roomId: 1,
+        roomId: selectedRoom.id,
         text: `${text}`,
       }),
     });
@@ -261,6 +238,14 @@ export default function data() {
                     onClick={() => {
                       setVisibility(true);
                       setSelectedTitle(index);
+                      setSelectedRoom(item);
+                      console.log(allQueryFetch?.data?.rooms[index].queries);
+                      setQueryResults(
+                        allQueryFetch?.data?.queries.find(
+                          (query) => query.roomId === selectedRoom.id
+                        )
+                      );
+                      console.log(queryResults);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}
@@ -343,7 +328,10 @@ export default function data() {
                         ))}
                         <input
                           onKeyDown={addTag}
-                          onChange={handleTag}
+                          // onChange={handleTag}
+                          onChange={(e) => {
+                            console.log(e);
+                          }}
                           style={{ color: "black" }}
                           onFocus={() => setTagPopUp(true)}
                         />
@@ -404,50 +392,48 @@ export default function data() {
                   )}
                   <div style={{ border: "1px solid black", marginTop: "1rem" }}>
                     <div>
-                      {allQueryFetch?.data?.rooms.map((item) => (
-                        <div
-                          className="item-sender"
-                          onClick={() => setVisibility(true)}
-                          onKeyDown={showDrawer}
-                          role="button"
-                          tabIndex={0}
-                        >
-                          {item.queries.map((items) => (
-                            <div
-                              style={{
-                                color: "black",
-                                paddingTop: "20px",
-                                cursor: "pointer",
-                                marginLeft: "1rem",
-                              }}
-                            >
-                              <li>
-                                <div
-                                  style={{
-                                    paddingLeft: "20px",
-                                    marginTop: "-20px",
-                                  }}
-                                >
-                                  {items.sender.username}
-                                </div>
-                                <div style={{ paddingLeft: "100px", marginTop: "-22px" }}>
-                                  {items.sender.createdAt.split("T")[0]}
-                                </div>
-                                <div style={{ paddingLeft: "200px", marginTop: "-22px" }}>
-                                  {items.sender.createdAt.split("T")[1].split(".")[0]}
-                                </div>
-                                <div style={{ marginLeft: "1rem", paddingTop: "10px" }}>
-                                  {items.text}
-                                </div>
-                                {/* {items.sender.username}
+                      <div
+                        className="item-sender"
+                        onClick={() => setVisibility(true)}
+                        onKeyDown={showDrawer}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        {allQueryFetch?.data?.rooms[selectedTitle]?.queries.map((items) => (
+                          <div
+                            style={{
+                              color: "black",
+                              paddingTop: "20px",
+                              cursor: "pointer",
+                              marginLeft: "1rem",
+                            }}
+                          >
+                            <li>
+                              <div
+                                style={{
+                                  paddingLeft: "20px",
+                                  marginTop: "-20px",
+                                }}
+                              >
+                                {items.sender.username}
+                              </div>
+                              <div style={{ paddingLeft: "100px", marginTop: "-22px" }}>
+                                {items.sender.createdAt.split("T")[0]}
+                              </div>
+                              <div style={{ paddingLeft: "200px", marginTop: "-22px" }}>
+                                {items.sender.createdAt.split("T")[1].split(".")[0]}
+                              </div>
+                              <div style={{ marginLeft: "1rem", paddingTop: "10px" }}>
+                                {items.text}
+                              </div>
+                              {/* {items.sender.username}
                                 {items.sender.createdAt.split("T")[0]}
                                 {items.sender.createdAt.split("T")[1].split(".")[0]}
                                 {items.text} */}
-                              </li>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
+                            </li>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </Drawer>

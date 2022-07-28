@@ -1,9 +1,9 @@
 import React from "react";
 import "./tagDrop.styles.scss";
 
-function TagPopupC({ name, tags, setTags, setTagPopUp, setSearchField }) {
+function TagPopupC({ user, tags, setTags, setTagPopUp, setSearchField }) {
   const handleTagSave = () => {
-    setTags([...tags, name]);
+    setTags([...tags, user]);
     setTagPopUp(false);
     setSearchField("");
   };
@@ -15,7 +15,7 @@ function TagPopupC({ name, tags, setTags, setTagPopUp, setSearchField }) {
       onClick={handleTagSave}
       onKeyDown={handleTagSave}
     >
-      {name}
+      {user.username}
     </div>
   );
 }
