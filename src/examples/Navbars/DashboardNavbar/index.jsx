@@ -146,7 +146,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [isExpanded, setExpanded] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [tvShows, setTvShows] = useState([]);
-  console.log(tvShows);
+  // console.log(tvShows);
   const [noTvShows, setNoTvShows] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
 

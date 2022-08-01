@@ -32,14 +32,22 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
-  const [filteredTagName, setFilteredTagName] = useState([]);
-  const [searchElement, setSearchElement] = useState("");
-  const [show, setShow] = useState(true);
+  const [selectedTag, setSelectedTag] = useState(null);
+  // const [filteredTagName, setFilteredTagName] = useState([]);
+  // console.log(filteredTagName);
+  // const [searchElement, setSearchElement] = useState("");
+  // const [show, setShow] = useState(true);
   const [tagedUsers, setTagedUsers] = useState([]);
+  console.log(setTagedUsers);
+  // const [hide, setHide] = useState(true);
+  // const [usero, setUsero] = useState("");
+  // const [setTags] = useState([]);
+  // const [input, setInput] = useState("");
+  // console.log(usero);
 
   const teess = temp?.blocks?.map((item) => item.text);
   const userPost = tagedUsers;
-  console.log(searchElement);
+  // console.log(searchElement);
   // console.log(selectedTitle);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
@@ -59,6 +67,26 @@ export default function data() {
   //       e.target.value = "";
   //     }
   //   }
+  // };
+
+  // const onKeyDown = (e) => {
+  //   const { key } = e;
+  //   const trimInput = input.trim();
+
+  //   if (key === "Enter" && trimInput.length && !tags.includes(trimInput)) {
+  //     e.preventDefault();
+  //     setTags((oldArray) => [...oldArray, trimInput]);
+  //     setInput("");
+  //   }
+  // };
+
+  // const onChange = (e) => {
+  //   const { value } = e.target;
+  //   setInput(value);
+  // };
+
+  // const deleteTag = (idx) => {
+  //   setTags((oldArray) => [...oldArray].filter((_, id) => id !== idx));
   // };
 
   // const [tagPopUp, setTagPopUp] = useState(false);
@@ -87,7 +115,7 @@ export default function data() {
   // );
 
   // const removeTag = (removedTag) => {
-  //   const newTags = tags.filter((tag) => tag !== removedTag);
+  //   const newTags = tags.filter((user) => user !== removedTag);
   //   setTags(newTags);
   // };
 
@@ -228,26 +256,27 @@ export default function data() {
     setLoader(false);
   };
 
-  const searchTag = async (tagSearch) => {
-    console.log(tagSearch);
-    const parsedSearchTag = await JSON.parse(localStorage.getItem("user-info"));
-    fetch(`https://inquiry-ts.herokuapp.com/user/search-user?term=${tagSearch}`, {
-      headers: {
-        Authorization: `Bearer ${parsedSearchTag.data.accessToken}`,
-      },
-      method: "GET",
-    })
-      .then(async (res) => {
-        const resJSON = await res.json();
-        setFilteredTagName(resJSON.data?.users);
-        console.log(setFilteredTagName);
-        setSearchElement(resJSON);
-        setShow(!show);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const searchTag = async (tagSearch) => {
+  //   console.log(tagSearch);
+  //   const parsedSearchTag = await JSON.parse(localStorage.getItem("user-info"));
+  //   fetch(`https://inquiry-ts.herokuapp.com/user/search-user?term=${tagSearch}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${parsedSearchTag.data.accessToken}`,
+  //     },
+  //     method: "GET",
+  //   })
+  //     .then(async (res) => {
+  //       const resJSON = await res.json();
+  //       setFilteredTagName(resJSON.data?.users);
+  //       console.log(setFilteredTagName);
+  //       setSearchElement(resJSON);
+  //       setShow(!show);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+  // console.log(allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers?.user_name);
 
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
@@ -265,6 +294,7 @@ export default function data() {
                       setVisibility(true);
                       setSelectedTitle(index);
                       setSelectedRoom(item);
+                      setSelectedTag(index);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}
@@ -384,10 +414,12 @@ export default function data() {
                       <h2>Tag users</h2>
                       <input
                         type="text"
-                        onChange={(e) => {
-                          searchTag(e.target.value);
-                        }}
-                        value={tagedUsers[0]?.username}
+                        // onClick={(e) => {
+                        //   searchTag(e.target.value);
+                        // }}
+                        // onKeyDown={onKeyDown}
+                        // onChange={onChange}
+                        value={allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers[0]?.user_name}
                         style={{
                           width: "22rem",
                           height: "2.7rem",
@@ -398,28 +430,35 @@ export default function data() {
                           paddingLeft: "10px",
                         }}
                       />
-                      {!show && (
-                        <div style={{ border: "1px solid black" }}>
-                          {filteredTagName.map((user) => (
-                            <div
-                              style={{
-                                color: "black",
-                                paddingTop: "10px",
-                              }}
-                              tabIndex={0}
-                              onKeyDown={() => {
-                                setTagedUsers((oldArray) => [...oldArray, user]);
-                              }}
-                              role="button"
-                              onClick={() => {
-                                setTagedUsers((oldArray) => [...oldArray, user]);
-                              }}
-                            >
-                              {user.username}
+                      {/* {!show && (
+                        <div>
+                          {hide && (
+                            <div style={{ border: "1px solid black", cursor: "pointer" }}>
+                              {filteredTagName.map((user) => (
+                                <div
+                                  style={{
+                                    color: "black",
+                                    paddingTop: "10px",
+                                    marginLeft: "9rem",
+                                  }}
+                                  tabIndex={0}
+                                  onKeyDown={() => {
+                                    setTagedUsers((oldArray) => [...oldArray, user]);
+                                  }}
+                                  role="button"
+                                  onClick={(e) => {
+                                    setTagedUsers((oldArray) => [...oldArray, user]);
+                                    setUsero(e.target.innerText);
+                                    setHide(false);
+                                  }}
+                                >
+                                  {user.username}
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                          )}
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   <div className="change-editor" style={{ marginTop: "1rem" }}>
@@ -487,11 +526,20 @@ export default function data() {
                               <div style={{ marginLeft: "1rem", paddingTop: "10px" }}>
                                 {items.text}
                               </div>
-                              {/* {items.sender.username}
-                                {items.sender.createdAt.split("T")[0]}
-                                {items.sender.createdAt.split("T")[1].split(".")[0]}
-                                {items.text} */}
                             </li>
+                            <div
+                              style={{
+                                marginLeft: "18rem",
+                                marginBottom: "50px",
+                                marginTop: "-55px",
+                              }}
+                            >
+                              {allQueryFetch?.data?.rooms[selectedTitle]?.taggedUsers?.map(
+                                (item) => (
+                                  <div style={{ color: "black" }}>@{item.user_name}</div>
+                                )
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>

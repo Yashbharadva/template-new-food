@@ -57,11 +57,51 @@ function Inquiry() {
   const [tempTitle, setTempTitle] = useState("");
   const [tempDes, setTempDes] = useState("");
   const [tagedUsers, setTagedUsers] = useState([]);
+  console.log(setTagedUsers);
+  const [usero, setUsero] = useState("");
   const [searchElement, setSearchElement] = useState("");
   const [show, setShow] = useState(true);
   const [filteredTagName, setFilteredTagName] = useState([]);
-  const [selectedTag, setSelectedTag] = useState([]);
+  const [hide, setHide] = useState(true);
+  const [selectedTag, setSelectedTag] = useState(null);
   console.log(selectedTag);
+  console.log(usero);
+  const [input, setInput] = useState("");
+  const [tags, setTags] = useState([]);
+  const [isKeyReleased, setIsKeyReleased] = useState(false);
+
+  const onChangeInput = (e) => {
+    const { value } = e.target;
+    setInput(value);
+  };
+
+  const onKeyDown = (e) => {
+    const { key } = e;
+    const trimInput = input.trim();
+
+    if (key === "Enter" && trimInput.length && !tags.includes(trimInput)) {
+      e.preventDefault();
+      setTags((prev) => [...prev, trimInput]);
+      setInput("");
+    }
+
+    if (key === "Backspace" && !input.length && tags.length && isKeyReleased) {
+      e.preventDefault();
+      const tagsCopy = [...tags];
+      const popTag = tagsCopy.pop();
+      setTags(tagsCopy);
+      setInput(popTag);
+    }
+    setIsKeyReleased(false);
+  };
+
+  const onKeyUp = () => {
+    setIsKeyReleased(true);
+  };
+
+  const deleteTag = (idx) => {
+    setTags((prev) => [...prev].filter((_, id) => id !== idx));
+  };
   // const [selectUser, setSelectUser] = useState("");
   // console.log(selectUser.bubble);
   // console.log(searchElement.bubble);
@@ -266,7 +306,6 @@ function Inquiry() {
                             type="text"
                             onChange={(e) => {
                               setTempTitle(e);
-                              // setSaveTitle(e);
                             }}
                             style={{
                               width: "47rem",
@@ -285,7 +324,6 @@ function Inquiry() {
                             type="text"
                             onChange={(e) => {
                               setTempDes(e);
-                              // setSaveDes(e);
                             }}
                             style={{
                               width: "47rem",
@@ -293,7 +331,7 @@ function Inquiry() {
                               border: "1px solid black",
                               borderRadius: "5px",
                               color: "black",
-                              outline: "none",
+                              // outline: "none",
                               paddingLeft: "10px",
                             }}
                           />
@@ -305,44 +343,106 @@ function Inquiry() {
                           type="text"
                           onChange={(e) => {
                             searchTag(e.target.value);
+                            onChangeInput(e);
                           }}
-                          value={tagedUsers[0]?.username}
-                          // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[2]?.username}, ${tagedUsers[3]?.username}`}
+                          onKeyDown={onKeyDown}
+                          onKeyUp={onKeyUp}
+                          value={input}
+                          placeholder="Enter a tag"
+                          // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
                           style={{
-                            width: "47rem",
-                            height: "2.7rem",
-                            border: "1px solid black",
+                            // width: "47rem",
+                            // height: "2.7rem",
+                            // border: "1px solid black",
+                            // borderRadius: "5px",
+                            // color: "black",
+                            // outline: "none",
+                            // paddingLeft: "10px",
+                            width: "100%",
+                            minWidth: "50%",
+                            border: "none",
                             borderRadius: "5px",
-                            color: "black",
-                            outline: "none",
-                            paddingLeft: "10px",
+                            padding: "14px",
+                            paddingLeft: "14px",
                           }}
                           onClick={(e) => {
                             searchTag(e.target.value);
-                            setSelectedTag(e);
                           }}
+                          // value={tagedUsers[0]?.username}
                         />
-                        {!show && (
-                          <div style={{ border: "1px solid black" }}>
-                            {filteredTagName.map((user) => (
-                              <div
+                        <div
+                          style={{
+                            display: "flex",
+                            width: "calc(100% - 14px)",
+                            maxWidth: "100%",
+                            paddingLeft: "14px",
+                            borderRadius: "5px",
+                            color: "black",
+                          }}
+                        >
+                          {tags.map((tag, idx) => (
+                            <div
+                              style={{
+                                border: "1px solid black",
+                                display: "flex",
+                                alignItems: "center",
+                                margin: "7px 0",
+                                marginRight: "10px",
+                                padding: "0 10px",
+                                paddingRight: "5px",
+                                borderRadius: "5px",
+                                whiteSpace: "nowrap",
+                                color: "black",
+                              }}
+                            >
+                              {tag}
+                              <button
+                                type="button"
                                 style={{
+                                  display: "flex",
+                                  padding: "6px",
+                                  border: "none",
+                                  backgroundColor: "unset",
+                                  cursor: "pointer",
                                   color: "black",
-                                  marginLeft: "22rem",
-                                  paddingTop: "10px",
+                                  marginTop: "0px",
                                 }}
-                                tabIndex={0}
-                                onKeyDown={() => {
-                                  setTagedUsers((oldArray) => [...oldArray, user]);
-                                }}
-                                role="button"
-                                onClick={() => {
-                                  setTagedUsers((oldArray) => [...oldArray, user]);
-                                }}
+                                onClick={() => deleteTag(idx)}
                               >
-                                {user.username}
+                                x
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                        {!show && (
+                          <div>
+                            {hide && (
+                              <div style={{ border: "1px solid black", cursor: "pointer" }}>
+                                {filteredTagName.map((user) => (
+                                  <div
+                                    style={{
+                                      color: "black",
+                                      paddingTop: "10px",
+                                      marginLeft: "22rem",
+                                    }}
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                      setSelectedTag(e);
+                                      setTagedUsers((oldArray) => [...oldArray, user]);
+                                    }}
+                                    role="button"
+                                    onClick={(e) => {
+                                      setTagedUsers((oldArray) => [...oldArray, user]);
+                                      setUsero(e.target.innerText);
+                                      setHide(false);
+                                      setSelectedTag(e);
+                                    }}
+                                  >
+                                    {user.username}
+                                  </div>
+                                ))}
                               </div>
-                            ))}
+                            )}
                           </div>
                         )}
                       </div>
