@@ -60,6 +60,8 @@ function Inquiry() {
   const [searchElement, setSearchElement] = useState("");
   const [show, setShow] = useState(true);
   const [filteredTagName, setFilteredTagName] = useState([]);
+  const [selectedTag, setSelectedTag] = useState([]);
+  console.log(selectedTag);
   // const [selectUser, setSelectUser] = useState("");
   // console.log(selectUser.bubble);
   // console.log(searchElement.bubble);
@@ -305,6 +307,7 @@ function Inquiry() {
                             searchTag(e.target.value);
                           }}
                           value={tagedUsers[0]?.username}
+                          // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[2]?.username}, ${tagedUsers[3]?.username}`}
                           style={{
                             width: "47rem",
                             height: "2.7rem",
@@ -313,6 +316,10 @@ function Inquiry() {
                             color: "black",
                             outline: "none",
                             paddingLeft: "10px",
+                          }}
+                          onClick={(e) => {
+                            searchTag(e.target.value);
+                            setSelectedTag(e);
                           }}
                         />
                         {!show && (
@@ -326,12 +333,10 @@ function Inquiry() {
                                 }}
                                 tabIndex={0}
                                 onKeyDown={() => {
-                                  // setSelectUser(user);
                                   setTagedUsers((oldArray) => [...oldArray, user]);
                                 }}
                                 role="button"
                                 onClick={() => {
-                                  // setSelectUser(user);
                                   setTagedUsers((oldArray) => [...oldArray, user]);
                                 }}
                               >

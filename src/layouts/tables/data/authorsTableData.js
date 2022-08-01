@@ -1,38 +1,11 @@
 import { useEffect, useState } from "react";
 import "./authorTable.scss";
-import { Skeleton } from "@mui/material";
+// import { Skeleton } from "@mui/material";
 
 export default function FirstTable() {
   const [customer] = useState([]);
-  // const [searchInput, setSearchInput] = useState("");
-  // const [APIData, setAPIData] = useState([]);
-  // const [filteredResults, setFilteredResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  // const getCustomers = async () => {
-  //   const parsedUser = JSON.parse(localStorage.getItem("user-info"));
-  //   const response = await fetch("https://cerv-api.herokuapp.com/admin/users/1", {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedUser.token}`,
-  //     },
-  //   });
-  //   const customersData = await response.json();
-  //   // console.log(customersData.customers);
-  //   setCustomer(customersData.customers);
-  // };
-
-  // const searchItems = (searchValue) => {
-  //   setSearchInput(searchValue)
-  //   if (searchInput !== ""){
-  //     const filteredData = APIData.filter((item) => {
-  //       return Object.values(item).join("").toLowerCase().includes(searchInput.toLowerCase())
-  //     })
-  //     setFilteredResults(filteredData)
-  //   }
-  //   else{
-  //     setFilteredResults(APIData)
-  //   }
-  // }
+  const [setIsLoading] = useState(true);
+  const [adminUsers, setAdminUsers] = useState({});
 
   useEffect(() => {
     setTimeout(() => {
@@ -40,85 +13,67 @@ export default function FirstTable() {
     });
   });
 
-  // useEffect(() => {
-  //   getCustomers();
-  // }, []);
-
   useEffect(() => {
     // console.log(customer);
   }, [customer]);
 
+  const getUsers = async () => {
+    const parsedGetUsers = JSON.parse(localStorage.getItem("user-info"));
+    const response = await fetch("https://inquiry-ts.herokuapp.com/admin/get-users", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedGetUsers.data.accessToken}`,
+      },
+    });
+    const getusers = await response.json();
+    console.log(getusers);
+    setAdminUsers(getusers);
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const getRole = (idx) => {
+    switch (idx) {
+      case 0:
+        return "Admin";
+      case 1:
+        return "Salesman";
+      case 2:
+        return "User";
+      default:
+        return "Some Role";
+    }
+  };
+
   return {
     columns: [
-      { Header: "Customers", accessor: "customers", width: "40%", align: "left" },
-      { Header: "phone number", accessor: "phone", align: "left" },
+      { Header: "Name", accessor: "name", width: "40%", align: "left" },
+      { Header: "Role", accessor: "role", align: "left" },
       { Header: "status", accessor: "status", align: "center" },
     ],
     rows: [
       {
-        customers: (
+        name: (
           <div>
-            {isLoading
-              ? [...Array(4)].map((i) => (
-                  <div className="customer-effect" key={i}>
-                    <div className="image-effect">
-                      <Skeleton animation="wave" variant="circular" width="50px" height="50px" />
-                    </div>
-                    <h3>
-                      <Skeleton width="100px" height="25px" />
-                    </h3>
-                    <h4>
-                      <Skeleton width="150px" height="25px" />
-                    </h4>
-                    <br />
-                  </div>
-                ))
-              : customer.map((item) => (
-                  <div className="customer-info" key={item.id} item={item}>
-                    <img src={item.image} alt="" />
-                    <h3 className="name">{item.name}</h3>
-                    <h4 className="email">{item.email}</h4>
-                    <br />
-                  </div>
-                ))}
+            {adminUsers?.data?.map((item) => (
+              <div style={{ marginTop: "20px" }}>{item.username}</div>
+            ))}
           </div>
         ),
-        phone: (
+        role: (
           <div>
-            {isLoading
-              ? [...Array(4)].map((i) => (
-                  <div className="phone-info" key={i}>
-                    <h3>
-                      <Skeleton width="150px" height="25px" />
-                    </h3>
-                    <br />
-                  </div>
-                ))
-              : customer.map((item) => (
-                  <div key={item.id} item={item}>
-                    <div className="phone-number">{item.phone_number}</div>
-                    <br />
-                  </div>
-                ))}
+            {adminUsers?.data?.map((obj) => (
+              <div style={{ marginTop: "20px" }}>{getRole(obj.role)}</div>
+            ))}
           </div>
         ),
         status: (
           <div>
-            {isLoading
-              ? [...Array(4)].map((i) => (
-                  <div className="active-info" key={i}>
-                    <h3>
-                      <Skeleton width="75px" height="35px" />
-                    </h3>
-                    <br />
-                  </div>
-                ))
-              : customer.map((item) => (
-                  <div key={item.id} item={item}>
-                    <div className="active">{item.is_active ? "Online" : "Offline"}</div>
-                    <br />
-                  </div>
-                ))}
+            {adminUsers?.data?.map((items) => (
+              <div style={{ marginTop: "20px" }}>{items.is_active ? "Online" : "Offline"}</div>
+            ))}
           </div>
         ),
       },

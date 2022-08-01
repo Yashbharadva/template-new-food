@@ -8,7 +8,7 @@ import MDInput from "components/MDInput";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import useDebounce from "examples/Navbars/DashboardNavbar/debounceHook";
 import axios from "axios";
-import TagPopupC from "./tagDrop";
+// import TagPopupC from "./tagDrop";
 import InquiryDrawer from "./inquiryDrawer";
 
 export default function data() {
@@ -20,7 +20,7 @@ export default function data() {
   // console.log(allQueryFetch?.data?.rooms?.queries[2]?.text);
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
-  const [tags, setTags] = useState(["Hello"]);
+  // const [tags, setTags] = useState(["Hello"]);
   const [temp, setTemp] = useState("");
   const [postdata, setPostTheData] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,8 +32,14 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
+  const [filteredTagName, setFilteredTagName] = useState([]);
+  const [searchElement, setSearchElement] = useState("");
+  const [show, setShow] = useState(true);
+  const [tagedUsers, setTagedUsers] = useState([]);
 
   const teess = temp?.blocks?.map((item) => item.text);
+  const userPost = tagedUsers;
+  console.log(searchElement);
   // console.log(selectedTitle);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
@@ -46,28 +52,28 @@ export default function data() {
     if (isClickedOutside) collapseContainer();
   }, [isClickedOutside]);
 
-  const addTag = (e) => {
-    if (e.key === "Enter") {
-      if (e.target.value.length > 0) {
-        setTags([...tags, e.target.value]);
-        e.target.value = "";
-      }
-    }
-  };
+  // const addTag = (e) => {
+  //   if (e.key === "Enter") {
+  //     if (e.target.value.length > 0) {
+  //       setTags([...tags, e.target.value]);
+  //       e.target.value = "";
+  //     }
+  //   }
+  // };
 
-  const [tagPopUp, setTagPopUp] = useState(false);
-  const [tagName] = useState([
-    "Vatsal",
-    "Yash",
-    "Tanish",
-    "Gaurang",
-    "Avin",
-    "Ishan",
-    "Pradip",
-    "Akash",
-    "Nidhi",
-  ]);
-  const [searchField, setSearchField] = useState("");
+  // const [tagPopUp, setTagPopUp] = useState(false);
+  // const [tagName] = useState([
+  //   "Vatsal",
+  //   "Yash",
+  //   "Tanish",
+  //   "Gaurang",
+  //   "Avin",
+  //   "Ishan",
+  //   "Pradip",
+  //   "Akash",
+  //   "Nidhi",
+  // ]);
+  // const [searchField, setSearchField] = useState("");
   // const handleTag = (e) => {
   //   if (e.target.value) {
   //     setTagPopUp(true);
@@ -76,14 +82,14 @@ export default function data() {
   //   }
   //   setSearchField(e.target.value);
   // };
-  const filteredTagName = tagName.filter((name) =>
-    name.toLowerCase().includes(searchField.toLowerCase())
-  );
+  // const filteredTagName = tagName.filter((name) =>
+  //   name.toLowerCase().includes(searchField.toLowerCase())
+  // );
 
-  const removeTag = (removedTag) => {
-    const newTags = tags.filter((tag) => tag !== removedTag);
-    setTags(newTags);
-  };
+  // const removeTag = (removedTag) => {
+  //   const newTags = tags.filter((tag) => tag !== removedTag);
+  //   setTags(newTags);
+  // };
 
   const showDrawer = () => {
     setVisible(true);
@@ -222,6 +228,27 @@ export default function data() {
     setLoader(false);
   };
 
+  const searchTag = async (tagSearch) => {
+    console.log(tagSearch);
+    const parsedSearchTag = await JSON.parse(localStorage.getItem("user-info"));
+    fetch(`https://inquiry-ts.herokuapp.com/user/search-user?term=${tagSearch}`, {
+      headers: {
+        Authorization: `Bearer ${parsedSearchTag.data.accessToken}`,
+      },
+      method: "GET",
+    })
+      .then(async (res) => {
+        const resJSON = await res.json();
+        setFilteredTagName(resJSON.data?.users);
+        console.log(setFilteredTagName);
+        setSearchElement(resJSON);
+        setShow(!show);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
     rows: [
@@ -303,8 +330,8 @@ export default function data() {
                         value={allQueryFetch?.data?.rooms[selectedTitle]?.title}
                       />
                     </div>
-                    <div className="tag-item" style={{ marginLeft: "30px" }}>
-                      <h2>Tags</h2>
+                    {/* <div className="tag-item" style={{ marginLeft: "30px" }}>
+                      <h2>User Tags</h2>
                       <div className="tag-container">
                         {tags.map((tag) => (
                           <div className="tag">
@@ -352,6 +379,47 @@ export default function data() {
                             />
                           ))}
                       </div>
+                    </div> */}
+                    <div style={{ color: "black", marginLeft: "30px" }}>
+                      <h2>Tag users</h2>
+                      <input
+                        type="text"
+                        onChange={(e) => {
+                          searchTag(e.target.value);
+                        }}
+                        value={tagedUsers[0]?.username}
+                        style={{
+                          width: "22rem",
+                          height: "2.7rem",
+                          border: "1px solid black",
+                          borderRadius: "5px",
+                          color: "black",
+                          outline: "none",
+                          paddingLeft: "10px",
+                        }}
+                      />
+                      {!show && (
+                        <div style={{ border: "1px solid black" }}>
+                          {filteredTagName.map((user) => (
+                            <div
+                              style={{
+                                color: "black",
+                                paddingTop: "10px",
+                              }}
+                              tabIndex={0}
+                              onKeyDown={() => {
+                                setTagedUsers((oldArray) => [...oldArray, user]);
+                              }}
+                              role="button"
+                              onClick={() => {
+                                setTagedUsers((oldArray) => [...oldArray, user]);
+                              }}
+                            >
+                              {user.username}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="change-editor" style={{ marginTop: "1rem" }}>
@@ -374,7 +442,7 @@ export default function data() {
                     }}
                   />
                   {!loader && (
-                    <Button type="button" onClick={() => postTheQuery(teess)}>
+                    <Button type="button" onClick={() => postTheQuery(teess, userPost)}>
                       SAVE
                     </Button>
                   )}
