@@ -347,7 +347,8 @@ function Inquiry() {
                           }}
                           onKeyDown={onKeyDown}
                           onKeyUp={onKeyUp}
-                          value={input}
+                          // value={input}
+                          value={tagedUsers[0]?.username}
                           placeholder="Enter a tag"
                           // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
                           style={{
@@ -380,7 +381,7 @@ function Inquiry() {
                             color: "black",
                           }}
                         >
-                          {tags.map((tag, idx) => (
+                          {tags?.map((user, idx) => (
                             <div
                               style={{
                                 border: "1px solid black",
@@ -395,7 +396,7 @@ function Inquiry() {
                                 color: "black",
                               }}
                             >
-                              {tag}
+                              {user}
                               <button
                                 type="button"
                                 style={{
@@ -429,6 +430,7 @@ function Inquiry() {
                                     onKeyDown={(e) => {
                                       setSelectedTag(e);
                                       setTagedUsers((oldArray) => [...oldArray, user]);
+                                      onKeyDown(e);
                                     }}
                                     role="button"
                                     onClick={(e) => {
@@ -436,6 +438,12 @@ function Inquiry() {
                                       setUsero(e.target.innerText);
                                       setHide(false);
                                       setSelectedTag(e);
+                                      onKeyDown(e);
+                                      searchTag(e);
+                                    }}
+                                    onChange={(e) => {
+                                      searchTag(e.target.value);
+                                      onChangeInput(e);
                                     }}
                                   >
                                     {user.username}
