@@ -53,19 +53,19 @@ function Inquiry() {
   const [visibility, setVisibility] = useState(false);
   // const [temp, setTemp] = useState("");
   const [loader, setLoader] = useState(false);
-  const [allQueryFetch, setAllQueryFetch] = useState({});
+  const [setAllQueryFetch] = useState({});
   const [tempTitle, setTempTitle] = useState("");
   const [tempDes, setTempDes] = useState("");
   const [tagedUsers, setTagedUsers] = useState([]);
-  console.log(setTagedUsers);
-  const [usero, setUsero] = useState("");
-  const [searchElement, setSearchElement] = useState("");
+  // console.log(setTagedUsers);
+  const [setUsero] = useState("");
+  const [setSearchElement] = useState("");
   const [show, setShow] = useState(true);
   const [filteredTagName, setFilteredTagName] = useState([]);
   const [hide, setHide] = useState(true);
-  const [selectedTag, setSelectedTag] = useState(null);
-  console.log(selectedTag);
-  console.log(usero);
+  const [setSelectedTag] = useState(null);
+  // console.log(selectedTag);
+  // console.log(usero);
   const [input, setInput] = useState("");
   const [tags, setTags] = useState([]);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
@@ -120,7 +120,7 @@ function Inquiry() {
   const desPost = tempDes?.target?.value;
   // console.log(desPost);
   const userPost = tagedUsers;
-  console.log(searchElement);
+  // console.log(searchElement);
   // const editorPost = temp?.blocks?.map((item) => item.text);
 
   // const addTag = (e) => {
@@ -171,7 +171,7 @@ function Inquiry() {
     const allQueryData = await response.json();
     // console.log(allQueryData);
     setAllQueryFetch(allQueryData);
-    console.log(allQueryFetch);
+    // console.log(allQueryFetch);
   };
   useEffect(() => {
     getAllQuery();
@@ -345,10 +345,11 @@ function Inquiry() {
                             searchTag(e.target.value);
                             onChangeInput(e);
                           }}
+                          onFocus
                           onKeyDown={onKeyDown}
                           onKeyUp={onKeyUp}
-                          // value={input}
-                          value={tagedUsers[0]?.username}
+                          value={input}
+                          // value={tagedUsers[0]?.username}
                           placeholder="Enter a tag"
                           // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
                           style={{

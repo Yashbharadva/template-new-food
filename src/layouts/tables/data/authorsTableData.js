@@ -4,14 +4,15 @@ import "./authorTable.scss";
 
 export default function FirstTable() {
   const [customer] = useState([]);
-  const [setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [adminUsers, setAdminUsers] = useState({});
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    });
-  });
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //     console.log(isLoading);
+  //   });
+  // });
 
   useEffect(() => {
     // console.log(customer);

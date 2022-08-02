@@ -34,19 +34,22 @@ export default function data() {
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
   const [selectedTag, setSelectedTag] = useState(null);
+  // const [isEmptyField, setEmptyField] = useState("");
   // const [filteredTagName, setFilteredTagName] = useState([]);
   // console.log(filteredTagName);
   // const [searchElement, setSearchElement] = useState("");
   // const [show, setShow] = useState(true);
-  const [tagedUsers, setTagedUsers] = useState([]);
-  console.log(setTagedUsers);
+  const [tagedUsers] = useState([]);
+  // console.log(setTagedUsers);
   // const [hide, setHide] = useState(true);
   // const [usero, setUsero] = useState("");
   // const [setTags] = useState([]);
   // const [input, setInput] = useState("");
   // console.log(usero);
 
-  const teess = temp?.blocks?.map((item) => item.text);
+  // const teess = temp?.blocks?.map((item) => item.text);
+  const teess = temp?.target?.value;
+  // console.log(teess);
   const userPost = tagedUsers;
   // console.log(searchElement);
   // console.log(selectedTitle);
@@ -261,7 +264,6 @@ export default function data() {
     });
     const allQueryData = await response1.json();
     setAll(allQueryData);
-
     console.log(postdata);
     console.log(response);
     // window.location.reload(false);
@@ -290,6 +292,9 @@ export default function data() {
   //     });
   // };
   // console.log(allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers?.user_name);
+  // const onPushQuery = (e) => {
+  //   e.preventDefault();
+  // };
 
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
@@ -477,11 +482,15 @@ export default function data() {
                   <div className="change-editor" style={{ marginTop: "1rem" }}>
                     <h2>Text Editor</h2>
                   </div>
+                  {/* <form onSubmit={onPushQuery}> */}
                   <Editor
                     className="editor-text"
                     onChange={(e) => {
-                      setTemp(e);
+                      const x = e;
+                      setTemp(x);
+                      console.log(x);
                     }}
+                    style={{ color: "black" }}
                     toolbarClassName="toolbarClassName"
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
@@ -498,7 +507,7 @@ export default function data() {
                       type="button"
                       onClick={() => {
                         postTheQuery(teess, userPost);
-                        // window.location.reload(false);
+                        setTemp("");
                       }}
                     >
                       SAVE
@@ -509,6 +518,7 @@ export default function data() {
                       Loading...
                     </Button>
                   )}
+                  {/* </form> */}
                   <div style={{ border: "1px solid black", marginTop: "1rem" }}>
                     <div>
                       <div
