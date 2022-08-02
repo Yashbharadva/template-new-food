@@ -17,6 +17,7 @@ export default function data() {
   const [mainData] = useState([]);
   const [setVisible] = useState(false);
   const [allQueryFetch, setAllQueryFetch] = useState({});
+  const [all, setAll] = useState({});
   // console.log(allQueryFetch?.data?.rooms?.queries[2]?.text);
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
@@ -212,6 +213,7 @@ export default function data() {
     const allQueryData = await response.json();
     // console.log(allQueryData);
     setAllQueryFetch(allQueryData);
+    setAll(allQueryData);
   };
 
   useEffect(() => {
@@ -249,11 +251,22 @@ export default function data() {
       }),
     });
     setPostTheData(response);
+
+    const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+    const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedAll.data.accessToken}`,
+      },
+    });
+    const allQueryData = await response1.json();
+    setAll(allQueryData);
+
     console.log(postdata);
     console.log(response);
-    window.location.reload(false);
-    setVisibility(true);
+    // window.location.reload(false);
     setLoader(false);
+    setVisibility(true);
   };
 
   // const searchTag = async (tagSearch) => {
@@ -481,7 +494,13 @@ export default function data() {
                     }}
                   />
                   {!loader && (
-                    <Button type="button" onClick={() => postTheQuery(teess, userPost)}>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        postTheQuery(teess, userPost);
+                        // window.location.reload(false);
+                      }}
+                    >
                       SAVE
                     </Button>
                   )}
@@ -499,7 +518,7 @@ export default function data() {
                         role="button"
                         tabIndex={0}
                       >
-                        {allQueryFetch?.data?.rooms[selectedTitle]?.queries.map((items) => (
+                        {all?.data?.rooms[selectedTitle]?.queries.map((items) => (
                           <div
                             style={{
                               color: "black",
@@ -546,6 +565,8 @@ export default function data() {
                     </div>
                   </div>
                 </Drawer>
+
+                {loader && <div>loading...</div>}
               </div>
             </form>
             <InquiryDrawer onClick={showDrawer}>
