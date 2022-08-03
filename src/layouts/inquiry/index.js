@@ -35,7 +35,7 @@ import DataTable from "examples/Tables/DataTable";
 import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
 import "antd/dist/antd.min.css";
-import { Button, Drawer, Radio, Space } from "antd";
+import { Button, Drawer, Radio, Space, Select } from "antd";
 // import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import MDButton from "components/MDButton";
@@ -69,6 +69,12 @@ function Inquiry() {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState([]);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
+
+  const { Option } = Select;
+
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+  };
 
   const onChangeInput = (e) => {
     const { value } = e.target;
@@ -301,7 +307,7 @@ function Inquiry() {
                     >
                       <div className="title-des" style={{ justifyContent: "space-between" }}>
                         <div className="title-drawer">
-                          <h2>Title</h2>
+                          <h4>Title</h4>
                           <input
                             type="text"
                             onChange={(e) => {
@@ -319,7 +325,7 @@ function Inquiry() {
                           />
                         </div>
                         <div style={{ marginTop: "2rem" }}>
-                          <h2>Description</h2>
+                          <h4>Description</h4>
                           <input
                             type="text"
                             onChange={(e) => {
@@ -338,7 +344,7 @@ function Inquiry() {
                         </div>
                       </div>
                       <div style={{ color: "black", marginTop: "1rem" }}>
-                        <h2>User</h2>
+                        <h4>User</h4>
                         <input
                           type="text"
                           onChange={(e) => {
@@ -364,7 +370,7 @@ function Inquiry() {
                             minWidth: "50%",
                             border: "none",
                             borderRadius: "5px",
-                            padding: "14px",
+                            padding: "5px",
                             paddingLeft: "14px",
                           }}
                           onClick={(e) => {
@@ -377,7 +383,7 @@ function Inquiry() {
                             display: "flex",
                             width: "calc(100% - 14px)",
                             maxWidth: "100%",
-                            paddingLeft: "14px",
+                            paddingLeft: "5px",
                             borderRadius: "5px",
                             color: "black",
                           }}
@@ -455,6 +461,49 @@ function Inquiry() {
                           </div>
                         )}
                       </div>
+                      <Select
+                        mode="multiple"
+                        style={{
+                          width: "100%",
+                        }}
+                        placeholder="select one country"
+                        defaultValue={["india"]}
+                        onChange={handleChange}
+                        optionLabelProp="label"
+                      >
+                        <Option value="china" label="China">
+                          <div className="demo-option-label-item">
+                            <span role="img" aria-label="China">
+                              🇨🇳
+                            </span>
+                            China (中国)
+                          </div>
+                        </Option>
+                        <Option value="usa" label="USA">
+                          <div className="demo-option-label-item">
+                            <span role="img" aria-label="USA">
+                              🇺🇸
+                            </span>
+                            USA (美国)
+                          </div>
+                        </Option>
+                        <Option value="japan" label="Japan">
+                          <div className="demo-option-label-item">
+                            <span role="img" aria-label="Japan">
+                              🇯🇵
+                            </span>
+                            Japan (日本)
+                          </div>
+                        </Option>
+                        <Option value="korea" label="Korea">
+                          <div className="demo-option-label-item">
+                            <span role="img" aria-label="Korea">
+                              🇰🇷
+                            </span>
+                            Korea (韩国)
+                          </div>
+                        </Option>
+                      </Select>
                       {/* <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
                         <div className="tag-container">

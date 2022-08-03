@@ -6,7 +6,8 @@ export default function FirstTable() {
   const [customer] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
   const [adminUsers, setAdminUsers] = useState({});
-
+  const [loader, setLoader] = useState(false);
+  console.log(loader);
   // useEffect(() => {
   //   setTimeout(() => {
   //     setIsLoading(false);
@@ -35,6 +36,27 @@ export default function FirstTable() {
     getUsers();
   }, []);
 
+  const deleteUser = async (id) => {
+    setLoader(true);
+    const parsedDeleteUsers = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedDeleteUsers);
+    console.log(id);
+    const responseDelete = await fetch("https://inquiry-ts.herokuapp.com/admin/delete-user", {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${parsedDeleteUsers.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: id,
+      }),
+    });
+    const response = await responseDelete.json();
+    console.log(response);
+    setLoader(false);
+    window.location.reload(false);
+  };
+
   const getRole = (idx) => {
     switch (idx) {
       case 0:
@@ -50,9 +72,10 @@ export default function FirstTable() {
 
   return {
     columns: [
-      { Header: "Name", accessor: "name", width: "40%", align: "left" },
-      { Header: "Role", accessor: "role", align: "left" },
+      { Header: "Name", accessor: "name", width: "30%", align: "left" },
+      { Header: "Role", accessor: "role", width: "10%", align: "left" },
       { Header: "status", accessor: "status", align: "center" },
+      { Header: "Delete", accessor: "delete", align: "center" },
     ],
     rows: [
       {
@@ -75,6 +98,32 @@ export default function FirstTable() {
             {adminUsers?.data?.map((items) => (
               <div style={{ marginTop: "20px" }}>{items.is_active ? "Online" : "Offline"}</div>
             ))}
+          </div>
+        ),
+        delete: (
+          <div>
+            <div>
+              {adminUsers?.data?.map((item) => (
+                <div>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    style={{
+                      marginTop: "20px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      deleteUser(item.id);
+                    }}
+                    onKeyDown={() => {
+                      deleteUser(item.id);
+                    }}
+                  >
+                    Delete
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ),
       },

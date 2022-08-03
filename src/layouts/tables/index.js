@@ -21,7 +21,7 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import { Button, Drawer, Radio, Space } from "antd";
+import { Button, Drawer, Radio, Space, Input, Form, Select } from "antd";
 import "antd/dist/antd.css";
 
 // Material Dashboard 2 React example components
@@ -33,6 +33,7 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
+import { Option } from "antd/lib/mentions";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
@@ -45,10 +46,15 @@ function Tables() {
   const [isEmail, setEmail] = useState("");
   const [isUsername, setUsername] = useState("");
   const [isPassword, setPassword] = useState("");
+  const [isRole, setRole] = useState("");
+  // console.log(isRole);
 
   const createEmail = isEmail?.target?.value;
   const createUsername = isUsername?.target?.value;
   const createPassword = isPassword?.target?.value;
+  const createRole = isRole;
+
+  // console.log(createUsername, createRole, createEmail, createPassword);
 
   // const { Option } = Select;
 
@@ -60,6 +66,14 @@ function Tables() {
   //   console.log("search:", value);
   // };
 
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   const showDrawer = () => {
     setVisible(true);
   };
@@ -68,8 +82,24 @@ function Tables() {
     setPlacement(e.target.value);
   };
 
-  const createUser = async (email, role, username, password) => {
+  const onValue = (value) => {
+    console.log(`selected ${value}`);
+  };
+
+  const onSearch = (value) => {
+    console.log(("search:", value));
+  };
+
+  const createUser = async (username, role, email, password) => {
     setLoader(true);
+    let role1;
+    if (role === "Admin") {
+      role1 = 0;
+    } else if (role === "Salesman") {
+      role1 = 1;
+    } else if (role === "User") {
+      role1 = 2;
+    }
     const parsedCreateUser = JSON.parse(localStorage.getItem("user-info"));
     const res = await fetch("https://inquiry-ts.herokuapp.com/admin/register", {
       method: "POST",
@@ -78,9 +108,9 @@ function Tables() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: `${email}`,
-        role: `${role}`,
         username: `${username}`,
+        role: role1,
+        email: `${email}`,
         password: `${password}`,
       }),
     });
@@ -89,6 +119,7 @@ function Tables() {
     console.log(isCreateUser);
     console.log("~~~~~~~~~~~~~~~~", response);
     setLoader(false);
+    window.location.reload(false);
   };
 
   return (
@@ -138,93 +169,175 @@ function Tables() {
                       visible={visibility}
                       style={{ zIndex: "2000" }}
                     >
-                      <div>
-                        <div style={{ color: "black" }}>
-                          <h4>Email:-</h4>
-                          <input
+                      <Form
+                        style={{ marginTop: "4rem" }}
+                        name="basic"
+                        labelCol={{
+                          span: 3,
+                        }}
+                        wrapperCol={{
+                          span: 15,
+                        }}
+                        initialValues={{
+                          remember: true,
+                        }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                      >
+                        <Form.Item
+                          label="Username"
+                          name="username"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your username!",
+                            },
+                          ]}
+                        >
+                          <Input
                             onChange={(e) => {
-                              setEmail(e);
-                            }}
-                            type="email"
-                            style={{
-                              width: "18rem",
-                              height: "2.7rem",
-                              border: "1px solid black",
-                              borderRadius: "5px",
-                              color: "black",
-                              outline: "none",
-                              paddingLeft: "10px",
+                              setUsername(e);
                             }}
                           />
-                        </div>
-                        <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
-                          <h4>Select Role:-</h4>
-                          <input
-                            type="text"
-                            style={{
-                              width: "18rem",
-                              height: "2.7rem",
-                              border: "1px solid black",
-                              borderRadius: "5px",
-                              color: "black",
-                              outline: "none",
-                              paddingLeft: "10px",
-                            }}
-                          />
-                          {/* <Select
+                        </Form.Item>
+
+                        <Form.Item
+                          name="role"
+                          label="Role"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                          value={isRole}
+                        >
+                          <Select
                             showSearch
                             placeholder="Select a person"
                             optionFilterProp="children"
-                            onChange={onValue}
+                            onChange={(e) => {
+                              onValue(e);
+                              setRole(e);
+                            }}
                             onSearch={onSearch}
                             filterOption={(input, option) =>
                               option.children.toLowerCase().includes(input.toLowerCase())
                             }
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                          </Select> */}
+                            <Option value="Admin">Admin</Option>
+                            <Option value="Salesman">Salesman</Option>
+                            <Option value="User">User</Option>
+                          </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                          label="Email"
+                          name="email"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please enter valid email!",
+                            },
+                          ]}
+                          onChange={(e) => {
+                            setEmail(e);
+                          }}
+                        >
+                          <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                          label="Password"
+                          name="password"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your password!",
+                            },
+                          ]}
+                          onChange={(e) => {
+                            setPassword(e);
+                          }}
+                        >
+                          <Input.Password />
+                        </Form.Item>
+                      </Form>
+                      {/* <div>
+                        <div>
+                          <div style={{ color: "black" }}>
+                            <h4>Email:-</h4>
+                            <input
+                              onChange={(e) => {
+                                setEmail(e);
+                              }}
+                              type="email"
+                              style={{
+                                width: "18rem",
+                                height: "2.7rem",
+                                border: "1px solid black",
+                                borderRadius: "5px",
+                                color: "black",
+                                outline: "none",
+                                paddingLeft: "10px",
+                              }}
+                            />
+                          </div>
+                          <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
+                            <h4>Select Role:-</h4>
+                            <input
+                              type="text"
+                              style={{
+                                width: "18rem",
+                                height: "2.7rem",
+                                border: "1px solid black",
+                                borderRadius: "5px",
+                                color: "black",
+                                outline: "none",
+                                paddingLeft: "10px",
+                              }}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div>
-                        <div style={{ color: "black", marginTop: "2rem" }}>
-                          <h4>Username:-</h4>
-                          <input
-                            type="text"
-                            onChange={(e) => {
-                              setUsername(e);
-                            }}
-                            style={{
-                              width: "18rem",
-                              height: "2.7rem",
-                              border: "1px solid black",
-                              borderRadius: "5px",
-                              color: "black",
-                              outline: "none",
-                              paddingLeft: "10px",
-                            }}
-                          />
+                        <div>
+                          <div style={{ color: "black", marginTop: "2rem" }}>
+                            <h4>Username:-</h4>
+                            <input
+                              type="text"
+                              onChange={(e) => {
+                                setUsername(e);
+                              }}
+                              style={{
+                                width: "18rem",
+                                height: "2.7rem",
+                                border: "1px solid black",
+                                borderRadius: "5px",
+                                color: "black",
+                                outline: "none",
+                                paddingLeft: "10px",
+                              }}
+                            />
+                          </div>
+                          <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
+                            <h4>Password:-</h4>
+                            <input
+                              type="password"
+                              onChange={(e) => {
+                                setPassword(e);
+                              }}
+                              style={{
+                                width: "18rem",
+                                height: "2.7rem",
+                                border: "1px solid black",
+                                borderRadius: "5px",
+                                color: "black",
+                                outline: "none",
+                                paddingLeft: "10px",
+                              }}
+                            />
+                          </div>
                         </div>
-                        <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
-                          <h4>Password:-</h4>
-                          <input
-                            type="password"
-                            onChange={(e) => {
-                              setPassword(e);
-                            }}
-                            style={{
-                              width: "18rem",
-                              height: "2.7rem",
-                              border: "1px solid black",
-                              borderRadius: "5px",
-                              color: "black",
-                              outline: "none",
-                              paddingLeft: "10px",
-                            }}
-                          />
-                        </div>
-                      </div>
+                      </div> */}
                       {/* <button type="button" tabIndex={0} style={{ marginTop: "2rem" }}>
                         Create
                       </button> */}
@@ -233,7 +346,7 @@ function Tables() {
                           <Button
                             type="button"
                             onClick={() => {
-                              createUser(createEmail, createPassword, createUsername);
+                              createUser(createUsername, createRole, createEmail, createPassword);
                             }}
                           >
                             CREATE
