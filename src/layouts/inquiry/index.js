@@ -35,11 +35,12 @@ import DataTable from "examples/Tables/DataTable";
 import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
 import "antd/dist/antd.min.css";
-import { Button, Drawer, Radio, Space, Select } from "antd";
+import { Button, Drawer, Radio, Space, Select, Input } from "antd";
 // import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import MDButton from "components/MDButton";
 import "./index.css";
+import Form from "antd/lib/form/Form";
 // import TagPopupC from "./data/tagDrop";
 
 function Inquiry() {
@@ -254,6 +255,14 @@ function Inquiry() {
       });
   };
 
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  }
+
   // useEffect(() => {
   //   searchTag();
   // }, []);
@@ -305,205 +314,246 @@ function Inquiry() {
                       visible={visibility}
                       style={{ zIndex: 2000 }}
                     >
-                      <div className="title-des" style={{ justifyContent: "space-between" }}>
-                        <div className="title-drawer">
-                          <h4>Title</h4>
-                          <input
-                            type="text"
+                      <Form
+                        style={{ marginTop: "4rem" }}
+                        name="basic"
+                        labelCol={{
+                          span: 3,
+                        }}
+                        wrapperCol={{
+                          span: 15,
+                        }}
+                        initialValues={{
+                          remeber: true,
+                        }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                        >
+                          <Form.Item
+                          label="Title"
+                          name="title"
+                        >
+                          <Input
                             onChange={(e) => {
                               setTempTitle(e);
                             }}
-                            style={{
-                              width: "47rem",
-                              height: "2.7rem",
-                              border: "1px solid black",
-                              borderRadius: "5px",
-                              color: "black",
-                              outline: "none",
-                              paddingLeft: "10px",
-                            }}
                           />
-                        </div>
-                        <div style={{ marginTop: "2rem" }}>
-                          <h4>Description</h4>
-                          <input
-                            type="text"
+                        </Form.Item>
+
+                        <Form.Item
+                          label="Description"
+                          name="description"
+                        >
+                          <Input
                             onChange={(e) => {
                               setTempDes(e);
                             }}
+                          />
+                        </Form.Item>
+                        
+                        </Form>
+                      {/* <div>
+                        <div className="title-des" style={{ justifyContent: "space-between" }}>
+                          <div className="title-drawer">
+                            <h4>Title</h4>
+                            <input
+                              type="text"
+                              onChange={(e) => {
+                                setTempTitle(e);
+                              }}
+                              style={{
+                                width: "47rem",
+                                height: "2.7rem",
+                                border: "1px solid black",
+                                borderRadius: "5px",
+                                color: "black",
+                                outline: "none",
+                                paddingLeft: "10px",
+                              }}
+                            />
+                          </div>
+                          <div style={{ marginTop: "2rem" }}>
+                            <h4>Description</h4>
+                            <input
+                              type="text"
+                              onChange={(e) => {
+                                setTempDes(e);
+                              }}
+                              style={{
+                                width: "47rem",
+                                height: "2.7rem",
+                                border: "1px solid black",
+                                borderRadius: "5px",
+                                color: "black",
+                                // outline: "none",
+                                paddingLeft: "10px",
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div style={{ color: "black", marginTop: "1rem" }}>
+                          <h4>User</h4>
+                          <input
+                            type="text"
+                            onChange={(e) => {
+                              searchTag(e.target.value);
+                              onChangeInput(e);
+                            }}
+                            onFocus
+                            onKeyDown={onKeyDown}
+                            onKeyUp={onKeyUp}
+                            value={input}
+                            // value={tagedUsers[0]?.username}
+                            placeholder="Enter a tag"
+                            // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
                             style={{
-                              width: "47rem",
-                              height: "2.7rem",
-                              border: "1px solid black",
+                              // width: "47rem",
+                              // height: "2.7rem",
+                              // border: "1px solid black",
+                              // borderRadius: "5px",
+                              // color: "black",
+                              // outline: "none",
+                              // paddingLeft: "10px",
+                              width: "100%",
+                              minWidth: "50%",
+                              border: "none",
+                              borderRadius: "5px",
+                              padding: "5px",
+                              paddingLeft: "14px",
+                            }}
+                            onClick={(e) => {
+                              searchTag(e.target.value);
+                            }}
+                            // value={tagedUsers[0]?.username}
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              width: "calc(100% - 14px)",
+                              maxWidth: "100%",
+                              paddingLeft: "5px",
                               borderRadius: "5px",
                               color: "black",
-                              // outline: "none",
-                              paddingLeft: "10px",
                             }}
-                          />
-                        </div>
-                      </div>
-                      <div style={{ color: "black", marginTop: "1rem" }}>
-                        <h4>User</h4>
-                        <input
-                          type="text"
-                          onChange={(e) => {
-                            searchTag(e.target.value);
-                            onChangeInput(e);
-                          }}
-                          onFocus
-                          onKeyDown={onKeyDown}
-                          onKeyUp={onKeyUp}
-                          value={input}
-                          // value={tagedUsers[0]?.username}
-                          placeholder="Enter a tag"
-                          // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
-                          style={{
-                            // width: "47rem",
-                            // height: "2.7rem",
-                            // border: "1px solid black",
-                            // borderRadius: "5px",
-                            // color: "black",
-                            // outline: "none",
-                            // paddingLeft: "10px",
-                            width: "100%",
-                            minWidth: "50%",
-                            border: "none",
-                            borderRadius: "5px",
-                            padding: "5px",
-                            paddingLeft: "14px",
-                          }}
-                          onClick={(e) => {
-                            searchTag(e.target.value);
-                          }}
-                          // value={tagedUsers[0]?.username}
-                        />
-                        <div
-                          style={{
-                            display: "flex",
-                            width: "calc(100% - 14px)",
-                            maxWidth: "100%",
-                            paddingLeft: "5px",
-                            borderRadius: "5px",
-                            color: "black",
-                          }}
-                        >
-                          {tags?.map((user, idx) => (
-                            <div
-                              style={{
-                                border: "1px solid black",
-                                display: "flex",
-                                alignItems: "center",
-                                margin: "7px 0",
-                                marginRight: "10px",
-                                padding: "0 10px",
-                                paddingRight: "5px",
-                                borderRadius: "5px",
-                                whiteSpace: "nowrap",
-                                color: "black",
-                              }}
-                            >
-                              {user}
-                              <button
-                                type="button"
+                          >
+                            {tags?.map((user, idx) => (
+                              <div
                                 style={{
+                                  border: "1px solid black",
                                   display: "flex",
-                                  padding: "6px",
-                                  border: "none",
-                                  backgroundColor: "unset",
-                                  cursor: "pointer",
+                                  alignItems: "center",
+                                  margin: "7px 0",
+                                  marginRight: "10px",
+                                  padding: "0 10px",
+                                  paddingRight: "5px",
+                                  borderRadius: "5px",
+                                  whiteSpace: "nowrap",
                                   color: "black",
-                                  marginTop: "0px",
                                 }}
-                                onClick={() => deleteTag(idx)}
                               >
-                                x
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                        {!show && (
-                          <div>
-                            {hide && (
-                              <div style={{ border: "1px solid black", cursor: "pointer" }}>
-                                {filteredTagName.map((user) => (
-                                  <div
-                                    style={{
-                                      color: "black",
-                                      paddingTop: "10px",
-                                      marginLeft: "22rem",
-                                    }}
-                                    tabIndex={0}
-                                    onKeyDown={(e) => {
-                                      setSelectedTag(e);
-                                      setTagedUsers((oldArray) => [...oldArray, user]);
-                                      onKeyDown(e);
-                                    }}
-                                    role="button"
-                                    onClick={(e) => {
-                                      setTagedUsers((oldArray) => [...oldArray, user]);
-                                      setUsero(e.target.innerText);
-                                      setHide(false);
-                                      setSelectedTag(e);
-                                      onKeyDown(e);
-                                      searchTag(e);
-                                    }}
-                                    onChange={(e) => {
-                                      searchTag(e.target.value);
-                                      onChangeInput(e);
-                                    }}
-                                  >
-                                    {user.username}
-                                  </div>
-                                ))}
+                                {user}
+                                <button
+                                  type="button"
+                                  style={{
+                                    display: "flex",
+                                    padding: "6px",
+                                    border: "none",
+                                    backgroundColor: "unset",
+                                    cursor: "pointer",
+                                    color: "black",
+                                    marginTop: "0px",
+                                  }}
+                                  onClick={() => deleteTag(idx)}
+                                >
+                                  x
+                                </button>
                               </div>
-                            )}
+                            ))}
                           </div>
-                        )}
-                      </div>
-                      <Select
-                        mode="multiple"
-                        style={{
-                          width: "100%",
-                        }}
-                        placeholder="select one country"
-                        defaultValue={["india"]}
-                        onChange={handleChange}
-                        optionLabelProp="label"
-                      >
-                        <Option value="china" label="China">
-                          <div className="demo-option-label-item">
-                            <span role="img" aria-label="China">
-                              🇨🇳
-                            </span>
-                            China (中国)
-                          </div>
-                        </Option>
-                        <Option value="usa" label="USA">
-                          <div className="demo-option-label-item">
-                            <span role="img" aria-label="USA">
-                              🇺🇸
-                            </span>
-                            USA (美国)
-                          </div>
-                        </Option>
-                        <Option value="japan" label="Japan">
-                          <div className="demo-option-label-item">
-                            <span role="img" aria-label="Japan">
-                              🇯🇵
-                            </span>
-                            Japan (日本)
-                          </div>
-                        </Option>
-                        <Option value="korea" label="Korea">
-                          <div className="demo-option-label-item">
-                            <span role="img" aria-label="Korea">
-                              🇰🇷
-                            </span>
-                            Korea (韩国)
-                          </div>
-                        </Option>
-                      </Select>
+                          {!show && (
+                            <div>
+                              {hide && (
+                                <div style={{ border: "1px solid black", cursor: "pointer" }}>
+                                  {filteredTagName.map((user) => (
+                                    <div
+                                      style={{
+                                        color: "black",
+                                        paddingTop: "10px",
+                                        marginLeft: "22rem",
+                                      }}
+                                      tabIndex={0}
+                                      onKeyDown={(e) => {
+                                        setSelectedTag(e);
+                                        setTagedUsers((oldArray) => [...oldArray, user]);
+                                        onKeyDown(e);
+                                      }}
+                                      role="button"
+                                      onClick={(e) => {
+                                        setTagedUsers((oldArray) => [...oldArray, user]);
+                                        setUsero(e.target.innerText);
+                                        setHide(false);
+                                        setSelectedTag(e);
+                                        onKeyDown(e);
+                                        searchTag(e);
+                                      }}
+                                      onChange={(e) => {
+                                        searchTag(e.target.value);
+                                        onChangeInput(e);
+                                      }}
+                                    >
+                                      {user.username}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <Select
+                          mode="multiple"
+                          style={{
+                            width: "100%",
+                          }}
+                          placeholder="select one country"
+                          defaultValue={["india"]}
+                          onChange={handleChange}
+                          optionLabelProp="label"
+                        >
+                          <Option value="china" label="China">
+                            <div className="demo-option-label-item">
+                              <span role="img" aria-label="China">
+                                🇨🇳
+                              </span>
+                              China (中国)
+                            </div>
+                          </Option>
+                          <Option value="usa" label="USA">
+                            <div className="demo-option-label-item">
+                              <span role="img" aria-label="USA">
+                                🇺🇸
+                              </span>
+                              USA (美国)
+                            </div>
+                          </Option>
+                          <Option value="japan" label="Japan">
+                            <div className="demo-option-label-item">
+                              <span role="img" aria-label="Japan">
+                                🇯🇵
+                              </span>
+                              Japan (日本)
+                            </div>
+                          </Option>
+                          <Option value="korea" label="Korea">
+                            <div className="demo-option-label-item">
+                              <span role="img" aria-label="Korea">
+                                🇰🇷
+                              </span>
+                              Korea (韩国)
+                            </div>
+                          </Option>
+                        </Select>
+                      </div> */}
                       {/* <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
                         <div className="tag-container">
