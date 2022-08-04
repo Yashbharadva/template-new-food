@@ -1,96 +1,3 @@
-.image-search {
-
-    input {
-        // height: 20px;
-        // width: 20px;
-        margin-bottom: 30px;
-        margin-top: -80px;
-        margin-left: 180px;
-    }
-}
-
-.searchbarcontainer {
-    display: flex;
-    flex-direction: column;
-    width: 34em;
-    height: 3.8em;
-    background-color: aqua;
-    border-radius: 6px;
-    box-shadow: 0px 2px 12px 3px rgba(0, 0, 0, 0.14);
-}
-
-.searchinputcontainer {
-    width: 100%;
-    min-height: 4em;
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 2px 15px;
-}
-
-.searchinput {
-    width: 100%;
-    height: 100%;
-    outline: none;
-    border: none;
-    font-size: 21px;
-    color: #12112e;
-    font-weight: 500;
-    border-radius: 6px;
-    background-color: transparent;
-
-    &:focus {
-        outline: none;
-
-        &::placeholder {
-            opacity: 0;
-        }
-    }
-
-    &::placeholder {
-        color: #bebebe;
-        transition: all 250ms ease-in-out;
-    }
-}
-
-.searchicon {
-    color: #bebebe;
-    font-size: 27px;
-    margin-right: 10px;
-    margin-top: 6px;
-    vertical-align: middle;
-}
-
-.closeicon {
-    color: #bebebe;
-    font-size: 23px;
-    vertical-align: middle;
-    transition: all 200ms ease-in-out;
-    cursor: pointer;
-
-    &:hover {
-        color: #dfdfdf;
-    }
-}
-
-.lineseperator {
-    display: flex;
-    min-width: 100%;
-    min-height: 2px;
-    background: #d8d8d878;
-}
-
-// .border-drop{
-//     height: 250px;
-//     width: 250px;
-//     // background-color: aqua;
-//     border: 1px solid black;
-// }
-
-// .drop-for-tab{
-//     margin-top: 20px;
-// }
-
 .drop-search {
     margin-top: 5px;
     width: 172px;
@@ -104,6 +11,43 @@
     font-size: 13px;
 }
 
-.drop-search::-webkit-scrollbar {
-    display: none;
+.search-query{
+    width: 15rem;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    height: 2.5rem;
+    font-size: 14px;
+    padding: 0 12px;
+}
+
+.menu-open{
+    margin-left: -30rem;
+    margin-top: -40px;
+}
+
+@media screen and (max-width: 500px) {
+    .main-search-query{
+        margin-left: 10rem;
+        margin-top: -7.5rem;
+    }
+    .search-query{
+        width: 10rem;
+    }
+    .account{
+        margin-top: 1rem;
+        margin-left: -40rem;
+    }
+    .settings-button{
+        margin-left: -15rem;
+        margin-top: -4rem;
+    }
+    .notification-query{
+        margin-top: -8rem;
+        margin-left: -2rem;
+    }
+    .all-in{
+        display: inline;
+        justify-content: space-between;
+    }
 }

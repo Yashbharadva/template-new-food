@@ -59,7 +59,7 @@ import {
 import axios from "axios";
 // import search from "../../../assets/images/search.png";
 import "./index.styles.scss";
-import MDInput from "components/MDInput";
+// import MDInput from "components/MDInput";
 import useDebounce from "./debounceHook";
 
 const containerVariants = {
@@ -420,8 +420,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 />
               </div> */}
               <div animate={isExpanded ? "expanded" : "collapsed"} variants={containerVariants}>
-                <div>
-                  <MDInput
+                <div className="main-search-query">
+                  <input
+                    className="search-query"
                     placeholder="Search here"
                     onFocus={expandContainer}
                     value={searchQuery}
@@ -444,50 +445,56 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 )}
               </div>
             </MDBox>
-            <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle} style={{ marginTop: "-30px" }}>
-                    account_circle
+            <div className="all-in">
+              <MDBox color={light ? "white" : "inherit"}>
+                <Link to="/authentication/sign-in/basic">
+                  <IconButton sx={navbarIconButton} size="small" disableRipple>
+                    <Icon className="account" sx={iconsStyle}>
+                      account_circle
+                    </Icon>
+                  </IconButton>
+                </Link>
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarMobileMenu}
+                  onClick={handleMiniSidenav}
+                >
+                  <Icon className="menu-open" sx={iconsStyle} fontSize="medium">
+                    {miniSidenav ? "menu_open" : "menu"}
                   </Icon>
                 </IconButton>
-              </Link>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-                style={{ marginTop: "-30px" }}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-                style={{ marginTop: "-30px" }}
-              >
-                <Icon sx={iconsStyle}>notifications</Icon>
-              </IconButton>
-              {renderMenu()}
-            </MDBox>
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarIconButton}
+                  onClick={handleConfiguratorOpen}
+                  // style={{ marginTop: "-30px" }}
+                >
+                  <Icon className="settings-button" sx={iconsStyle}>
+                    settings
+                  </Icon>
+                </IconButton>
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarIconButton}
+                  aria-controls="notification-menu"
+                  aria-haspopup="true"
+                  variant="contained"
+                  onClick={handleOpenMenu}
+                  // style={{ marginTop: "-30px" }}
+                >
+                  <Icon className="notification-query" sx={iconsStyle}>
+                    notifications
+                  </Icon>
+                </IconButton>
+                {renderMenu()}
+              </MDBox>
+            </div>
             <IconButton color="inherit" size="small" style={{ marginTop: "-30px" }} />
             {/* {localStorage.getItem("user-info") ? (
                 <Link to="/authentication/sign-in" onClick={handlelogout}>

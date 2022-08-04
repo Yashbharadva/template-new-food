@@ -22,7 +22,7 @@ import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import { Button, Drawer, Radio, Space, Input, Form, Select } from "antd";
-import "antd/dist/antd.css";
+import "antd/dist/antd.less";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -42,7 +42,7 @@ function Tables() {
   const [placement, setPlacement] = useState("right");
   const [visibility, setVisibility] = useState(false);
   const [loader, setLoader] = useState(false);
-  const [isCreateUser, setCreateUser] = useState("");
+  const [setCreateUser] = useState("");
   const [isEmail, setEmail] = useState("");
   const [isUsername, setUsername] = useState("");
   const [isPassword, setPassword] = useState("");
@@ -66,13 +66,13 @@ function Tables() {
   //   console.log("search:", value);
   // };
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+  // const onFinish = (values) => {
+  //   console.log("Success:", values);
+  // };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log("Failed:", errorInfo);
+  // };
 
   const showDrawer = () => {
     setVisible(true);
@@ -82,13 +82,13 @@ function Tables() {
     setPlacement(e.target.value);
   };
 
-  const onValue = (value) => {
-    console.log(`selected ${value}`);
-  };
+  // const onValue = (value) => {
+  //   console.log(`selected ${value}`);
+  // };
 
-  const onSearch = (value) => {
-    console.log(("search:", value));
-  };
+  // const onSearch = (value) => {
+  //   console.log(("search:", value));
+  // };
 
   const createUser = async (username, role, email, password) => {
     setLoader(true);
@@ -116,8 +116,7 @@ function Tables() {
     });
     const response = await res.json();
     setCreateUser(response);
-    console.log(isCreateUser);
-    console.log("~~~~~~~~~~~~~~~~", response);
+    // console.log("~~~~~~~~~~~~~~~~", response);
     setLoader(false);
     window.location.reload(false);
   };
@@ -181,8 +180,8 @@ function Tables() {
                         initialValues={{
                           remember: true,
                         }}
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
+                        // onFinish={onFinish}
+                        // onFinishFailed={onFinishFailed}
                         autoComplete="off"
                       >
                         <Form.Item
@@ -217,10 +216,10 @@ function Tables() {
                             placeholder="Select a person"
                             optionFilterProp="children"
                             onChange={(e) => {
-                              onValue(e);
+                              // onValue(e);
                               setRole(e);
                             }}
-                            onSearch={onSearch}
+                            // onSearch={onSearch}
                             filterOption={(input, option) =>
                               option.children.toLowerCase().includes(input.toLowerCase())
                             }
