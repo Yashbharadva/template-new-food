@@ -35,12 +35,11 @@ import DataTable from "examples/Tables/DataTable";
 import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
 import "antd/dist/antd.min.css";
-import { Button, Drawer, Radio, Space, Select, Input } from "antd";
+import { Button, Drawer, Radio, Space } from "antd";
 // import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import MDButton from "components/MDButton";
 import "./index.css";
-import Form from "antd/lib/form/Form";
 // import TagPopupC from "./data/tagDrop";
 
 function Inquiry() {
@@ -54,28 +53,31 @@ function Inquiry() {
   const [visibility, setVisibility] = useState(false);
   // const [temp, setTemp] = useState("");
   const [loader, setLoader] = useState(false);
-  const [setAllQueryFetch] = useState({});
+  const [allQueryFetch, setAllQueryFetch] = useState({});
+  console.log(allQueryFetch);
   const [tempTitle, setTempTitle] = useState("");
+  console.log(tempTitle);
   const [tempDes, setTempDes] = useState("");
+  console.log(tempDes);
   const [tagedUsers, setTagedUsers] = useState([]);
   // console.log(setTagedUsers);
-  const [setUsero] = useState("");
-  const [setSearchElement] = useState("");
+  const [usero, setUsero] = useState("");
+  const [searchElement, setSearchElement] = useState("");
   const [show, setShow] = useState(true);
   const [filteredTagName, setFilteredTagName] = useState([]);
   const [hide, setHide] = useState(true);
-  const [setSelectedTag] = useState(null);
-  // console.log(selectedTag);
-  // console.log(usero);
+  const [selectedTag, setSelectedTag] = useState(null);
+  console.log(selectedTag);
+  console.log(usero);
   const [input, setInput] = useState("");
   const [tags, setTags] = useState([]);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
 
-  const { Option } = Select;
+  // const { Option } = Select;
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
+  // const handleChange = (value) => {
+  //   console.log(`selected ${value}`);
+  // };
 
   const onChangeInput = (e) => {
     const { value } = e.target;
@@ -123,11 +125,12 @@ function Inquiry() {
   // console.log(saveEd);
 
   const titlePost = tempTitle?.target?.value;
-  // console.log(titlePost, searchElement);
+  console.log(titlePost);
   const desPost = tempDes?.target?.value;
-  // console.log(desPost);
+  console.log(desPost);
   const userPost = tagedUsers;
-  // console.log(searchElement);
+  console.log(userPost);
+  console.log(searchElement);
   // const editorPost = temp?.blocks?.map((item) => item.text);
 
   // const addTag = (e) => {
@@ -255,17 +258,17 @@ function Inquiry() {
       });
   };
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  }
-
   // useEffect(() => {
   //   searchTag();
   // }, []);
+
+  const roleCheck = localStorage.getItem("user-info");
+
+  const role = JSON.parse(roleCheck);
+
+  const finalRole = role?.data?.user?.role;
+
+  console.log("check for role--------------->>>>>>>>", finalRole);
 
   return (
     <DashboardLayout>
@@ -288,22 +291,26 @@ function Inquiry() {
                   Inquiry Table
                   <Space>
                     <Radio.Group value={placement} onChange={onChange} />
-                    <div
-                      role="button"
-                      className="open-drawer"
-                      type="primary"
-                      onClick={() => setVisibility(true)}
-                      onKeyDown={showDrawer}
-                      tabIndex={0}
-                      style={{
-                        cursor: "pointer",
-                        position: "absolute",
-                        marginLeft: "80rem",
-                        marginTop: "-1rem",
-                      }}
-                    >
-                      +CreateRoom
-                    </div>
+                    {finalRole === 0 || finalRole === 1 ? (
+                      <div
+                        role="button"
+                        className="open-drawer"
+                        type="primary"
+                        onClick={() => setVisibility(true)}
+                        onKeyDown={showDrawer}
+                        tabIndex={0}
+                        // style={{
+                        //   cursor: "pointer",
+                        //   position: "absolute",
+                        //   marginLeft: "80rem",
+                        //   marginTop: "-1rem",
+                        // }}
+                      >
+                        +CreateRoom
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </Space>
                   <form>
                     <Drawer
@@ -314,46 +321,7 @@ function Inquiry() {
                       visible={visibility}
                       style={{ zIndex: 2000 }}
                     >
-                      <Form
-                        style={{ marginTop: "4rem" }}
-                        name="basic"
-                        labelCol={{
-                          span: 3,
-                        }}
-                        wrapperCol={{
-                          span: 15,
-                        }}
-                        initialValues={{
-                          remeber: true,
-                        }}
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                        >
-                          <Form.Item
-                          label="Title"
-                          name="title"
-                        >
-                          <Input
-                            onChange={(e) => {
-                              setTempTitle(e);
-                            }}
-                          />
-                        </Form.Item>
-
-                        <Form.Item
-                          label="Description"
-                          name="description"
-                        >
-                          <Input
-                            onChange={(e) => {
-                              setTempDes(e);
-                            }}
-                          />
-                        </Form.Item>
-                        
-                        </Form>
-                      {/* <div>
+                      <div>
                         <div className="title-des" style={{ justifyContent: "space-between" }}>
                           <div className="title-drawer">
                             <h4>Title</h4>
@@ -370,6 +338,7 @@ function Inquiry() {
                                 color: "black",
                                 outline: "none",
                                 paddingLeft: "10px",
+                                fontSize: "15px",
                               }}
                             />
                           </div>
@@ -388,6 +357,7 @@ function Inquiry() {
                                 color: "black",
                                 // outline: "none",
                                 paddingLeft: "10px",
+                                fontSize: "15px",
                               }}
                             />
                           </div>
@@ -400,11 +370,10 @@ function Inquiry() {
                               searchTag(e.target.value);
                               onChangeInput(e);
                             }}
-                            onFocus
                             onKeyDown={onKeyDown}
                             onKeyUp={onKeyUp}
-                            value={input}
-                            // value={tagedUsers[0]?.username}
+                            // value={input}
+                            value={tagedUsers[0]?.username}
                             placeholder="Enter a tag"
                             // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
                             style={{
@@ -417,15 +386,15 @@ function Inquiry() {
                               // paddingLeft: "10px",
                               width: "100%",
                               minWidth: "50%",
-                              border: "none",
                               borderRadius: "5px",
                               padding: "5px",
                               paddingLeft: "14px",
+                              border: "1px solid black",
+                              fontSize: "15px",
                             }}
                             onClick={(e) => {
                               searchTag(e.target.value);
                             }}
-                            // value={tagedUsers[0]?.username}
                           />
                           <div
                             style={{
@@ -474,7 +443,13 @@ function Inquiry() {
                           {!show && (
                             <div>
                               {hide && (
-                                <div style={{ border: "1px solid black", cursor: "pointer" }}>
+                                <div
+                                  style={{
+                                    border: "1px solid black",
+                                    cursor: "pointer",
+                                    fontSize: "15px",
+                                  }}
+                                >
                                   {filteredTagName.map((user) => (
                                     <div
                                       style={{
@@ -510,7 +485,7 @@ function Inquiry() {
                             </div>
                           )}
                         </div>
-                        <Select
+                        {/* <Select
                           mode="multiple"
                           style={{
                             width: "100%",
@@ -552,8 +527,8 @@ function Inquiry() {
                               Korea (韩国)
                             </div>
                           </Option>
-                        </Select>
-                      </div> */}
+                        </Select> */}
+                      </div>
                       {/* <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
                         <div className="tag-container">

@@ -108,6 +108,7 @@ function Basic() {
         }
         localStorage.setItem("user-info", JSON.stringify(resData));
         navigate("/profile");
+        window.location.reload(false);
         return console.log(resData.message);
       })
       .catch((err) => {

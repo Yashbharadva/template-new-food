@@ -1,6 +1,16 @@
 .open-drawer {
-    /* margin-left: 50rem; */
+    cursor: pointer;
     display: flex;
+    position: absolute;
+    margin-left: 80rem;
+    margin-top: -1rem;
+}
+
+@media screen and (max-width: 500px) {
+    .open-drawer{
+        margin-left: 10rem;
+    }
+    
 }
 
 html {

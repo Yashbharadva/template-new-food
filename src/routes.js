@@ -54,84 +54,118 @@ import Tables2 from "layouts/tables2";
 import Inquiry from "layouts/inquiry";
 import { Link } from "react-router-dom";
 import { AiOutlineProfile } from "react-icons/ai";
+// import { useState } from "react";
 // import Inquiry2 from "layouts/inquiry2";
 // import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
 // import { Link } from "react-router-dom";
 
-const routes = [
-  // {
-  //   type: "collapse",
-  //   name: "CERV Dashboard",
-  //   key: "dashboard",
-  //   icon: <Icon fontSize="small">dashboard</Icon>,
-  //   route: "/dashboard",
-  //   component: <Dashboard />,
-  // },
-  {
-    type: "collapse",
-    name: "Admin",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Inquiry",
-    key: "inquiry",
-    icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
-    route: "/inquiry",
-    component: <Inquiry />,
-  },
-  {
-    type: "collapse",
-    name: "Caterer",
-    key: "tables2",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables2",
-    component: <Tables2 />,
-  },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
-  {
-    type: "collapse",
-    name: (
-      <div>
-        {localStorage.getItem("user-info") ? (
-          <Link to="/authentication/sign-in" style={{ color: "white" }}>
-            Log Out
-          </Link>
-        ) : (
-          <Link to="/authentication/sign-in">Sign-in</Link>
-        )}
-      </div>
-    ),
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  // {
-  //   type: "collapse",
-  //   name: "Sign Up",
-  //   key: "sign-up",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/authentication/sign-up",
-  //   component: <SignUp />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Log out",
-  //   key: "Log-out",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/authentication/Log-out",
-  // },
-];
+const roleAdmin = localStorage.getItem("user-info");
+
+const ROLE = JSON.parse(roleAdmin);
+
+const role = ROLE?.data?.user?.role;
+
+console.log("ROLE---------->", role);
+
+const routes = [];
+
+if (role === 0) {
+  routes.push(
+    {
+      type: "collapse",
+      name: "Admin",
+      icon: <Icon fontSize="small">table_view</Icon>,
+      route: "/tables",
+      component: <Tables />,
+    },
+    {
+      type: "collapse",
+      name: "Inquiry",
+      key: "inquiry",
+      icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
+      route: "/inquiry",
+      component: <Inquiry />,
+    },
+    {
+      type: "collapse",
+      name: "Caterer",
+      key: "tables2",
+      icon: <Icon fontSize="small">table_view</Icon>,
+      route: "/tables2",
+      component: <Tables2 />,
+    },
+    {
+      type: "collapse",
+      name: "Profile",
+      key: "profile",
+      icon: <Icon fontSize="small">person</Icon>,
+      route: "/profile",
+      component: <Profile />,
+    },
+    {
+      type: "collapse",
+      name: (
+        <div>
+          {localStorage.getItem("user-info") ? (
+            <Link to="/authentication/sign-in" style={{ color: "white" }}>
+              Log Out
+            </Link>
+          ) : (
+            <Link to="/authentication/sign-in">Sign-in</Link>
+          )}
+        </div>
+      ),
+      key: "sign-in",
+      icon: <Icon fontSize="small">login</Icon>,
+      route: "/authentication/sign-in",
+      component: <SignIn />,
+    }
+  );
+} else {
+  routes.push(
+    {
+      type: "collapse",
+      name: "Inquiry",
+      key: "inquiry",
+      icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
+      route: "/inquiry",
+      component: <Inquiry />,
+    },
+    {
+      type: "collapse",
+      name: "Caterer",
+      key: "tables2",
+      icon: <Icon fontSize="small">table_view</Icon>,
+      route: "/tables2",
+      component: <Tables2 />,
+    },
+    {
+      type: "collapse",
+      name: "Profile",
+      key: "profile",
+      icon: <Icon fontSize="small">person</Icon>,
+      route: "/profile",
+      component: <Profile />,
+    },
+    {
+      type: "collapse",
+      name: (
+        <div>
+          {localStorage.getItem("user-info") ? (
+            <Link to="/authentication/sign-in" style={{ color: "white" }}>
+              Log Out
+            </Link>
+          ) : (
+            <Link to="/authentication/sign-in">Sign-in</Link>
+          )}
+        </div>
+      ),
+      key: "sign-in",
+      icon: <Icon fontSize="small">login</Icon>,
+      route: "/authentication/sign-in",
+      component: <SignIn />,
+    }
+  );
+}
 
 export default routes;

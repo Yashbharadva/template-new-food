@@ -47,8 +47,8 @@ export default function data() {
   // const [input, setInput] = useState("");
   // console.log(usero);
 
-  // const teess = temp?.blocks?.map((item) => item.text);
-  const teess = temp?.target?.value;
+  const teess = temp?.blocks?.map((item) => item.text);
+  // const teess = temp?.target?.value;
   // console.log(teess);
   const userPost = tagedUsers;
   // console.log(searchElement);
@@ -363,17 +363,18 @@ export default function data() {
                 >
                   <div className="title-tags" style={{ display: "flex" }}>
                     <div className="title-drawer">
-                      <h2>Title</h2>
+                      <h4>Title</h4>
                       <input
                         type="text"
                         style={{
                           width: "22rem",
-                          height: "2.7rem",
+                          height: "2.6rem",
                           border: "1px solid black",
                           borderRadius: "5px",
                           color: "black",
                           outline: "none",
                           paddingLeft: "10px",
+                          fontSize: "15px",
                         }}
                         value={allQueryFetch?.data?.rooms[selectedTitle]?.title}
                       />
@@ -429,7 +430,7 @@ export default function data() {
                       </div>
                     </div> */}
                     <div style={{ color: "black", marginLeft: "30px" }}>
-                      <h2>Tag users</h2>
+                      <h4>Tag users</h4>
                       <input
                         type="text"
                         // onClick={(e) => {
@@ -440,12 +441,13 @@ export default function data() {
                         value={allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers[0]?.user_name}
                         style={{
                           width: "22rem",
-                          height: "2.7rem",
+                          height: "2.6rem",
                           border: "1px solid black",
                           borderRadius: "5px",
                           color: "black",
                           outline: "none",
                           paddingLeft: "10px",
+                          fontSize: "15px",
                         }}
                       />
                       {/* {!show && (
@@ -480,7 +482,7 @@ export default function data() {
                     </div>
                   </div>
                   <div className="change-editor" style={{ marginTop: "1rem" }}>
-                    <h2>Text Editor</h2>
+                    <h4>Text Editor</h4>
                   </div>
                   {/* <form onSubmit={onPushQuery}> */}
                   <Editor
@@ -500,6 +502,7 @@ export default function data() {
                       height: "700",
                       color: "black",
                       paddingLeft: "10px",
+                      fontSize: "15px",
                     }}
                   />
                   {!loader && (
@@ -541,18 +544,37 @@ export default function data() {
                               <div
                                 style={{
                                   paddingLeft: "20px",
-                                  marginTop: "-20px",
+                                  marginTop: "-28px",
+                                  fontSize: "15px",
                                 }}
                               >
                                 {items.sender.username}
                               </div>
-                              <div style={{ paddingLeft: "100px", marginTop: "-22px" }}>
+                              <div
+                                style={{
+                                  paddingLeft: "150px",
+                                  marginTop: "-25px",
+                                  fontSize: "15px",
+                                }}
+                              >
                                 {items.sender.createdAt.split("T")[0]}
                               </div>
-                              <div style={{ paddingLeft: "200px", marginTop: "-22px" }}>
+                              <div
+                                style={{
+                                  paddingLeft: "300px",
+                                  marginTop: "-25px",
+                                  fontSize: "15px",
+                                }}
+                              >
                                 {items.sender.createdAt.split("T")[1].split(".")[0]}
                               </div>
-                              <div style={{ marginLeft: "1rem", paddingTop: "10px" }}>
+                              <div
+                                style={{
+                                  marginLeft: "1.3rem",
+                                  paddingTop: "10px",
+                                  fontSize: "15px",
+                                }}
+                              >
                                 {items.text}
                               </div>
                             </li>
@@ -561,11 +583,20 @@ export default function data() {
                                 marginLeft: "18rem",
                                 marginBottom: "50px",
                                 marginTop: "-55px",
+                                fontSize: "15px",
                               }}
                             >
                               {allQueryFetch?.data?.rooms[selectedTitle]?.taggedUsers?.map(
                                 (item) => (
-                                  <div style={{ color: "black" }}>@{item.user_name}</div>
+                                  <div
+                                    style={{
+                                      color: "black",
+                                      marginTop: "30px",
+                                      marginLeft: "15px",
+                                    }}
+                                  >
+                                    @{item.user_name}
+                                  </div>
                                 )
                               )}
                             </div>
