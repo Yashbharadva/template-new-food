@@ -360,9 +360,14 @@ export default function data() {
     setIsKeyReleased(true);
   };
 
-  const deleteTag = (idx) => {
-    setTags((prev) => [...prev].filter((_, id) => id !== idx));
+  const removeTag = (removedTag) => {
+    const newTags = tagedUsers.filter((tag) => tag.username !== removedTag);
+    setTagedUsers(newTags);
+    console.log(removedTag);
   };
+
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
@@ -444,7 +449,6 @@ export default function data() {
                           paddingLeft: "10px",
                           fontSize: "15px",
                         }}
-                        // value={allQueryFetch?.data?.rooms[selectedTitle]?.title}
                       />
                     </div>
                     {/* <div className="tag-item" style={{ marginLeft: "30px" }}>
@@ -545,93 +549,60 @@ export default function data() {
                         </div>
                       )} */}
                     {/* </div>  */}
-                    <div style={{ color: "black", marginTop: "1rem" }}>
+                    <div>
                       <h4>User</h4>
-                      <input
-                        type="text"
-                        onChange={(e) => {
-                          searchTag(e.target.value);
-                          onChangeInput(e);
-                        }}
-                        onKeyDown={onKeyDown}
-                        onKeyUp={onKeyUp}
-                        // value={input}
-                        value={tagedUsers[0]?.username}
-                        placeholder="Enter a tag"
-                        // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
-                        // style={{
-                        //   // width: "47rem",
-                        //   // height: "2.7rem",
-                        //   // border: "1px solid black",
-                        //   // borderRadius: "5px",
-                        //   // color: "black",
-                        //   // outline: "none",
-                        //   // paddingLeft: "10px",
-                        //   width: "100%",
-                        //   minWidth: "50%",
-                        //   borderRadius: "5px",
-                        //   padding: "5px",
-                        //   paddingLeft: "14px",
-                        //   border: "1px solid black",
-                        //   fontSize: "15px",
-                        // }}
-                        style={{
-                          width: "22rem",
-                          height: "2.6rem",
-                          border: "1px solid black",
-                          borderRadius: "5px",
-                          color: "black",
-                          outline: "none",
-                          paddingLeft: "10px",
-                          fontSize: "15px",
-                        }}
-                        onClick={(e) => {
-                          searchTag(e.target.value);
-                        }}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          width: "calc(100% - 14px)",
-                          maxWidth: "100%",
-                          paddingLeft: "5px",
-                          borderRadius: "5px",
-                          color: "black",
-                        }}
-                      >
-                        {tags?.map((user, idx) => (
-                          <div
-                            style={{
-                              border: "1px solid black",
-                              display: "flex",
-                              alignItems: "center",
-                              margin: "7px 0",
-                              marginRight: "10px",
-                              padding: "0 10px",
-                              paddingRight: "5px",
-                              borderRadius: "5px",
-                              whiteSpace: "nowrap",
-                              color: "black",
-                            }}
-                          >
-                            {user}
-                            <button
-                              type="button"
+                      <div>
+                        <div style={{ display: "flex", position: "absolute" }}>
+                          {tagedUsers.map((text) => (
+                            <div
                               style={{
-                                display: "flex",
-                                padding: "6px",
-                                border: "none",
-                                backgroundColor: "unset",
-                                cursor: "pointer",
-                                color: "black",
-                                marginTop: "0px",
+                                marginLeft: "1rem",
+                                border: "1px solid black",
+                                fontSize: "15px",
+                                marginTop: "5px",
+                                padding: "0 10px",
                               }}
-                              onClick={() => deleteTag(idx)}
                             >
-                              x
-                            </button>
-                          </div>
-                        ))}
+                              {text.username}
+                              <span
+                                style={{
+                                  paddingLeft: "10px",
+                                  cursor: "pointer",
+                                  color: "black",
+                                }}
+                                onKeyDown
+                                onClick={() => removeTag(text.username)}
+                                role="button"
+                                tabIndex={0}
+                              >
+                                x
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <input
+                          type="text"
+                          onChange={(e) => {
+                            searchTag(e.target.value);
+                            onChangeInput(e);
+                          }}
+                          onFocus={() => setHide(true)}
+                          onKeyDown={onKeyDown}
+                          onKeyUp={onKeyUp}
+                          style={{
+                            width: "22rem",
+                            height: "2.6rem",
+                            border: "1px solid black",
+                            borderRadius: "5px",
+                            color: "black",
+                            outline: "none",
+                            paddingLeft: "10px",
+                            fontSize: "15px",
+                          }}
+                          onClick={(e) => {
+                            searchTag(e.target.value);
+                          }}
+                        />
                       </div>
                       {!show && (
                         <div>
@@ -765,13 +736,14 @@ export default function data() {
                                 }}
                               >
                                 {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                {date}
                               </div>
                               <div
                                 style={{
                                   marginLeft: "1.3rem",
                                   paddingTop: "10px",
                                   fontSize: "15px",
-                                  width: "10rem",
+                                  width: "5rem",
                                 }}
                               >
                                 {items.text}

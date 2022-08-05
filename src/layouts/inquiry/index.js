@@ -344,9 +344,6 @@ function Inquiry() {
                               onFocus={() => setHide(true)}
                               onKeyDown={onKeyDown}
                               onKeyUp={onKeyUp}
-                              // value={input}
-                              // value={tagedUsers[0]?.username}
-                              // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
                               style={{
                                 // width: "47rem",
                                 // height: "2.7rem",
@@ -368,50 +365,6 @@ function Inquiry() {
                               }}
                             />
                           </div>
-                          {/* <div
-                            style={{
-                              display: "flex",
-                              width: "calc(100% - 14px)",
-                              maxWidth: "100%",
-                              paddingLeft: "5px",
-                              borderRadius: "5px",
-                              color: "black",
-                            }}
-                          >
-                            {tags?.map((user, idx) => (
-                              <div
-                                style={{
-                                  border: "1px solid black",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  margin: "7px 0",
-                                  marginRight: "10px",
-                                  padding: "0 10px",
-                                  paddingRight: "5px",
-                                  borderRadius: "5px",
-                                  whiteSpace: "nowrap",
-                                  color: "black",
-                                }}
-                              >
-                                {user}
-                                <button
-                                  type="button"
-                                  style={{
-                                    display: "flex",
-                                    padding: "6px",
-                                    border: "none",
-                                    backgroundColor: "unset",
-                                    cursor: "pointer",
-                                    color: "black",
-                                    marginTop: "0px",
-                                  }}
-                                  onClick={() => deleteTag(idx)}
-                                >
-                                  x
-                                </button>
-                              </div>
-                            ))}
-                          </div> */}
                           {!show && (
                             <div>
                               {hide && (
@@ -458,50 +411,6 @@ function Inquiry() {
                           )}
                         </div>
                       </div>
-                      {/* <div className="tag-item" style={{ marginTop: "1rem" }}>
-                        <h2>Tags</h2>
-                        <div className="tag-container">
-                          {tags.map((tag) => (
-                            <div className="tag">
-                              {tag}
-                              <span
-                                onClick={() => removeTag(tag)}
-                                onKeyDown={() => removeTag(tag)}
-                                role="button"
-                                tabIndex={0}
-                              >
-                                X
-                              </span>
-                            </div>
-                          ))}
-                          <input
-                            onKeyDown={addTag}
-                            onChange={(e) => {
-                              setTagPopUp(true);
-                              searchTag(e.target.value);
-                            }}
-                            style={{ color: "black" }}
-                            onFocus={() => setTagPopUp(true)}
-                          />
-                        </div>
-                        <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          marginTop: "5px",
-                          boxShadow: "3px 3px 10px #CBC6C6",
-                          width: "100%",
-                          height: "auto",
-                          background: "white",
-                          color: "black",
-                        }}
-                        >
-                          {tagPopUp &&
-                          {filteredTagName.map((user) => (
-                            <div>{user.username}</div>
-                          ))}
-                        </div>
-                      </div> */}
                       <div style={{ marginTop: "2rem" }}>
                         {!loader && (
                           <Button
@@ -519,124 +428,6 @@ function Inquiry() {
                           </Button>
                         )}
                       </div>
-                      {/* <div className="change-editor" style={{ marginTop: "1rem" }}>
-                        <h2>Text Editor</h2>
-                        <Editor
-                        className="editor-text"
-                          onChange={(e) => {
-                            setTemp(e);
-                            // setSaveEd(e);
-                          }}
-                          toolbarClassName="toolbarClassName"
-                          wrapperClassName="wrapperClassName"
-                          editorClassName="editorClassName"
-                          wrapperStyle={{
-                            width: 745,
-                            border: "1px solid black",
-                            height: "700",
-                            color: "black",
-                            paddingLeft: "10px",
-                          }}
-                        />
-                      </div> */}
-                      {/* <div
-                        className="button-save"
-                        style={{
-                          border: "1px solid black",
-                          padding: "10px 10px",
-                          width: "3.7rem",
-                          marginTop: "1rem",
-                          color: "black",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setSaveShow(true);
-                        }}
-                        onKeyDown={() => {
-                          setSaveShow(true);
-                        }}
-                        tabIndex={0}
-                        role="button"
-                      >
-                        SAVE
-                      </div> */}
-                      {/* {saveShow && (
-                        <div>
-                          <div
-                            style={{
-                              color: "black",
-                              marginTop: "2rem",
-                            }}
-                          >
-                            {tempTitle?.target?.value}
-                          </div>
-                          <div
-                            style={{
-                              color: "black",
-                              paddingTop: "10px",
-                            }}
-                          >
-                            {tempDes?.target?.value}
-                          </div>
-
-                          <div style={{ marginTop: "1rem" }}>
-                            <div>
-                              {allQueryFetch?.data?.rooms?.map(() => (
-                              <div
-                                className="item-sender"
-                                onClick={() => setVisibility(true)}
-                                onKeyDown={showDrawer}
-                                role="button"
-                                tabIndex={0}
-                                style={{ color: "black" }}
-                              >
-                                vatsal19
-                                {item?.queries[0]?.sender?.username}
-                                {item?.queries?.map((items) => (
-                                    <div  
-                                      style={{
-                                        color: "black",
-                                        paddingTop: "20px",
-                                        cursor: "pointer",
-                                        marginLeft: "1rem",
-                                      }}
-                                    >
-                                      <li>
-                                        <div
-                                          style={{
-                                            paddingLeft: "20px",
-                                            marginTop: "-20px",
-                                          }}
-                                        >
-                                          {items?.sender?.username}
-                                        </div>
-                                        <div
-                                          style={{
-                                            color: "black",
-                                            paddingTop: "10px",
-                                          }}
-                                        >
-                                          {temp?.blocks?.map(() => item.text)}
-                                        </div>
-                                      </li>
-                                    </div>
-                                  ))}
-                              </div>
-                              ))}
-                            </div>
-                            <div
-                              style={{
-                                color: "black",
-                                // paddingTop: "10px",
-                                marginLeft: "5rem",
-                                marginTop: "-21px",
-                              }}
-                            >
-                              {temp?.blocks?.map((obj) => obj.text)}
-                            </div>
-                          </div>
-                        </div>
-                      )} */}
                     </Drawer>
                   </form>
                 </MDTypography>
