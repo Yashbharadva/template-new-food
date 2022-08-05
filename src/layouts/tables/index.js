@@ -33,7 +33,8 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
-import { Option } from "antd/lib/mentions";
+// import RoleDrop from "./data/roleDrop/roleDrop";
+// import { Option } from "antd/lib/mentions";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
@@ -41,14 +42,27 @@ function Tables() {
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [visibility, setVisibility] = useState(false);
-  const [loader, setLoader] = useState(false);
   const [isCreateUser, setCreateUser] = useState("");
   console.log(isCreateUser);
   const [isEmail, setEmail] = useState("");
   const [isUsername, setUsername] = useState("");
+  console.log(setUsername);
   const [isPassword, setPassword] = useState("");
   const [isRole, setRole] = useState("");
-  // console.log(isRole);
+  console.log(setRole);
+  const [loader, setLoader] = useState(false);
+  // const [roleSelect, setRoleSelect] = useState(["Admin", "Salesman", "User"]);
+  // const [newRole, setNewRole] = useState();
+  // const [rolePopup, setRolePopup] = useState(false);
+
+  // const handleSetRole = (e) => {
+  //   if (e.target.value) {
+  //     setRolePopup(true);
+  //   } else {
+  //     setRolePopup(false);
+  //   }
+  // };
+  console.log(isRole);
 
   const createEmail = isEmail?.target?.value;
   const createUsername = isUsername?.target?.value;
@@ -57,7 +71,7 @@ function Tables() {
 
   // console.log(createUsername, createRole, createEmail, createPassword);
 
-  // const { Option } = Select;
+  const { Option } = Select;
 
   // const onValue = (value) => {
   //   console.log(`selected ${value}`);
@@ -194,12 +208,11 @@ function Tables() {
                               message: "Please input your username!",
                             },
                           ]}
+                          onChange={(e) => {
+                            setUsername(e);
+                          }}
                         >
-                          <Input
-                            onChange={(e) => {
-                              setUsername(e);
-                            }}
-                          />
+                          <Input />
                         </Form.Item>
 
                         <Form.Item
@@ -216,7 +229,7 @@ function Tables() {
                             showSearch
                             placeholder="Select a person"
                             optionFilterProp="children"
-                            onChange={(e) => {
+                            onClick={(e) => {
                               // onValue(e);
                               setRole(e);
                             }}
@@ -238,6 +251,7 @@ function Tables() {
                             {
                               required: true,
                               message: "Please enter valid email!",
+                              type: "email",
                             },
                           ]}
                           onChange={(e) => {
@@ -263,84 +277,127 @@ function Tables() {
                           <Input.Password />
                         </Form.Item>
                       </Form>
-                      {/* <div>
-                        <div>
-                          <div style={{ color: "black" }}>
-                            <h4>Email:-</h4>
-                            <input
-                              onChange={(e) => {
-                                setEmail(e);
-                              }}
-                              type="email"
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                          <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
-                            <h4>Select Role:-</h4>
-                            <input
-                              type="text"
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <div style={{ color: "black", marginTop: "2rem" }}>
-                            <h4>Username:-</h4>
-                            <input
-                              type="text"
-                              onChange={(e) => {
-                                setUsername(e);
-                              }}
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                          <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
-                            <h4>Password:-</h4>
-                            <input
-                              type="password"
-                              onChange={(e) => {
-                                setPassword(e);
-                              }}
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div> */}
-                      {/* <button type="button" tabIndex={0} style={{ marginTop: "2rem" }}>
-                        Create
-                      </button> */}
+                      {/* <Form
+                        name="basic"
+                        labelCol={{
+                          span: 8,
+                        }}
+                        wrapperCol={{
+                          span: 11,
+                        }}
+                        initialValues={{
+                          remember: true,
+                        }}
+                        // onFinish={onFinish}
+                        // onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                      >
+                        <Form.Item
+                          label="Username"
+                          name="username"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your username!",
+                            },
+                          ]}
+                          onChange={(e) => {
+                            setUsername(e);
+                          }}
+                        >
+                          <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                          name="role"
+                          label="Role"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                        >
+                          <Select
+                            showSearch
+                            placeholder="Select a person"
+                            optionFilterProp="children"
+                            onClick={(e) => {
+                              // onValue(e);
+                              setRole(e);
+                            }}
+                            onChange={handleSetRole}
+                            onFocus={() => setRolePopup(true)}
+                            // onSearch={onSearch}
+                            filterOption={(name, option) =>
+                              option.children.toLowerCase().includes(name.toLowerCase())
+                            }
+                            value={newRole}
+                          >
+                            <Option value="Admin">Admin</Option>
+                            <Option value="Salesman">Salesman</Option>
+                            <Option value="User">User</Option>
+                          </Select>
+                          {rolePopup &&
+                            roleSelect?.map((name) => (
+                              <RoleDrop
+                                name={name}
+                                setRolePopup={setRolePopup}
+                                setRoleSelect={setRoleSelect}
+                                setNewRole={setNewRole}
+                              />
+                            ))}
+                        </Form.Item>
+
+                        <Form.Item
+                          label="Email"
+                          name="email"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your Email!",
+                              type: "email",
+                            },
+                          ]}
+                          onChange={(e) => {
+                            setEmail(e);
+                          }}
+                        >
+                          <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                          label="Password"
+                          name="password"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your password!",
+                            },
+                          ]}
+                          onChange={(e) => {
+                            setPassword(e);
+                          }}
+                        >
+                          <Input.Password />
+                        </Form.Item>
+
+                        <Form.Item
+                          wrapperCol={{
+                            offset: 8,
+                            span: 9,
+                          }}
+                        >
+                          <Button
+                            type="primary"
+                            htmlType="button"
+                            onClick={() => {
+                              createUser(createUsername, createRole, createEmail, createPassword);
+                            }}
+                          >
+                            CREATE
+                          </Button>
+                        </Form.Item>
+                      </Form> */}
                       <div>
                         {!loader && (
                           <Button
@@ -354,7 +411,7 @@ function Tables() {
                         )}
                         {loader && (
                           <Button type="button" disabled>
-                            Loading....
+                            Loading...
                           </Button>
                         )}
                       </div>

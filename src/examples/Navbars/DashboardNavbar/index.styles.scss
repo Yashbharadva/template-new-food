@@ -11,7 +11,7 @@
     font-size: 13px;
 }
 
-.search-query{
+.search-query {
     width: 15rem;
     border-radius: 5px;
     border: none;
@@ -21,32 +21,44 @@
     padding: 0 12px;
 }
 
-.menu-open{
+.menu-open {
     margin-left: -30rem;
-    margin-top: -40px;
+    margin-top: -3rem;
 }
 
+
 @media screen and (max-width: 500px) {
-    .main-search-query{
+
+    .all-in{
+        display: inline;
+        margin-top: -1rem;
+    }
+    .main-search-query {
         margin-left: 10rem;
         margin-top: -7.5rem;
     }
-    .search-query{
+
+    .search-query {
         width: 10rem;
     }
-    .account{
-        margin-top: 1rem;
+
+    .account {
+        margin-top: 3rem;
         margin-left: -40rem;
+        background-color: aqua;
     }
-    .settings-button{
+
+    .settings-button {
         margin-left: -15rem;
         margin-top: -4rem;
     }
-    .notification-query{
+
+    .notification-query {
         margin-top: -8rem;
         margin-left: -2rem;
     }
-    .all-in{
+
+    .all-in {
         display: inline;
         justify-content: space-between;
     }

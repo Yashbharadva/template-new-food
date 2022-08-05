@@ -1,0 +1,14 @@
+.tagpopup {
+    // padding: 5px auto;
+    margin: 0 auto;
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    &:hover {
+        background-color: #a0cecf;
+        cursor: pointer;
+    }
+}

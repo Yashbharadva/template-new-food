@@ -15,7 +15,7 @@ function TagPopupC({ user, tags, setTags, setTagPopUp, setSearchField }) {
       onClick={handleTagSave}
       onKeyDown={handleTagSave}
     >
-      {user.username}
+      {user}
     </div>
   );
 }
