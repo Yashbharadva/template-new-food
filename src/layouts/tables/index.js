@@ -42,7 +42,8 @@ function Tables() {
   const [placement, setPlacement] = useState("right");
   const [visibility, setVisibility] = useState(false);
   const [loader, setLoader] = useState(false);
-  const [setCreateUser] = useState("");
+  const [isCreateUser, setCreateUser] = useState("");
+  console.log(isCreateUser);
   const [isEmail, setEmail] = useState("");
   const [isUsername, setUsername] = useState("");
   const [isPassword, setPassword] = useState("");
@@ -116,7 +117,7 @@ function Tables() {
     });
     const response = await res.json();
     setCreateUser(response);
-    // console.log("~~~~~~~~~~~~~~~~", response);
+    console.log("~~~~~~~~~~~~~~~~", response);
     setLoader(false);
     window.location.reload(false);
   };
