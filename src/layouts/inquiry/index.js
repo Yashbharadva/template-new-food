@@ -108,9 +108,9 @@ function Inquiry() {
     setIsKeyReleased(true);
   };
 
-  const deleteTag = (idx) => {
-    setTags((prev) => [...prev].filter((_, id) => id !== idx));
-  };
+  // const deleteTag = (idx) => {
+  //   setTags((prev) => [...prev].filter((_, id) => id !== idx));
+  // };
   // const [selectUser, setSelectUser] = useState("");
   // console.log(selectUser.bubble);
   // console.log(searchElement.bubble);
@@ -129,38 +129,15 @@ function Inquiry() {
   const desPost = tempDes?.target?.value;
   console.log(desPost);
   const userPost = tagedUsers;
+  console.log(tagedUsers);
   console.log(userPost);
   console.log(searchElement);
-  // const editorPost = temp?.blocks?.map((item) => item.text);
 
-  // const addTag = (e) => {
-  //   if (e.key === "Enter") {
-  //     if (e.target.value.length > 0) {
-  //       setTags([...tags, e.target.value]);
-  //       e.target.value = "";
-  //     }
-  //   }
-  // };
-
-  // const [tagPopUp, setTagPopUp] = useState(false);
-
-  // const [searchField, setSearchField] = useState("");
-  // const handleTag = (e) => {
-  //   if (e.target.value) {
-  //     setTagPopUp(true);
-  //   } else {
-  //     setTagPopUp(false);
-  //   }
-  //   // setTagName(e);
-  // };
-  // const filteredTagName = tagName.filter((name) =>
-  //   name.toString().toLowerCase().includes(searchField.toLowerCase())
-  // );
-
-  // const removeTag = (removedTag) => {
-  //   const newTags = tags.filter((tag) => tag !== removedTag);
-  //   setTags(newTags);
-  // };
+  const removeTag = (removedTag) => {
+    const newTags = tagedUsers.filter((tag) => tag.username !== removedTag);
+    setTagedUsers(newTags);
+    console.log(removedTag);
+  };
 
   const showDrawer = () => {
     setVisible(true);
@@ -210,30 +187,6 @@ function Inquiry() {
     setLoader(false);
     window.location.reload(false);
   };
-  // console.log(postQueryRoom);
-
-  // const postTheQuery = async () => {
-  //   setLoader(true);
-  //   const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-  //   console.log(parsedPostQuery);
-  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       roomId: 2,
-  //       text: `${editorPost}`,
-  //     }),
-  //   });
-  //   setPostTheData(response);
-  //   console.log(postTheData);
-  //   console.log(response);
-  //   window.location.reload(false);
-  //   setVisibility(true);
-  //   setLoader(false);
-  // };
 
   const searchTag = async (tagSearch) => {
     console.log(tagSearch);
@@ -257,10 +210,6 @@ function Inquiry() {
         console.log(err);
       });
   };
-
-  // useEffect(() => {
-  //   searchTag();
-  // }, []);
 
   const roleCheck = localStorage.getItem("user-info");
 
@@ -299,12 +248,6 @@ function Inquiry() {
                         onClick={() => setVisibility(true)}
                         onKeyDown={showDrawer}
                         tabIndex={0}
-                        // style={{
-                        //   cursor: "pointer",
-                        //   position: "absolute",
-                        //   marginLeft: "80rem",
-                        //   marginTop: "-1rem",
-                        // }}
                       >
                         +CreateRoom
                       </div>
@@ -364,39 +307,68 @@ function Inquiry() {
                         </div>
                         <div style={{ color: "black", marginTop: "1rem" }}>
                           <h4>User</h4>
-                          <input
-                            type="text"
-                            onChange={(e) => {
-                              searchTag(e.target.value);
-                              onChangeInput(e);
-                            }}
-                            onKeyDown={onKeyDown}
-                            onKeyUp={onKeyUp}
-                            // value={input}
-                            value={tagedUsers[0]?.username}
-                            placeholder="Enter a tag"
-                            // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
-                            style={{
-                              // width: "47rem",
-                              // height: "2.7rem",
-                              // border: "1px solid black",
-                              // borderRadius: "5px",
-                              // color: "black",
-                              // outline: "none",
-                              // paddingLeft: "10px",
-                              width: "100%",
-                              minWidth: "50%",
-                              borderRadius: "5px",
-                              padding: "5px",
-                              paddingLeft: "14px",
-                              border: "1px solid black",
-                              fontSize: "15px",
-                            }}
-                            onClick={(e) => {
-                              searchTag(e.target.value);
-                            }}
-                          />
-                          <div
+                          <div>
+                            <div style={{ display: "flex", position: "absolute" }}>
+                              {tagedUsers.map((text) => (
+                                <div
+                                  style={{
+                                    marginLeft: "1rem",
+                                    border: "1px solid black",
+                                    fontSize: "15px",
+                                    marginTop: "5px",
+                                    padding: "0 10px",
+                                  }}
+                                >
+                                  {text.username}
+                                  <span
+                                    style={{
+                                      paddingLeft: "10px",
+                                      cursor: "pointer",
+                                    }}
+                                    onKeyDown
+                                    onClick={() => removeTag(text.username)}
+                                    role="button"
+                                    tabIndex={0}
+                                  >
+                                    x
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                            <input
+                              type="text"
+                              onChange={(e) => {
+                                searchTag(e.target.value);
+                                onChangeInput(e);
+                              }}
+                              onFocus={() => setHide(true)}
+                              onKeyDown={onKeyDown}
+                              onKeyUp={onKeyUp}
+                              // value={input}
+                              // value={tagedUsers[0]?.username}
+                              // value={`${tagedUsers[0]?.username}, ${tagedUsers[1]?.username}, ${tagedUsers[]?.username}, ${tagedUsers[0]?.username}`}
+                              style={{
+                                // width: "47rem",
+                                // height: "2.7rem",
+                                // border: "1px solid black",
+                                // borderRadius: "5px",
+                                // color: "black",
+                                // outline: "none",
+                                // paddingLeft: "10px",
+                                width: "100%",
+                                minWidth: "50%",
+                                borderRadius: "5px",
+                                padding: "5px",
+                                paddingLeft: "14px",
+                                border: "1px solid black",
+                                fontSize: "15px",
+                              }}
+                              onClick={(e) => {
+                                searchTag(e.target.value);
+                              }}
+                            />
+                          </div>
+                          {/* <div
                             style={{
                               display: "flex",
                               width: "calc(100% - 14px)",
@@ -439,7 +411,7 @@ function Inquiry() {
                                 </button>
                               </div>
                             ))}
-                          </div>
+                          </div> */}
                           {!show && (
                             <div>
                               {hide && (
@@ -485,49 +457,6 @@ function Inquiry() {
                             </div>
                           )}
                         </div>
-                        {/* <Select
-                          mode="multiple"
-                          style={{
-                            width: "100%",
-                          }}
-                          placeholder="select one country"
-                          defaultValue={["india"]}
-                          onChange={handleChange}
-                          optionLabelProp="label"
-                        >
-                          <Option value="china" label="China">
-                            <div className="demo-option-label-item">
-                              <span role="img" aria-label="China">
-                                🇨🇳
-                              </span>
-                              China (中国)
-                            </div>
-                          </Option>
-                          <Option value="usa" label="USA">
-                            <div className="demo-option-label-item">
-                              <span role="img" aria-label="USA">
-                                🇺🇸
-                              </span>
-                              USA (美国)
-                            </div>
-                          </Option>
-                          <Option value="japan" label="Japan">
-                            <div className="demo-option-label-item">
-                              <span role="img" aria-label="Japan">
-                                🇯🇵
-                              </span>
-                              Japan (日本)
-                            </div>
-                          </Option>
-                          <Option value="korea" label="Korea">
-                            <div className="demo-option-label-item">
-                              <span role="img" aria-label="Korea">
-                                🇰🇷
-                              </span>
-                              Korea (韩国)
-                            </div>
-                          </Option>
-                        </Select> */}
                       </div>
                       {/* <div className="tag-item" style={{ marginTop: "1rem" }}>
                         <h2>Tags</h2>
