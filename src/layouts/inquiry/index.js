@@ -308,100 +308,114 @@ function Inquiry() {
                         <div style={{ color: "black", marginTop: "1rem" }}>
                           <h4>User</h4>
                           <div>
-                            <div style={{ display: "flex", position: "absolute" }}>
-                              {tagedUsers.map((text) => (
-                                <div
-                                  style={{
-                                    marginLeft: "1rem",
-                                    border: "1px solid black",
-                                    fontSize: "15px",
-                                    marginTop: "5px",
-                                    padding: "0 10px",
-                                  }}
-                                >
-                                  {text.username}
-                                  <span
-                                    style={{
-                                      paddingLeft: "10px",
-                                      cursor: "pointer",
-                                    }}
-                                    onKeyDown
-                                    onClick={() => removeTag(text.username)}
-                                    role="button"
-                                    tabIndex={0}
-                                  >
-                                    x
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                            <input
-                              type="text"
-                              onChange={(e) => {
-                                searchTag(e.target.value);
-                                onChangeInput(e);
-                              }}
-                              onFocus={() => setHide(true)}
-                              onKeyDown={onKeyDown}
-                              onKeyUp={onKeyUp}
+                            <div
                               style={{
-                                width: "100%",
                                 height: "auto",
-                                borderRadius: "5px",
-                                padding: "5px",
-                                paddingLeft: "14px",
+                                width: "47rem",
                                 border: "1px solid black",
-                                fontSize: "15px",
+                                borderRadius: "5px",
                               }}
-                              onClick={(e) => {
-                                searchTag(e.target.value);
-                              }}
-                            />
-                          </div>
-                          {!show && (
-                            <div>
-                              {hide && (
-                                <div
-                                  style={{
-                                    border: "1px solid black",
-                                    cursor: "pointer",
-                                    fontSize: "15px",
-                                  }}
-                                >
-                                  {filteredTagName.map((user) => (
-                                    <div
+                            >
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexWrap: "wrap",
+                                }}
+                              >
+                                {tagedUsers.map((text) => (
+                                  <div
+                                    style={{
+                                      marginLeft: "1rem",
+                                      border: "1px solid black",
+                                      fontSize: "15px",
+                                      marginTop: "5px",
+                                      padding: "0 10px",
+                                      color: "black",
+                                    }}
+                                  >
+                                    {text.username}
+                                    <span
                                       style={{
+                                        paddingLeft: "10px",
+                                        cursor: "pointer",
                                         color: "black",
-                                        paddingTop: "10px",
-                                        marginLeft: "22rem",
                                       }}
-                                      tabIndex={0}
-                                      onKeyDown={(e) => {
-                                        setSelectedTag(e);
-                                        setTagedUsers((oldArray) => [...oldArray, user]);
-                                        onKeyDown(e);
-                                      }}
+                                      onKeyDown
+                                      onClick={() => removeTag(text.username)}
                                       role="button"
-                                      onClick={(e) => {
-                                        setTagedUsers((oldArray) => [...oldArray, user]);
-                                        setUsero(e.target.innerText);
-                                        setHide(false);
-                                        setSelectedTag(e);
-                                        onKeyDown(e);
-                                        searchTag(e);
-                                      }}
-                                      onChange={(e) => {
-                                        searchTag(e.target.value);
-                                        onChangeInput(e);
-                                      }}
+                                      tabIndex={0}
                                     >
-                                      {user.username}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
+                                      x
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                              <input
+                                type="text"
+                                onChange={(e) => {
+                                  searchTag(e.target.value);
+                                  onChangeInput(e);
+                                }}
+                                onFocus={() => setHide(true)}
+                                onKeyDown={onKeyDown}
+                                onKeyUp={onKeyUp}
+                                style={{
+                                  width: "46rem",
+                                  height: "auto",
+                                  border: "none",
+                                  borderRadius: "5px",
+                                  color: "black",
+                                  outline: "none",
+                                  paddingLeft: "10px",
+                                  fontSize: "15px",
+                                  // background: "aqua",
+                                }}
+                                onClick={(e) => {
+                                  searchTag(e.target.value);
+                                }}
+                              />
                             </div>
-                          )}
+                            {!show && (
+                              <div>
+                                {hide && (
+                                  <div
+                                    style={{
+                                      border: "1px solid black",
+                                      cursor: "pointer",
+                                      fontSize: "15px",
+                                    }}
+                                  >
+                                    {filteredTagName.map((user) => (
+                                      <div
+                                        style={{
+                                          color: "black",
+                                          paddingTop: "10px",
+                                          marginLeft: "10rem",
+                                        }}
+                                        tabIndex={0}
+                                        onKeyDown
+                                        role="button"
+                                        onClick={(e) => {
+                                          setTagedUsers((oldArray) => [...oldArray, user]);
+                                          setUsero(e.target.innerText);
+                                          setHide(false);
+                                          setSelectedTag(e);
+                                          onKeyDown(e);
+                                          searchTag(e);
+                                        }}
+                                        onChange={(e) => {
+                                          searchTag(e.target.value);
+                                          onChangeInput(e);
+                                        }}
+                                      >
+                                        {user.username}
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div style={{ marginTop: "2rem" }}>
