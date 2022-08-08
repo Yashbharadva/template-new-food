@@ -30,6 +30,7 @@ import DataTable from "examples/Tables/DataTable";
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import { Option } from "antd/lib/mentions";
+import RoleDrop from "./data/roleDrop/roleDrop";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
@@ -44,12 +45,27 @@ function Tables() {
   const [isUsername, setUsername] = useState("");
   const [isPassword, setPassword] = useState("");
   const [isRole, setRole] = useState("");
-  // console.log(isRole);
+  console.log(isRole);
 
   const createEmail = isEmail?.target?.value;
   const createUsername = isUsername?.target?.value;
   const createPassword = isPassword?.target?.value;
-  const createRole = isRole;
+  // const createRole = isRole;
+  const [newRole, setNewRole] = useState();
+
+  console.log(createUsername, newRole, createEmail, createPassword);
+
+  const [roleSelect, setRoleSelect] = useState(["Admin", "Salesman", "User"]);
+  console.log(newRole);
+  const [rolePopup, setRolePopup] = useState(false);
+
+  const handleSetRole = (e) => {
+    if (e.target.value) {
+      setRolePopup(true);
+    } else {
+      setRolePopup(false);
+    }
+  };
 
   // console.log(createUsername, createRole, createEmail, createPassword);
 
@@ -206,25 +222,35 @@ function Tables() {
                               required: true,
                             },
                           ]}
-                          value={isRole}
                         >
                           <Select
                             showSearch
                             placeholder="Select a person"
                             optionFilterProp="children"
-                            onChange={(e) => {
-                              // onValue(e);
+                            value={newRole}
+                            onClick={(e) => {
                               setRole(e);
                             }}
+                            onChange={handleSetRole}
+                            onFocus={() => setRolePopup(true)}
                             // onSearch={onSearch}
-                            filterOption={(input, option) =>
-                              option.children.toLowerCase().includes(input.toLowerCase())
+                            filterOption={(name, option) =>
+                              option.children.toLowerCase().includes(name.toLowerCase())
                             }
                           >
                             <Option value="Admin">Admin</Option>
                             <Option value="Salesman">Salesman</Option>
                             <Option value="User">User</Option>
                           </Select>
+                          {rolePopup &&
+                            roleSelect?.map((name) => (
+                              <RoleDrop
+                                name={name}
+                                setRolePopup={setRolePopup}
+                                setRoleSelect={setRoleSelect}
+                                setNewRole={setNewRole}
+                              />
+                            ))}
                         </Form.Item>
 
                         <Form.Item
@@ -234,6 +260,7 @@ function Tables() {
                             {
                               required: true,
                               message: "Please enter valid email!",
+                              type: "email",
                             },
                           ]}
                           onChange={(e) => {
@@ -342,7 +369,7 @@ function Tables() {
                           <Button
                             type="button"
                             onClick={() => {
-                              createUser(createUsername, createRole, createEmail, createPassword);
+                              createUser(createUsername, newRole, createEmail, createPassword);
                             }}
                           >
                             CREATE

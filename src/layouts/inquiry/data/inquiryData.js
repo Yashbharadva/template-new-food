@@ -36,9 +36,9 @@ export default function data() {
   const [selectedTag, setSelectedTag] = useState(null);
   const [hide, setHide] = useState(true);
   const [usero, setUsero] = useState("");
+  console.log(usero);
   const [tagedUsers, setTagedUsers] = useState([]);
   const [filteredTagName, setFilteredTagName] = useState([]);
-  console.log(usero);
   const [show, setShow] = useState(true);
   const [tags, setTags] = useState([]);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
@@ -47,6 +47,10 @@ export default function data() {
   console.log(searchElement);
   // const [selectedTag, setSelectedTag] = useState(null);
   console.log(selectedTag);
+  const [inquiryTitle, setInquiryTitle] = useState("");
+  console.log(inquiryTitle);
+
+  const [isPostEdit, setPostEdit] = useState("");
   // const [isEmptyField, setEmptyField] = useState("");
   // const [filteredTagName, setFilteredTagName] = useState([]);
   // console.log(filteredTagName);
@@ -60,11 +64,11 @@ export default function data() {
   // console.log(usero);
 
   const teess = temp?.blocks?.map((item) => item.text);
-  // const teess = temp?.target?.value;
-  // console.log(teess);
   const userPost = tagedUsers;
-  // console.log(searchElement);
-  // console.log(selectedTitle);
+  console.log(tagedUsers);
+
+  const titlePostInquiry = inquiryTitle?.target?.value;
+  console.log(titlePostInquiry);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
 
@@ -76,76 +80,9 @@ export default function data() {
     if (isClickedOutside) collapseContainer();
   }, [isClickedOutside]);
 
-  // const addTag = (e) => {
-  //   if (e.key === "Enter") {
-  //     if (e.target.value.length > 0) {
-  //       setTags([...tags, e.target.value]);
-  //       e.target.value = "";
-  //     }
-  //   }
-  // };
-
-  // const onKeyDown = (e) => {
-  //   const { key } = e;
-  //   const trimInput = input.trim();
-
-  //   if (key === "Enter" && trimInput.length && !tags.includes(trimInput)) {
-  //     e.preventDefault();
-  //     setTags((oldArray) => [...oldArray, trimInput]);
-  //     setInput("");
-  //   }
-  // };
-
-  // const onChange = (e) => {
-  //   const { value } = e.target;
-  //   setInput(value);
-  // };
-
-  // const deleteTag = (idx) => {
-  //   setTags((oldArray) => [...oldArray].filter((_, id) => id !== idx));
-  // };
-
-  // const [tagPopUp, setTagPopUp] = useState(false);
-  // const [tagName] = useState([
-  //   "Vatsal",
-  //   "Yash",
-  //   "Tanish",
-  //   "Gaurang",
-  //   "Avin",
-  //   "Ishan",
-  //   "Pradip",
-  //   "Akash",
-  //   "Nidhi",
-  // ]);
-  // const [searchField, setSearchField] = useState("");
-  // const handleTag = (e) => {
-  //   if (e.target.value) {
-  //     setTagPopUp(true);
-  //   } else {
-  //     setTagPopUp(false);
-  //   }
-  //   setSearchField(e.target.value);
-  // };
-  // const tagFilteredName = tagName.filter((name) =>
-  //   name.toLowerCase().includes(searchField.toLowerCase())
-  // );
-
-  // const removeTag = (removedTag) => {
-  //   const newTags = tags.filter((user) => user !== removedTag);
-  //   setTags(newTags);
-  // };
-
   const showDrawer = () => {
     setVisible(true);
   };
-
-  // const closeField = () => {
-  //   if (tvShows.length || !tvShows === 0) {
-  //     setExpanded(false);
-  //   } else {
-  //     setExpanded(true);
-  //   }
-  // };
 
   // const [isShow, setIsShow] = useState(false);
   // const [show, setShow] = useState(true);
@@ -250,6 +187,27 @@ export default function data() {
     // console.log(customer);
   }, [customer]);
 
+  const postEdit = async (title, user) => {
+    const parsedEdit = JSON.parse(localStorage.getItem("user-info"));
+    // console.log(parsedEdit);
+    console.log(selectedRoom.id, title, user);
+    const res = await fetch("https://inquiry-ts.herokuapp.com/user/edit-query-room", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${parsedEdit.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: selectedRoom.id,
+        title: `${title}`,
+        users: user,
+      }),
+    });
+    const response = await res.json();
+    setPostEdit(response);
+    console.log(isPostEdit);
+  };
+
   const postTheQuery = async (text) => {
     setLoader(true);
     const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
@@ -303,7 +261,7 @@ export default function data() {
   //       console.log(err);
   //     });
   // };
-  // console.log(allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers?.user_name);
+  // console.log(allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers?.username);
   // const onPushQuery = (e) => {
   //   e.preventDefault();
   // };
@@ -369,6 +327,27 @@ export default function data() {
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
+  const today = new Date();
+  const currentTime = `${today.getHours()} : ${today.getMinutes()}`;
+
+  // const valueForTag = () => {
+  //   allQueryFetch?.data?.rooms[selectedTitle]?.taggedUsers?.map((name) => name.username);
+  // };
+
+  // console.log(
+  //   allQueryFetch?.data?.rooms[selectedTitle]?.taggedUsers?.map((name) => name.username)
+  // );
+
+  const array = (titleSelect) => {
+    const x = allQueryFetch?.data?.rooms[titleSelect]?.taggedUsers;
+    console.log(x);
+    return x;
+  };
+
+  // useEffect(() => {
+  //   setTagedUsers((oldArray) => [...oldArray, ...array(selectedTitle)]);
+  // }, [selectedTitle]);
+
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
     rows: [
@@ -384,6 +363,7 @@ export default function data() {
                     onClick={() => {
                       setVisibility(true);
                       setSelectedTitle(index);
+                      setTagedUsers(() => [...array(index)]);
                       setSelectedRoom(item);
                       setSelectedTag(index);
                     }}
@@ -400,7 +380,7 @@ export default function data() {
             <form>
               <div>
                 <Drawer
-                  title="Post Your Queriy"
+                  title="Post Your Queries"
                   placement={placement}
                   width={800}
                   onClose={() => setVisibility(false)}
@@ -449,107 +429,12 @@ export default function data() {
                           paddingLeft: "10px",
                           fontSize: "15px",
                         }}
+                        onChange={(e) => {
+                          setInquiryTitle(e);
+                        }}
                       />
                     </div>
-                    {/* <div className="tag-item" style={{ marginLeft: "30px" }}>
-                      <h2>User Tags</h2>
-                      <div className="tag-container">
-                        {tags.map((tag) => (
-                          <div className="tag">
-                            {tag}
-                            <span
-                              onClick={() => removeTag(tag)}
-                              onKeyDown={() => removeTag(tag)}
-                              role="button"
-                              tabIndex={0}
-                            >
-                              X
-                            </span>
-                          </div>
-                        ))}
-                        <input
-                          onKeyDown={addTag}
-                          onChange={handleTag}
-                          style={{ color: "black" }}
-                          onFocus={() => setTagPopUp(true)}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          marginTop: "5px",
-                          boxShadow: "3px 3px 10px #CBC6C6",
-                          width: "100%",
-                          height: "auto",
-                          background: "white",
-                          color: "black",
-                        }}
-                      >
-                        {tagPopUp &&
-                          tagFilteredName.map((name) => (
-                            <TagPopupC
-                              name={name}
-                              tags={tags}
-                              setTags={setTags}
-                              setTagPopUp={setTagPopUp}
-                              setSearchField={setSearchField}
-                            />
-                          ))}
-                      </div>
-                    </div> */}
-                    {/* <div style={{ color: "black", marginLeft: "30px" }}>
-                      <h4>Tag users</h4>
-                      <input
-                        type="text"
-                        // onClick={(e) => {
-                        //   searchTag(e.target.value);
-                        // }}
-                        // onKeyDown={onKeyDown}
-                        // onChange={onChange}
-                        // value={allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers[0]?.user_name}
-                        style={{
-                          width: "22rem",
-                          height: "2.6rem",
-                          border: "1px solid black",
-                          borderRadius: "5px",
-                          color: "black",
-                          outline: "none",
-                          paddingLeft: "10px",
-                          fontSize: "15px",
-                        }}
-                      />
-                      {/* {!show && (
-                        <div>
-                          {hide && (
-                            <div style={{ border: "1px solid black", cursor: "pointer" }}>
-                              {filteredTagName.map((user) => (
-                                <div
-                                  style={{
-                                    color: "black",
-                                    paddingTop: "10px",
-                                    marginLeft: "9rem",
-                                  }}
-                                  tabIndex={0}
-                                  onKeyDown={() => {
-                                    setTagedUsers((oldArray) => [...oldArray, user]);
-                                  }}
-                                  role="button"
-                                  onClick={(e) => {
-                                    setTagedUsers((oldArray) => [...oldArray, user]);
-                                    setUsero(e.target.innerText);
-                                    setHide(false);
-                                  }}
-                                >
-                                  {user.username}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )} */}
-                    {/* </div>  */}
-                    <div>
+                    <div style={{ marginLeft: "2.5rem" }}>
                       <h4>User</h4>
                       <div>
                         <div style={{ display: "flex", position: "absolute" }}>
@@ -561,6 +446,7 @@ export default function data() {
                                 fontSize: "15px",
                                 marginTop: "5px",
                                 padding: "0 10px",
+                                color: "black",
                               }}
                             >
                               {text.username}
@@ -619,14 +505,10 @@ export default function data() {
                                   style={{
                                     color: "black",
                                     paddingTop: "10px",
-                                    marginLeft: "22rem",
+                                    marginLeft: "10rem",
                                   }}
                                   tabIndex={0}
-                                  onKeyDown={(e) => {
-                                    setSelectedTag(e);
-                                    setTagedUsers((oldArray) => [...oldArray, user]);
-                                    onKeyDown(e);
-                                  }}
+                                  onKeyDown
                                   role="button"
                                   onClick={(e) => {
                                     setTagedUsers((oldArray) => [...oldArray, user]);
@@ -680,6 +562,7 @@ export default function data() {
                       onClick={() => {
                         postTheQuery(teess, userPost);
                         setTemp("");
+                        postEdit(titlePostInquiry, userPost);
                       }}
                     >
                       SAVE
@@ -735,8 +618,9 @@ export default function data() {
                                   fontSize: "15px",
                                 }}
                               >
-                                {items.sender.createdAt.split("T")[1].split(".")[0]}
+                                {/* {items.sender.createdAt.split("T")[1].split(".")[0]} */}
                                 {date}
+                                {currentTime}
                               </div>
                               <div
                                 style={{
@@ -746,7 +630,7 @@ export default function data() {
                                   width: "5rem",
                                 }}
                               >
-                                {items.text}
+                                <div style={{ width: "12rem" }}>{items.text}</div>
                               </div>
                             </li>
                           </div>

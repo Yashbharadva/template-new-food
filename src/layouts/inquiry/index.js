@@ -130,7 +130,7 @@ function Inquiry() {
   console.log(desPost);
   const userPost = tagedUsers;
   console.log(tagedUsers);
-  console.log(userPost);
+  // console.log(userPost);
   console.log(searchElement);
 
   const removeTag = (removedTag) => {
@@ -345,15 +345,8 @@ function Inquiry() {
                               onKeyDown={onKeyDown}
                               onKeyUp={onKeyUp}
                               style={{
-                                // width: "47rem",
-                                // height: "2.7rem",
-                                // border: "1px solid black",
-                                // borderRadius: "5px",
-                                // color: "black",
-                                // outline: "none",
-                                // paddingLeft: "10px",
                                 width: "100%",
-                                minWidth: "50%",
+                                height: "auto",
                                 borderRadius: "5px",
                                 padding: "5px",
                                 paddingLeft: "14px",
