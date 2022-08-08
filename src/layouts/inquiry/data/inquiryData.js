@@ -57,10 +57,10 @@ export default function data() {
 
   const teess = temp?.blocks?.map((item) => item.text);
   const userPost = tagedUsers;
-  console.log(tagedUsers);
+  // console.log(tagedUsers);
 
   const titlePostInquiry = inquiryTitle?.target?.value;
-  console.log(titlePostInquiry);
+  console.log(titlePostInquiry, userPost);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
 
@@ -453,7 +453,6 @@ export default function data() {
                             style={{
                               display: "flex",
                               flexWrap: "wrap",
-                              // position: "absolute",
                             }}
                           >
                             {tagedUsers.map((text) => (
@@ -555,7 +554,6 @@ export default function data() {
                   <div className="change-editor" style={{ marginTop: "1rem" }}>
                     <h4>Text Editor</h4>
                   </div>
-                  {/* <form onSubmit={onPushQuery}> */}
                   <Editor
                     className="editor-text"
                     onChange={(e) => {
@@ -582,7 +580,7 @@ export default function data() {
                       onClick={() => {
                         postTheQuery(teess, userPost);
                         setTemp("");
-                        postEdit(titlePostInquiry, userPost);
+                        postEdit("====", titlePostInquiry, userPost);
                       }}
                     >
                       SAVE
