@@ -10,6 +10,7 @@ import useDebounce from "examples/Navbars/DashboardNavbar/debounceHook";
 import axios from "axios";
 // import TagPopupC from "./tagDrop";
 import InquiryDrawer from "./inquiryDrawer";
+// import { useRadioGroup } from "@mui/material";
 
 export default function data() {
   const [customer] = useState([]);
@@ -33,6 +34,7 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
+  console.log(selectedRoom);
   const [selectedTag, setSelectedTag] = useState(null);
   const [hide, setHide] = useState(true);
   const [usero, setUsero] = useState("");
@@ -57,7 +59,6 @@ export default function data() {
 
   const teess = temp?.blocks?.map((item) => item.text);
   const userPost = tagedUsers;
-  // console.log(tagedUsers);
 
   const titlePostInquiry = inquiryTitle?.target?.value;
   console.log(titlePostInquiry, userPost);
@@ -180,9 +181,15 @@ export default function data() {
   }, [customer]);
 
   const postEdit = async (title, user) => {
+    const editedUser = user;
+    for (let i = 0; i < editedUser.length; i += 1) {
+      if (editedUser[i].userId) {
+        editedUser[i].id = editedUser[i].userId;
+      }
+    }
     const parsedEdit = JSON.parse(localStorage.getItem("user-info"));
     // console.log(parsedEdit);
-    console.log(selectedRoom.id, title, user);
+    console.log(selectedRoom.id, title, editedUser);
     const res = await fetch("https://inquiry-ts.herokuapp.com/user/edit-query-room", {
       method: "PUT",
       headers: {
@@ -192,7 +199,7 @@ export default function data() {
       body: JSON.stringify({
         roomId: selectedRoom.id,
         title: `${title}`,
-        users: user,
+        users: editedUser,
       }),
     });
     const response = await res.json();
@@ -336,6 +343,13 @@ export default function data() {
     return x;
   };
 
+  const user1 = localStorage.getItem("user-info");
+
+  const id = JSON.parse(user1);
+
+  const userId = id?.data?.user?.id;
+  console.log(userId);
+
   // useEffect(() => {
   //   setTagedUsers((oldArray) => [...oldArray, ...array(selectedTitle)]);
   // }, [selectedTitle]);
@@ -406,17 +420,21 @@ export default function data() {
                     </Space>
                   }
                 >
-                  {isEdit === false && (
+                  {!loader && userId === selectedRoom.salesmanId ? (
                     <Button
                       style={{ marginLeft: "40rem" }}
                       onClick={() => {
                         setIsEdit(true);
                         console.log("---------->>setIsEdit");
+                        postEdit(titlePostInquiry, userPost);
                       }}
                     >
                       Edit
                     </Button>
+                  ) : (
+                    ""
                   )}
+
                   <div className="title-tags" style={{ display: "flex" }}>
                     <div className="title-drawer">
                       <h4>Title</h4>
@@ -432,10 +450,11 @@ export default function data() {
                           paddingLeft: "10px",
                           fontSize: "15px",
                         }}
+                        defaultValue={selectedRoom.title}
                         onChange={(e) => {
                           setInquiryTitle(e);
                         }}
-                        disabled={isEdit === false && "true"}
+                        disabled={userId !== selectedRoom.salesmanId}
                       />
                     </div>
                     <div style={{ marginLeft: "2.5rem" }}>
@@ -505,7 +524,6 @@ export default function data() {
                             onClick={(e) => {
                               searchTag(e.target.value);
                             }}
-                            disabled={isEdit === false && "true"}
                           />
                         </div>
                         {!show && (
@@ -578,9 +596,8 @@ export default function data() {
                     <Button
                       type="button"
                       onClick={() => {
-                        postTheQuery(teess, userPost);
+                        postTheQuery(teess);
                         setTemp("");
-                        postEdit("====", titlePostInquiry, userPost);
                       }}
                     >
                       SAVE
@@ -592,7 +609,14 @@ export default function data() {
                     </Button>
                   )}
                   {/* </form> */}
-                  <div style={{ border: "1px solid black", marginTop: "1rem" }}>
+                  <div
+                    style={{
+                      border: "1px solid black",
+                      marginTop: "1rem",
+                      width: "100%",
+                      overflowX: "scroll",
+                    }}
+                  >
                     <div>
                       <div
                         className="item-sender"
@@ -642,13 +666,22 @@ export default function data() {
                               </div>
                               <div
                                 style={{
-                                  marginLeft: "1.3rem",
-                                  paddingTop: "10px",
-                                  fontSize: "15px",
-                                  width: "5rem",
+                                  width: "90%",
+                                  height: "auto",
                                 }}
                               >
-                                <div style={{ width: "12rem" }}>{items.text}</div>
+                                <p
+                                  style={{
+                                    marginLeft: "1.3rem",
+                                    paddingTop: "10px",
+                                    fontSize: "15px",
+                                    // width: "90%",
+                                    // background: "aqua",
+                                    // height: "auto",
+                                  }}
+                                >
+                                  {items.text}
+                                </p>
                               </div>
                             </li>
                           </div>
@@ -657,8 +690,6 @@ export default function data() {
                     </div>
                   </div>
                 </Drawer>
-
-                {loader && <div>loading...</div>}
               </div>
             </form>
             <InquiryDrawer onClick={showDrawer}>

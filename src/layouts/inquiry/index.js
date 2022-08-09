@@ -331,6 +331,7 @@ function Inquiry() {
                                       marginTop: "5px",
                                       padding: "0 10px",
                                       color: "black",
+                                      background: "red",
                                     }}
                                   >
                                     {text.username}
@@ -390,7 +391,7 @@ function Inquiry() {
                                         style={{
                                           color: "black",
                                           paddingTop: "10px",
-                                          marginLeft: "10rem",
+                                          marginLeft: "20rem",
                                         }}
                                         tabIndex={0}
                                         onKeyDown
