@@ -27,6 +27,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import { Editor } from "react-draft-wysiwyg";
 
 // Data
 // import authorsTableData from "layouts/tables/data/authorsTableData";
@@ -36,6 +37,7 @@ import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
 import "antd/dist/antd.min.css";
 import { Button, Drawer, Radio, Space } from "antd";
+import { AiOutlineClose } from "react-icons/ai";
 // import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import MDButton from "components/MDButton";
@@ -72,6 +74,13 @@ function Inquiry() {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState([]);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState({});
+  console.log(setSelectedRoom);
+  const [postdata, setPostTheData] = useState("");
+  const [all, setAll] = useState({});
+  console.log(all);
+  const [temp, setTemp] = useState("");
+  const teess = temp?.blocks?.map((item) => item.text);
 
   // const { Option } = Select;
 
@@ -211,6 +220,39 @@ function Inquiry() {
       });
   };
 
+  const postTheQuery = async (text) => {
+    setLoader(true);
+    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedPostQuery);
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: selectedRoom.id,
+        text: `${text}`,
+      }),
+    });
+    setPostTheData(response);
+
+    const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+    const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedAll.data.accessToken}`,
+      },
+    });
+    const allQueryData = await response1.json();
+    setAll(allQueryData);
+    console.log(postdata);
+    console.log(response);
+    // window.location.reload(false);
+    setLoader(false);
+    setVisibility(true);
+  };
+
   const roleCheck = localStorage.getItem("user-info");
 
   const role = JSON.parse(roleCheck);
@@ -257,15 +299,50 @@ function Inquiry() {
                   </Space>
                   <form>
                     <Drawer
-                      title="Create Room"
                       placement={placement}
                       width={800}
                       onClose={() => setVisibility(false)}
+                      closable={false}
                       visible={visibility}
                       style={{ zIndex: 2000 }}
                     >
+                      <div
+                        style={{
+                          color: "black",
+                          display: "flex",
+                          width: "100%",
+                          justifyContent: "space-between",
+                          borderBottom: "1px solid black",
+                          paddingBottom: "10px",
+                        }}
+                      >
+                        <AiOutlineClose />
+                        <p>Create Room</p>
+                        {!loader && (
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              postQueryRoom(titlePost, desPost, userPost);
+                              postTheQuery(teess);
+                            }}
+                          >
+                            CREATE
+                          </Button>
+                        )}
+                        {loader && (
+                          <Button type="button" disabled>
+                            Loading...
+                          </Button>
+                        )}
+                      </div>
                       <div>
-                        <div className="title-des" style={{ justifyContent: "space-between" }}>
+                        <div
+                          className="title-des"
+                          style={{
+                            justifyContent: "space-between",
+                            paddingTop: "20px",
+                          }}
+                        >
                           <div className="title-drawer">
                             <h4>Title</h4>
                             <input
@@ -416,25 +493,30 @@ function Inquiry() {
                                 )}
                               </div>
                             )}
+                            <div style={{ paddingTop: "50px" }}>
+                              <Editor
+                                className="editor-text"
+                                onChange={(e) => {
+                                  const x = e;
+                                  setTemp(x);
+                                  console.log(x);
+                                }}
+                                style={{ color: "black" }}
+                                toolbarClassName="toolbarClassName"
+                                wrapperClassName="wrapperClassName"
+                                editorClassName="editorClassName"
+                                wrapperStyle={{
+                                  width: 735,
+                                  border: "1px solid black",
+                                  height: "700",
+                                  color: "black",
+                                  paddingLeft: "10px",
+                                  fontSize: "15px",
+                                }}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div style={{ marginTop: "2rem" }}>
-                        {!loader && (
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              postQueryRoom(titlePost, desPost, userPost);
-                            }}
-                          >
-                            CREATE
-                          </Button>
-                        )}
-                        {loader && (
-                          <Button type="button" disabled>
-                            Loading...
-                          </Button>
-                        )}
                       </div>
                     </Drawer>
                   </form>

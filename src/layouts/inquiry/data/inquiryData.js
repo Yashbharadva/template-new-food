@@ -28,6 +28,7 @@ export default function data() {
   const [postdata, setPostTheData] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [loader, setLoader] = useState(false);
+  const [editLoader, setEditLoader] = useState(false);
   const [isExpanded, setExpanded] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [tvShows, setTvShows] = useState([]);
@@ -190,6 +191,7 @@ export default function data() {
   }, [customer]);
 
   const postEdit = async (title, user) => {
+    setEditLoader(true);
     const editedUser = user;
     for (let i = 0; i < editedUser.length; i += 1) {
       if (editedUser[i].userId) {
@@ -214,6 +216,7 @@ export default function data() {
     const response = await res.json();
     setPostEdit(response);
     console.log(isPostEdit);
+    setEditLoader(false);
     window.location.reload(false);
   };
 
@@ -464,6 +467,7 @@ export default function data() {
                         onChange={(e) => {
                           setXXX(e.target.value);
                         }}
+                        disabled={userId !== selectedRoom.salesmanId ? selectedRoom.title : null}
                       />
                     </div>
                     <div style={{ marginLeft: "2.5rem" }}>
@@ -530,10 +534,12 @@ export default function data() {
                               paddingLeft: "10px",
                               fontSize: "15px",
                             }}
-                            // defaultValue={selectedRoom?.taggedUsers?.map((item) => item.username)}
                             onClick={(e) => {
                               searchTag(e.target.value);
                             }}
+                            disabled={
+                              userId !== selectedRoom.salesmanId ? selectedRoom.title : null
+                            }
                           />
                         </div>
                         {!show && (
@@ -579,7 +585,7 @@ export default function data() {
                       </div>
                     </div>
                   </div>
-                  {userId === selectedRoom.salesmanId ? (
+                  {!editLoader && userId === selectedRoom.salesmanId ? (
                     <Button
                       onClick={() => {
                         setIsEdit(true);
@@ -588,6 +594,11 @@ export default function data() {
                     >
                       SAVE
                     </Button>
+                  ) : (
+                    ""
+                  )}
+                  {editLoader && userId === selectedRoom.salesmanId ? (
+                    <Button disabled>Loading...</Button>
                   ) : (
                     ""
                   )}

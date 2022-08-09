@@ -6,8 +6,9 @@ export default function FirstTable() {
   const [customer] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
   const [adminUsers, setAdminUsers] = useState({});
-  const [loader, setLoader] = useState(false);
-  console.log(loader);
+  // const [loader, setLoader] = useState(false);
+  // const [deleteLoader, setDeleteLoader] = useState(false);
+  // console.log(loader);
   // useEffect(() => {
   //   setTimeout(() => {
   //     setIsLoading(false);
@@ -37,7 +38,7 @@ export default function FirstTable() {
   }, []);
 
   const deleteUser = async (id) => {
-    setLoader(true);
+    // deleteLoader(true);
     const parsedDeleteUsers = JSON.parse(localStorage.getItem("user-info"));
     console.log(parsedDeleteUsers);
     console.log(id);
@@ -53,7 +54,7 @@ export default function FirstTable() {
     });
     const response = await responseDelete.json();
     console.log(response);
-    setLoader(false);
+    // setDeleteLoader(false);
     window.location.reload(false);
   };
 
