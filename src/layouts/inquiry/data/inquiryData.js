@@ -1,13 +1,14 @@
 // import { Button } from "antd";
 import { useEffect, useState } from "react";
 import "./inquiryData.styles.scss";
-import { Button, Drawer, Space } from "antd";
+import { Button, Drawer } from "antd";
 import { Editor } from "react-draft-wysiwyg";
 import { useClickOutside } from "react-click-outside-hook";
 import MDInput from "components/MDInput";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import useDebounce from "examples/Navbars/DashboardNavbar/debounceHook";
 import axios from "axios";
+import { AiOutlineClose } from "react-icons/ai";
 // import TagPopupC from "./tagDrop";
 import InquiryDrawer from "./inquiryDrawer";
 // import { useRadioGroup } from "@mui/material";
@@ -34,7 +35,7 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
-  console.log(selectedRoom);
+  console.log(selectedRoom, setSelectedRoom);
   const [selectedTag, setSelectedTag] = useState(null);
   const [hide, setHide] = useState(true);
   const [usero, setUsero] = useState("");
@@ -60,10 +61,11 @@ export default function data() {
   const teess = temp?.blocks?.map((item) => item.text);
   const userPost = tagedUsers;
 
-  const titlePostInquiry = inquiryTitle?.target?.value;
-  console.log(titlePostInquiry, userPost);
-
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
+  const [xxx, setXXX] = useState("");
+  console.log(xxx);
+  const titlePostInquiry = xxx;
+  console.log(titlePostInquiry, userPost);
 
   const collapseContainer = () => {
     setExpanded(false);
@@ -76,6 +78,12 @@ export default function data() {
   const showDrawer = () => {
     setVisible(true);
   };
+
+  const [searchField, setSearchField] = useState("");
+
+  const filtereduserData = all?.data?.rooms[selectedTitle]?.queries.filter((user) =>
+    user.text?.toLowerCase().includes(searchField.toLowerCase())
+  );
 
   // const [isShow, setIsShow] = useState(false);
   // const [show, setShow] = useState(true);
@@ -111,6 +119,7 @@ export default function data() {
     if (e.target.value.trim() === "") setNoTvShows(false);
     setSearchQuery(e.target.value);
     console.log(noTvShows);
+    setSearchField(e.target.value);
   };
 
   const expandContainer = () => {
@@ -205,6 +214,7 @@ export default function data() {
     const response = await res.json();
     setPostEdit(response);
     console.log(isPostEdit);
+    window.location.reload(false);
   };
 
   const postTheQuery = async (text) => {
@@ -239,6 +249,8 @@ export default function data() {
     setLoader(false);
     setVisibility(true);
   };
+
+  console.log(all?.data?.rooms[selectedTitle]?.queries);
 
   // const searchTag = async (tagSearch) => {
   //   console.log(tagSearch);
@@ -276,10 +288,10 @@ export default function data() {
     })
       .then(async (res) => {
         const resJSON = await res.json();
-        // console.log("==-=-=-=-=-=-", resJSON.data);
+        console.log("==-=-=-=-=-=-", resJSON.data);
         setFilteredTagName(resJSON.data?.users);
         console.log(setFilteredTagName);
-        // console.log(tagSearch);
+        console.log(tagSearch);
         setSearchElement(resJSON);
         setShow(!show);
       })
@@ -371,7 +383,9 @@ export default function data() {
                       setSelectedTitle(index);
                       setTagedUsers(() => [...array(index)]);
                       setSelectedRoom(item);
+                      setInquiryTitle(item.title);
                       setSelectedTag(index);
+                      setXXX(item.title);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}
@@ -386,14 +400,26 @@ export default function data() {
             <form>
               <div>
                 <Drawer
-                  title="Post Your Queries"
                   placement={placement}
-                  width={800}
                   onClose={() => setVisibility(false)}
+                  closable={false}
+                  width={800}
                   visible={visibility}
                   style={{ zIndex: 2000 }}
-                  extra={
-                    <Space>
+                >
+                  <div
+                    style={{
+                      color: "black",
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                      borderBottom: "1px solid black",
+                      paddingBottom: "10px",
+                    }}
+                  >
+                    <AiOutlineClose />
+                    <p style={{ paddingLeft: "60px" }}>Post Your Queries</p>
+                    <div>
                       <div>
                         <MDInput
                           type="search"
@@ -417,25 +443,9 @@ export default function data() {
                           )}
                         </div>
                       )}
-                    </Space>
-                  }
-                >
-                  {!loader && userId === selectedRoom.salesmanId ? (
-                    <Button
-                      style={{ marginLeft: "40rem" }}
-                      onClick={() => {
-                        setIsEdit(true);
-                        console.log("---------->>setIsEdit");
-                        postEdit(titlePostInquiry, userPost);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  ) : (
-                    ""
-                  )}
-
-                  <div className="title-tags" style={{ display: "flex" }}>
+                    </div>
+                  </div>
+                  <div className="title-tags" style={{ display: "flex", marginTop: "2rem" }}>
                     <div className="title-drawer">
                       <h4>Title</h4>
                       <input
@@ -450,11 +460,10 @@ export default function data() {
                           paddingLeft: "10px",
                           fontSize: "15px",
                         }}
-                        defaultValue={selectedRoom.title}
+                        value={xxx}
                         onChange={(e) => {
-                          setInquiryTitle(e);
+                          setXXX(e.target.value);
                         }}
-                        disabled={userId !== selectedRoom.salesmanId}
                       />
                     </div>
                     <div style={{ marginLeft: "2.5rem" }}>
@@ -521,6 +530,7 @@ export default function data() {
                               paddingLeft: "10px",
                               fontSize: "15px",
                             }}
+                            // defaultValue={selectedRoom?.taggedUsers?.map((item) => item.username)}
                             onClick={(e) => {
                               searchTag(e.target.value);
                             }}
@@ -536,7 +546,7 @@ export default function data() {
                                   fontSize: "15px",
                                 }}
                               >
-                                {filteredTagName.map((user) => (
+                                {filteredTagName?.map((user) => (
                                   <div
                                     style={{
                                       color: "black",
@@ -569,7 +579,19 @@ export default function data() {
                       </div>
                     </div>
                   </div>
-                  <div className="change-editor" style={{ marginTop: "1rem" }}>
+                  {userId === selectedRoom.salesmanId ? (
+                    <Button
+                      onClick={() => {
+                        setIsEdit(true);
+                        postEdit(titlePostInquiry, userPost);
+                      }}
+                    >
+                      SAVE
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                  <div className="change-editor" style={{ marginTop: "2rem" }}>
                     <h4>Text Editor</h4>
                   </div>
                   <Editor
@@ -625,7 +647,7 @@ export default function data() {
                         role="button"
                         tabIndex={0}
                       >
-                        {all?.data?.rooms[selectedTitle]?.queries.map((items) => (
+                        {filtereduserData?.map((items) => (
                           <div
                             style={{
                               color: "black",
@@ -675,9 +697,6 @@ export default function data() {
                                     marginLeft: "1.3rem",
                                     paddingTop: "10px",
                                     fontSize: "15px",
-                                    // width: "90%",
-                                    // background: "aqua",
-                                    // height: "auto",
                                   }}
                                 >
                                   {items.text}

@@ -199,10 +199,10 @@ function Inquiry() {
     })
       .then(async (res) => {
         const resJSON = await res.json();
-        // console.log("==-=-=-=-=-=-", resJSON.data);
+        console.log("==-=-=-=-=-=-", resJSON.data);
         setFilteredTagName(resJSON.data?.users);
         console.log(setFilteredTagName);
-        // console.log(tagSearch);
+        console.log(tagSearch);
         setSearchElement(resJSON);
         setShow(!show);
       })

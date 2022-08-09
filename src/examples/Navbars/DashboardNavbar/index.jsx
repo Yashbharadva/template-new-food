@@ -2,15 +2,10 @@
 =========================================================
 * Material Dashboard 2 React - v2.1.0
 =========================================================
-
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
 * Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-
 Coded by www.creative-tim.com
-
  =========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
@@ -59,8 +54,9 @@ import {
 import axios from "axios";
 // import search from "../../../assets/images/search.png";
 import "./index.styles.scss";
-// import MDInput from "components/MDInput";
+import MDInput from "components/MDInput";
 import useDebounce from "./debounceHook";
+// import SearchDrop from "./searchDrop";
 
 const containerVariants = {
   expanded: {
@@ -146,12 +142,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [isExpanded, setExpanded] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [tvShows, setTvShows] = useState([]);
-  // console.log(tvShows);
   const [noTvShows, setNoTvShows] = useState(false);
   const [parentRef, isClickedOutside] = useClickOutside();
+  // const [searchResults, setSearchResults] = useState("");
+  // const [serachPopUp, setSearchPopUp] = useState("");
+  // const [filterdSearchName, setFilterdSearchName] = useState("");
+  // const [search, setSearch] = useState("");
+  // console.log(setSearchResults, setSearchPopUp, setFilterdSearchName, setSearch);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
-  // console.log(tvShows);
+  console.log(tvShows);
 
   const collapseContainer = () => {
     setExpanded(false);
@@ -179,6 +179,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   };
 
   const searchTvShow = async () => {
+    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
     if (!searchQuery || searchQuery.trim() === "") return;
     setLoading(true);
     setNoTvShows(false);
@@ -188,7 +189,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const response = await axios
       .get(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2FkZWRVc2VyIjp7ImlkIjoxLCJlbWFpbCI6InZhdHNhbHAudGNzQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoidmF0c2FsMTkiLCJyb2xlIjoyLCJpc19hY3RpdmUiOnRydWUsInJlc2V0VG9rZW4iOm51bGwsInJlc2V0VG9rZW5FeHBpcmF0aW9uIjpudWxsLCJjcmVhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjA0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjE5LjAwMFoifSwiaWF0IjoxNjU4NDk3MjEzLCJleHAiOjE2NTkxMDIwMTN9.U2ApxPDs-aDfNyez3leHp3F7JcMMQc0EIGLDhN7RHnw`,
+          Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
         },
       })
       .catch((err) => {
@@ -205,27 +206,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   };
   useDebounce(searchQuery, 100, searchTvShow);
 
-  // const handleSearchQuery = async () => {
-  //   const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
-  //   console.log(searchQuery);
-  //   fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
-  //     },
-  //     method: "GET",
-  //   })
-  //     .then(async (res) => {
-  //       const resJSON = await res.json();
-  //       console.log("-------->", resJSON);
-  //       setSearchResults(resJSON);
-  //       setShow(!show);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // Render the notifications menu
   const renderMenu = () => (
     <Menu
       anchorEl={openMenu}
@@ -256,124 +236,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       return colorValue;
     },
   });
-
-  // const handlelogout = () => {
-  //   const parsedUser = JSON.parse(localStorage.getItem("user-info"));
-  //   fetch("https://cerv-api.herokuapp.com/users/logout", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedUser.token}`,
-  //     },
-  //   })
-  //     .then(async (res) => {
-  //       localStorage.clear("user-info");
-  //       const resJSON = await res.json();
-  //       window.alert(resJSON.message);
-  //       console.log(resJSON);
-  //       navigate("/dashboard");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // {
-  //   fetch("https://cerv-api.herokuapp.com/admin/users/1")
-  //     .filter((val) => {
-  //       if (searchItem === "") {
-  //         return val;
-  //       } else if (val.item.name.toLowerCase().includes(searchItem.toLowerCase())) {
-  //         return val;
-  //       }
-  //     })
-  //     .map((val, key) => {
-  //       <div key={key}>
-  //         <p>{val.item.name}</p>
-  //       </div>;
-  //     });
-  // }
-
-  // const handleSearchSubmit = () => {
-  //   setIsLoading(true);
-  //   const parsedUser = JSON.parse(localStorage.getItem("search"));
-  //   fetch(`https://cerv-api.herokuapp.com/admin/search?term=tan&key=1`, {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedUser.token}`,
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then(({ items }) => items ?? [])
-  //     .then((items) =>
-  //       items.map((item) => ({
-  //         id: item.id,
-  //         name: item.name,
-  //       }))
-  //     )
-  //     .then(setGitPespos)
-  //     .then(() => setIsLoading(false));
-  // };
   // const [searchItem, setSearchItem] = useState("");
-
-  // const handleSearch = () => {
-  //   const parsedUser = JSON.parse(localStorage.getItem("user-info"));
-  //   console.log(searchQuery);
-  //   fetch(`https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`, {
-  //     headers: {
-  //       Authorization: `Bearer ${parsedUser.token}`,
-  //     },
-  //     method: "GET",
-  //   })
-  //     .then(async (res) => {
-  //       const resJSON = await res.json();
-  //       // window.alert(resJSON.message);
-  //       console.log(resJSON);
-  //       setSearchResults(resJSON.results);
-  //       setShow(!show);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const disableSearch = () => {
-  // };
-
-  // const handleSearch = () => {
-  //   const searchResponse = fetch(
-  //     `https://cerv-api.herokuapp.com/admin/search?term=${searchQuery}&key=1`
-  //   );
-  //   if (searchResponse.message) {
-  //     setSearchResults(searchResponse.data);
-  //   } else {
-  //     console.log(searchResponse);
-  //   }
-  // };
-
-  // const response = await getRequest(`/customer/search?term=${search}`)
-  //   // console.log(`\n\n\nSearched Products  `, response.data);
-  //   if (response.success) {
-  //     setResult(response.data)
-  //     setLoading(false)
-  //   } else {
-  //     console.log(response);
-  //   }
-  // }
-
-  // const handleSearch = async () => {
-  //   const clear = await fetch("https://cerv-api.herokuapp.com/admin/users/1");
-  //   const names = await clear.json();
-
-  //   const matching = names
-  //     .filter((item) => Object.values(item).join("").toLowerCase().includes(toLowerCase()))
-  //     .then(async (clear) => {
-  //       const clearJSON = await clear.json();
-  //       console.log(clearJSON);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   return (
     <AppBar
@@ -388,41 +251,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox pr={1}>
-              {/* <div style={{ color: "aqua" }}>
-                <MDInput
-                  className="drop-for-tab"
-                  label="Search here..."
-                  style={{ marginRight: "-1.3rem", marginTop: "-0.5rem" }}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="drop-search">
-                <div className="border-drop">
-                  {searchResults?.data?.rooms?.map((object) => (
-                    <div className="data-serach" key={object.id} style={{ color: "black" }}>
-                      {object.title}
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  {serachPopUp &&
-                    filterdSearchName.map((text) => <SearchDrop text={text} search={search} />)}
-                </div>
-              </div>
-              <div className="image-search">
-                <input
-                  type="image"
-                  src={search}
-                  alt=""
-                  onClick={handleSearchQuery}
-                  width="20px"
-                  height="20px"
-                />
-              </div> */}
               <div animate={isExpanded ? "expanded" : "collapsed"} variants={containerVariants}>
-                <div className="main-search-query">
-                  <input
-                    className="search-query"
+                <div>
+                  <MDInput
                     placeholder="Search here"
                     onFocus={expandContainer}
                     value={searchQuery}
@@ -445,56 +276,50 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 )}
               </div>
             </MDBox>
-            <div className="all-in">
-              <MDBox color={light ? "white" : "inherit"}>
-                <Link to="/authentication/sign-in/basic">
-                  <IconButton sx={navbarIconButton} size="small" disableRipple>
-                    <Icon className="account" sx={iconsStyle}>
-                      account_circle
-                    </Icon>
-                  </IconButton>
-                </Link>
-                <IconButton
-                  size="small"
-                  disableRipple
-                  color="inherit"
-                  sx={navbarMobileMenu}
-                  onClick={handleMiniSidenav}
-                >
-                  <Icon className="menu-open" sx={iconsStyle} fontSize="medium">
-                    {miniSidenav ? "menu_open" : "menu"}
+            <MDBox color={light ? "white" : "inherit"}>
+              <Link to="/authentication/sign-in/basic">
+                <IconButton sx={navbarIconButton} size="small" disableRipple>
+                  <Icon sx={iconsStyle} style={{ marginTop: "-30px" }}>
+                    account_circle
                   </Icon>
                 </IconButton>
-                <IconButton
-                  size="small"
-                  disableRipple
-                  color="inherit"
-                  sx={navbarIconButton}
-                  onClick={handleConfiguratorOpen}
-                  // style={{ marginTop: "-30px" }}
-                >
-                  <Icon className="settings-button" sx={iconsStyle}>
-                    settings
-                  </Icon>
-                </IconButton>
-                <IconButton
-                  size="small"
-                  disableRipple
-                  color="inherit"
-                  sx={navbarIconButton}
-                  aria-controls="notification-menu"
-                  aria-haspopup="true"
-                  variant="contained"
-                  onClick={handleOpenMenu}
-                  // style={{ marginTop: "-30px" }}
-                >
-                  <Icon className="notification-query" sx={iconsStyle}>
-                    notifications
-                  </Icon>
-                </IconButton>
-                {renderMenu()}
-              </MDBox>
-            </div>
+              </Link>
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarMobileMenu}
+                onClick={handleMiniSidenav}
+              >
+                <Icon sx={iconsStyle} fontSize="medium">
+                  {miniSidenav ? "menu_open" : "menu"}
+                </Icon>
+              </IconButton>
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={handleConfiguratorOpen}
+                style={{ marginTop: "-30px" }}
+              >
+                <Icon sx={iconsStyle}>settings</Icon>
+              </IconButton>
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                aria-controls="notification-menu"
+                aria-haspopup="true"
+                variant="contained"
+                onClick={handleOpenMenu}
+                style={{ marginTop: "-30px" }}
+              >
+                <Icon sx={iconsStyle}>notifications</Icon>
+              </IconButton>
+              {renderMenu()}
+            </MDBox>
             <IconButton color="inherit" size="small" style={{ marginTop: "-30px" }} />
             {/* {localStorage.getItem("user-info") ? (
                 <Link to="/authentication/sign-in" onClick={handlelogout}>
