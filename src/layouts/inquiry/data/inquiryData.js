@@ -207,7 +207,7 @@ export default function data() {
     setAll(allQueryData);
     console.log(postdata);
     console.log(response);
-    // window.location.reload(false);
+    window.location.reload(false);
     setLoader(false);
     setVisibility(true);
   };
