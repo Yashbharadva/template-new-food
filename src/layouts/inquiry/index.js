@@ -1,59 +1,31 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import { Editor } from "react-draft-wysiwyg";
 
-// Data
-// import authorsTableData from "layouts/tables/data/authorsTableData";
-// import projectsTableData from "layouts/tables/data/projectsTableData";
-
 import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
 import "antd/dist/antd.min.css";
 import { Button, Drawer, Radio, Space } from "antd";
 import { AiOutlineClose } from "react-icons/ai";
-// import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-// import MDButton from "components/MDButton";
 import "./index.css";
-// import TagPopupC from "./data/tagDrop";
 
 function Inquiry() {
   const { columns, rows } = inquiryData();
   const { columns: pColumns, rows: pRows } = inquiry();
   const [setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
-  // const [tags, setTags] = useState([]);
-  // const [postTheData, setPostTheData] = useState("");
   const [postQueryRooms, setPostQueryRooms] = useState("");
   const [visibility, setVisibility] = useState(false);
-  // const [temp, setTemp] = useState("");
   const [loader, setLoader] = useState(false);
   const [allQueryFetch, setAllQueryFetch] = useState({});
   console.log(allQueryFetch);
@@ -62,7 +34,6 @@ function Inquiry() {
   const [tempDes, setTempDes] = useState("");
   console.log(tempDes);
   const [tagedUsers, setTagedUsers] = useState([]);
-  // console.log(setTagedUsers);
   const [usero, setUsero] = useState("");
   const [searchElement, setSearchElement] = useState("");
   const [show, setShow] = useState(true);
@@ -74,8 +45,6 @@ function Inquiry() {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState([]);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
-  // const [selectedRoom, setSelectedRoom] = useState({});
-  // console.log(setSelectedRoom);
   const [postdata, setPostTheData] = useState("");
   const [all, setAll] = useState({});
   const [showEmail, setShowEmail] = useState([]);
@@ -83,12 +52,6 @@ function Inquiry() {
   console.log(all);
   const [temp, setTemp] = useState("");
   const teess = temp?.blocks?.map((item) => item.text);
-
-  // const { Option } = Select;
-
-  // const handleChange = (value) => {
-  //   console.log(`selected ${value}`);
-  // };
 
   const onChangeInput = (e) => {
     const { value } = e.target;
@@ -118,29 +81,9 @@ function Inquiry() {
     setIsKeyReleased(true);
   };
 
-  // const deleteTag = (idx) => {
-  //   setTags((prev) => [...prev].filter((_, id) => id !== idx));
-  // };
-  // const [selectUser, setSelectUser] = useState("");
-  // console.log(selectUser.bubble);
-  // console.log(searchElement.bubble);
-  // console.log(tagedUsers.bubble);
-  // const [saveTitle, setSaveTitle] = useState("");
-  // const [saveDes, setSaveDes] = useState("");
-  // const [saveEd, setSaveEd] = useState("");
-  // const [saveShow, setSaveShow] = useState(false);
-
-  // console.log(saveTitle);
-  // console.log(saveDes);
-  // console.log(saveEd);
-
   const titlePost = tempTitle?.target?.value;
-  console.log(titlePost);
   const desPost = tempDes?.target?.value;
-  console.log(desPost);
   const userPost = tagedUsers;
-  console.log(tagedUsers);
-  // console.log(userPost);
   console.log(searchElement);
 
   const removeTag = (removedTag) => {
@@ -166,9 +109,7 @@ function Inquiry() {
       },
     });
     const allQueryData = await response.json();
-    // console.log(allQueryData);
     setAllQueryFetch(allQueryData);
-    // console.log(allQueryFetch);
   };
   useEffect(() => {
     getAllQuery();
@@ -253,54 +194,11 @@ function Inquiry() {
       });
   };
 
-  // const postTheQuery = async (text) => {
-  //   setLoader(true);
-  //   const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-  //   console.log(parsedPostQuery);
-  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       roomId: selectedRoom.id,
-  //       text: `${text}`,
-  //     }),
-  //   });
-  //   setPostTheData(response);
-
-  //   const parsedAll = JSON.parse(localStorage.getItem("user-info"));
-  //   const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${parsedAll.data.accessToken}`,
-  //     },
-  //   });
-  //   const allQueryData = await response1.json();
-  //   setAll(allQueryData);
-  //   console.log(postdata);
-  //   console.log(response);
-  //   // window.location.reload(false);
-  //   setLoader(false);
-  //   setVisibility(true);
-  // };
-
-  // const userEmail = () => {
-  //   <div>
-  //     {tagedUsers.map((text) => (
-  //       <div>{text.useremail}</div>
-  //     ))}
-  //   </div>;
-  // };
-
   const roleCheck = localStorage.getItem("user-info");
 
   const role = JSON.parse(roleCheck);
 
   const finalRole = role?.data?.user?.role;
-
-  console.log("check for role--------------->>>>>>>>", finalRole);
 
   return (
     <DashboardLayout>
@@ -364,7 +262,6 @@ function Inquiry() {
                             type="button"
                             onClick={() => {
                               postQueryRoom(titlePost, desPost, userPost, teess);
-                              // postTheQuery(teess);
                             }}
                           >
                             CREATE
@@ -416,7 +313,6 @@ function Inquiry() {
                                 border: "1px solid black",
                                 borderRadius: "5px",
                                 color: "black",
-                                // outline: "none",
                                 paddingLeft: "10px",
                                 fontSize: "15px",
                               }}
@@ -487,7 +383,6 @@ function Inquiry() {
                                   outline: "none",
                                   paddingLeft: "10px",
                                   fontSize: "15px",
-                                  // background: "aqua",
                                 }}
                                 onClick={(e) => {
                                   searchTag(e.target.value);

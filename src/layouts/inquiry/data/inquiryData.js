@@ -14,7 +14,6 @@ import InquiryDrawer from "./inquiryDrawer";
 // import { useRadioGroup } from "@mui/material";
 
 export default function data() {
-  const [customer] = useState([]);
   const [setIsLoading] = useState(true);
   const [mainData] = useState([]);
   const [setVisible] = useState(false);
@@ -63,10 +62,8 @@ export default function data() {
   const userPost = tagedUsers;
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
-  const [xxx, setXXX] = useState("");
-  console.log(xxx);
-  const titlePostInquiry = xxx;
-  console.log(titlePostInquiry, userPost);
+  const [storeTitle, setStoreTitle] = useState("");
+  const titlePostInquiry = storeTitle;
 
   const collapseContainer = () => {
     setExpanded(false);
@@ -85,35 +82,6 @@ export default function data() {
   const filtereduserData = all?.data?.rooms[selectedTitle]?.queries.filter((user) =>
     user.text?.toLowerCase().includes(searchField.toLowerCase())
   );
-
-  // const [isShow, setIsShow] = useState(false);
-  // const [show, setShow] = useState(true);
-  // const [mainData] = useState({});
-  // const [placement] = useState("right");
-
-  // const handleShow = () => {
-  //   setShow((current) => !current);
-  // };
-
-  // const handleSearchQuery = async () => {
-  //   const parsedSearchQuery = await JSON.parse(localStorage.getItem("user-info"));
-  //   // console.log(searchQuery);
-  //   fetch(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${parsedSearchQuery.data.accessToken}`,
-  //     },
-  //     method: "GET",
-  //   })
-  //     .then(async (res) => {
-  //       const resJSON = await res.json();
-  //       console.log("--------->>>>>>", resJSON);
-  //       setSearchResults(resJSON);
-  //       setShow(!show);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   const changeHandler = (e) => {
     e.preventDefault();
@@ -166,14 +134,12 @@ export default function data() {
       },
     });
     const allQueryData = await response.json();
-    // console.log(allQueryData);
     setAllQueryFetch(allQueryData);
     setAll(allQueryData);
   };
 
   useEffect(() => {
     getAllQuery();
-    // console.log(getAllQuery);
   }, []);
 
   useEffect(() => {
@@ -182,24 +148,17 @@ export default function data() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   getCustomers();
-  // }, []);
-
-  useEffect(() => {
-    // console.log(customer);
-  }, [customer]);
-
   const postEdit = async (title, user) => {
     setEditLoader(true);
     const editedUser = user;
     for (let i = 0; i < editedUser.length; i += 1) {
       if (editedUser[i].userId) {
         editedUser[i].id = editedUser[i].userId;
+      } else {
+        editedUser[i].is_new = 1;
       }
     }
     const parsedEdit = JSON.parse(localStorage.getItem("user-info"));
-    // console.log(parsedEdit);
     console.log(selectedRoom.id, title, editedUser);
     const res = await fetch("https://inquiry-ts.herokuapp.com/user/edit-query-room", {
       method: "PUT",
@@ -217,7 +176,7 @@ export default function data() {
     setPostEdit(response);
     console.log(isPostEdit);
     setEditLoader(false);
-    window.location.reload(false);
+    // window.location.reload(false);
   };
 
   const postTheQuery = async (text) => {
@@ -252,33 +211,6 @@ export default function data() {
     setLoader(false);
     setVisibility(true);
   };
-
-  console.log(all?.data?.rooms[selectedTitle]?.queries);
-
-  // const searchTag = async (tagSearch) => {
-  //   console.log(tagSearch);
-  //   const parsedSearchTag = await JSON.parse(localStorage.getItem("user-info"));
-  //   fetch(`https://inquiry-ts.herokuapp.com/user/search-user?term=${tagSearch}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${parsedSearchTag.data.accessToken}`,
-  //     },
-  //     method: "GET",
-  //   })
-  //     .then(async (res) => {
-  //       const resJSON = await res.json();
-  //       setFilteredTagName(resJSON.data?.users);
-  //       console.log(setFilteredTagName);
-  //       setSearchElement(resJSON);
-  //       setShow(!show);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-  // console.log(allQueryFetch?.data?.rooms[selectedTag]?.taggedUsers?.username);
-  // const onPushQuery = (e) => {
-  //   e.preventDefault();
-  // };
 
   const searchTag = async (tagSearch) => {
     console.log(tagSearch);
@@ -363,7 +295,7 @@ export default function data() {
   const id = JSON.parse(user1);
 
   const userId = id?.data?.user?.id;
-  console.log(userId);
+  // console.log(userId);
 
   // useEffect(() => {
   //   setTagedUsers((oldArray) => [...oldArray, ...array(selectedTitle)]);
@@ -388,7 +320,7 @@ export default function data() {
                       setSelectedRoom(item);
                       setInquiryTitle(item.title);
                       setSelectedTag(index);
-                      setXXX(item.title);
+                      setStoreTitle(item.title);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}
@@ -463,9 +395,9 @@ export default function data() {
                           paddingLeft: "10px",
                           fontSize: "15px",
                         }}
-                        value={xxx}
+                        value={storeTitle}
                         onChange={(e) => {
-                          setXXX(e.target.value);
+                          setStoreTitle(e.target.value);
                         }}
                         disabled={userId !== selectedRoom.salesmanId ? selectedRoom.title : null}
                       />

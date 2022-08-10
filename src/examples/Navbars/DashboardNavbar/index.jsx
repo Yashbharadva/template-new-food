@@ -107,7 +107,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   // console.log(setSearchResults, setSearchPopUp, setFilterdSearchName, setSearch);
 
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
-  console.log(tvShows);
+  // console.log(tvShows);
 
   const collapseContainer = () => {
     setExpanded(false);
