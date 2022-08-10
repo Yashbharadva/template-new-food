@@ -74,10 +74,12 @@ function Inquiry() {
   const [input, setInput] = useState("");
   const [tags, setTags] = useState([]);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState({});
-  console.log(setSelectedRoom);
+  // const [selectedRoom, setSelectedRoom] = useState({});
+  // console.log(setSelectedRoom);
   const [postdata, setPostTheData] = useState("");
   const [all, setAll] = useState({});
+  const [showEmail, setShowEmail] = useState([]);
+  console.log(showEmail);
   console.log(all);
   const [temp, setTemp] = useState("");
   const teess = temp?.blocks?.map((item) => item.text);
@@ -92,7 +94,6 @@ function Inquiry() {
     const { value } = e.target;
     setInput(value);
   };
-
   const onKeyDown = (e) => {
     const { key } = e;
     const trimInput = input.trim();
@@ -173,7 +174,7 @@ function Inquiry() {
     getAllQuery();
   }, []);
 
-  const postQueryRoom = async (title, description, user) => {
+  const postQueryRoom = async (title, description, user, text) => {
     setLoader(true);
     const parsedPostQueryRoom = JSON.parse(localStorage.getItem("user-info"));
     console.log(title, description, user);
@@ -193,6 +194,38 @@ function Inquiry() {
     setPostQueryRooms(response);
     console.log(postQueryRooms);
     console.log("---------->>>>>>", response);
+
+    if (response.status === 1) {
+      const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+      console.log(parsedPostQuery);
+      const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roomId: response.data.id,
+          text: `${text}`,
+        }),
+      });
+      setPostTheData(api);
+
+      const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+      const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${parsedAll.data.accessToken}`,
+        },
+      });
+      const allQueryData = await response1.json();
+      setAll(allQueryData);
+      console.log(postdata);
+      console.log(response);
+      // window.location.reload(false);
+      setLoader(false);
+      setVisibility(true);
+    }
     setLoader(false);
     window.location.reload(false);
   };
@@ -220,38 +253,46 @@ function Inquiry() {
       });
   };
 
-  const postTheQuery = async (text) => {
-    setLoader(true);
-    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-    console.log(parsedPostQuery);
-    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        roomId: selectedRoom.id,
-        text: `${text}`,
-      }),
-    });
-    setPostTheData(response);
+  // const postTheQuery = async (text) => {
+  //   setLoader(true);
+  //   const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+  //   console.log(parsedPostQuery);
+  //   const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       roomId: selectedRoom.id,
+  //       text: `${text}`,
+  //     }),
+  //   });
+  //   setPostTheData(response);
 
-    const parsedAll = JSON.parse(localStorage.getItem("user-info"));
-    const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${parsedAll.data.accessToken}`,
-      },
-    });
-    const allQueryData = await response1.json();
-    setAll(allQueryData);
-    console.log(postdata);
-    console.log(response);
-    // window.location.reload(false);
-    setLoader(false);
-    setVisibility(true);
-  };
+  //   const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+  //   const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${parsedAll.data.accessToken}`,
+  //     },
+  //   });
+  //   const allQueryData = await response1.json();
+  //   setAll(allQueryData);
+  //   console.log(postdata);
+  //   console.log(response);
+  //   // window.location.reload(false);
+  //   setLoader(false);
+  //   setVisibility(true);
+  // };
+
+  // const userEmail = () => {
+  //   <div>
+  //     {tagedUsers.map((text) => (
+  //       <div>{text.useremail}</div>
+  //     ))}
+  //   </div>;
+  // };
 
   const roleCheck = localStorage.getItem("user-info");
 
@@ -322,8 +363,8 @@ function Inquiry() {
                           <Button
                             type="button"
                             onClick={() => {
-                              postQueryRoom(titlePost, desPost, userPost);
-                              postTheQuery(teess);
+                              postQueryRoom(titlePost, desPost, userPost, teess);
+                              // postTheQuery(teess);
                             }}
                           >
                             CREATE
@@ -408,7 +449,7 @@ function Inquiry() {
                                       marginTop: "5px",
                                       padding: "0 10px",
                                       color: "black",
-                                      background: "red",
+                                      borderRadius: "5px",
                                     }}
                                   >
                                     {text.username}
@@ -480,6 +521,7 @@ function Inquiry() {
                                           setSelectedTag(e);
                                           onKeyDown(e);
                                           searchTag(e);
+                                          setShowEmail(e);
                                         }}
                                         onChange={(e) => {
                                           searchTag(e.target.value);
