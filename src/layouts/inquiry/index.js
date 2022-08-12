@@ -40,6 +40,8 @@ function Inquiry() {
   const [filteredTagName, setFilteredTagName] = useState([]);
   const [hide, setHide] = useState(true);
   const [selectedTag, setSelectedTag] = useState(null);
+  const [nameTag, setNameTag] = useState("");
+  console.log(nameTag);
   console.log(selectedTag);
   console.log(usero);
   const [input, setInput] = useState("");
@@ -85,6 +87,7 @@ function Inquiry() {
   const desPost = tempDes?.target?.value;
   const userPost = tagedUsers;
   console.log(searchElement);
+  console.log(titlePost, desPost, userPost);
 
   const removeTag = (removedTag) => {
     const newTags = tagedUsers.filter((tag) => tag.username !== removedTag);
@@ -200,6 +203,11 @@ function Inquiry() {
 
   const finalRole = role?.data?.user?.role;
 
+  const clearTag = (e) => {
+    setNameTag("");
+    e.target.value = null;
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -255,7 +263,11 @@ function Inquiry() {
                           paddingBottom: "10px",
                         }}
                       >
-                        <AiOutlineClose />
+                        <AiOutlineClose
+                          onClick={() => setVisibility(false)}
+                          visible={visibility}
+                          style={{ cursor: "pointer" }}
+                        />
                         <p>Create Room</p>
                         {!loader && (
                           <Button
@@ -341,6 +353,8 @@ function Inquiry() {
                                     style={{
                                       marginLeft: "1rem",
                                       border: "1px solid black",
+                                      display: "flex",
+                                      flexDirection: "row",
                                       fontSize: "15px",
                                       marginTop: "5px",
                                       padding: "0 10px",
@@ -370,6 +384,7 @@ function Inquiry() {
                                 onChange={(e) => {
                                   searchTag(e.target.value);
                                   onChangeInput(e);
+                                  setNameTag(e.target.value);
                                 }}
                                 onFocus={() => setHide(true)}
                                 onKeyDown={onKeyDown}
@@ -386,6 +401,7 @@ function Inquiry() {
                                 }}
                                 onClick={(e) => {
                                   searchTag(e.target.value);
+                                  clearTag("");
                                 }}
                               />
                             </div>
@@ -417,6 +433,7 @@ function Inquiry() {
                                           onKeyDown(e);
                                           searchTag(e);
                                           setShowEmail(e);
+                                          clearTag("");
                                         }}
                                         onChange={(e) => {
                                           searchTag(e.target.value);

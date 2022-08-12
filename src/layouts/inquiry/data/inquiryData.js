@@ -16,13 +16,10 @@ import InquiryDrawer from "./inquiryDrawer";
 export default function data() {
   const [setIsLoading] = useState(true);
   const [mainData] = useState([]);
-  const [setVisible] = useState(false);
   const [allQueryFetch, setAllQueryFetch] = useState({});
   const [all, setAll] = useState({});
-  // console.log(allQueryFetch?.data?.rooms?.queries[2]?.text);
   const [placement] = useState("right");
   const [visibility, setVisibility] = useState(false);
-  // const [tags, setTags] = useState(["Hello"]);
   const [temp, setTemp] = useState("");
   const [postdata, setPostTheData] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -74,7 +71,7 @@ export default function data() {
   }, [isClickedOutside]);
 
   const showDrawer = () => {
-    setVisible(true);
+    setVisibility(true);
   };
 
   const [searchField, setSearchField] = useState("");
@@ -207,7 +204,7 @@ export default function data() {
     setAll(allQueryData);
     console.log(postdata);
     console.log(response);
-    window.location.reload(false);
+    // window.location.reload(false);
     setLoader(false);
     setVisibility(true);
   };
@@ -276,14 +273,6 @@ export default function data() {
   const today = new Date();
   const currentTime = `${today.getHours()} : ${today.getMinutes()}`;
 
-  // const valueForTag = () => {
-  //   allQueryFetch?.data?.rooms[selectedTitle]?.taggedUsers?.map((name) => name.username);
-  // };
-
-  // console.log(
-  //   allQueryFetch?.data?.rooms[selectedTitle]?.taggedUsers?.map((name) => name.username)
-  // );
-
   const array = (titleSelect) => {
     const x = allQueryFetch?.data?.rooms[titleSelect]?.taggedUsers;
     console.log(x);
@@ -295,11 +284,6 @@ export default function data() {
   const id = JSON.parse(user1);
 
   const userId = id?.data?.user?.id;
-  // console.log(userId);
-
-  // useEffect(() => {
-  //   setTagedUsers((oldArray) => [...oldArray, ...array(selectedTitle)]);
-  // }, [selectedTitle]);
 
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
@@ -354,7 +338,8 @@ export default function data() {
                   >
                     <div>
                       <AiOutlineClose
-                        onClose={() => setVisibility(false)}
+                        onClick={() => setVisibility(false)}
+                        visible={visibility}
                         style={{ cursor: "pointer" }}
                       />
                     </div>
@@ -456,7 +441,7 @@ export default function data() {
                             type="text"
                             onChange={(e) => {
                               searchTag(e.target.value);
-                              onChangeInput(e);
+                              console.log(searchTag(e.target.value));
                             }}
                             onFocus={() => setHide(true)}
                             onKeyDown={onKeyDown}

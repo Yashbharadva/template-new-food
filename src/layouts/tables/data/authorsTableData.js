@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
+import { Button } from "antd";
 import "./authorTable.scss";
-// import { Skeleton } from "@mui/material";
 
 export default function FirstTable() {
   const [customer] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
   const [adminUsers, setAdminUsers] = useState({});
+  const [visibility, setVisibility] = useState(false);
+  console.log(visibility);
+  // const [visible, setVisible] = useState(false);
+  // const [confirmLoading, setConfirmLoading] = useState(false);
+  console.log(adminUsers);
   // const [loader, setLoader] = useState(false);
-  // const [deleteLoader, setDeleteLoader] = useState(false);
-  // console.log(loader);
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //     console.log(isLoading);
-  //   });
-  // });
+  const [deleteLoader, setDeleteLoader] = useState(false);
+  console.log(deleteLoader);
 
   useEffect(() => {
     // console.log(customer);
@@ -29,7 +30,6 @@ export default function FirstTable() {
       },
     });
     const getusers = await response.json();
-    console.log(getusers);
     setAdminUsers(getusers);
   };
 
@@ -38,7 +38,7 @@ export default function FirstTable() {
   }, []);
 
   const deleteUser = async (id) => {
-    // deleteLoader(true);
+    setDeleteLoader(true);
     const parsedDeleteUsers = JSON.parse(localStorage.getItem("user-info"));
     console.log(parsedDeleteUsers);
     console.log(id);
@@ -54,7 +54,7 @@ export default function FirstTable() {
     });
     const response = await responseDelete.json();
     console.log(response);
-    // setDeleteLoader(false);
+    setDeleteLoader(false);
     window.location.reload(false);
   };
 
@@ -106,7 +106,7 @@ export default function FirstTable() {
             <div>
               {adminUsers?.data?.map((item) => (
                 <div>
-                  <div
+                  {/* <div
                     role="button"
                     tabIndex={0}
                     style={{
@@ -121,7 +121,31 @@ export default function FirstTable() {
                     }}
                   >
                     Delete
-                  </div>
+                  </div> */}
+                  <Popup
+                    trigger={<div style={{ marginTop: "20px", cursor: "pointer" }}>Delete</div>}
+                    position="right center"
+                  >
+                    <div style={{ fontSize: "15px", padding: "10px 10px" }}>Are you sure..??</div>
+                    <Button
+                      onClick={console.log("------------------------", () => setVisibility(false))}
+                      visible={visibility}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Cancel
+                    </Button>
+                    {!deleteLoader && (
+                      <Button
+                        onClick={() => {
+                          deleteUser(item.id);
+                        }}
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                    {deleteLoader && <Button disabled>Deleting...</Button>}
+                  </Popup>
                 </div>
               ))}
             </div>
