@@ -53,6 +53,8 @@ function Inquiry() {
   console.log(showEmail);
   console.log(all);
   const [temp, setTemp] = useState("");
+  const [selectedTitle, setSelectedTitle] = useState(null);
+  console.log(selectedTitle);
   const teess = temp?.blocks?.map((item) => item.text);
 
   const onChangeInput = (e) => {
@@ -139,39 +141,35 @@ function Inquiry() {
     console.log(postQueryRooms);
     console.log("---------->>>>>>", response);
 
-    if (response.status === 1) {
-      const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-      console.log(parsedPostQuery);
-      const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          roomId: response.data.id,
-          text: `${text}`,
-        }),
-      });
-      setPostTheData(api);
+    const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+    console.log(parsedPostQuery);
+    const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: response.data.id,
+        text: `${text}`,
+      }),
+    });
+    setPostTheData(api);
 
-      const parsedAll = JSON.parse(localStorage.getItem("user-info"));
-      const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${parsedAll.data.accessToken}`,
-        },
-      });
-      const allQueryData = await response1.json();
-      setAll(allQueryData);
-      console.log(postdata);
-      console.log(response);
-      // window.location.reload(false);
-      setLoader(false);
-      setVisibility(true);
-    }
+    const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+    const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${parsedAll.data.accessToken}`,
+      },
+    });
+    const allQueryData = await response1.json();
+    setAll(allQueryData);
+    console.log(postdata);
+    console.log(response);
     setLoader(false);
-    window.location.reload(false);
+    setVisibility(true);
+    setLoader(false);
   };
 
   const searchTag = async (tagSearch) => {
@@ -187,7 +185,6 @@ function Inquiry() {
         const resJSON = await res.json();
         console.log("==-=-=-=-=-=-", resJSON.data);
         setFilteredTagName(resJSON.data?.users);
-        console.log(setFilteredTagName);
         console.log(tagSearch);
         setSearchElement(resJSON);
         setShow(!show);
@@ -203,10 +200,7 @@ function Inquiry() {
 
   const finalRole = role?.data?.user?.role;
 
-  const clearTag = (e) => {
-    setNameTag("");
-    e.target.value = null;
-  };
+  console.log(allQueryFetch?.data?.rooms[0]?.queries[0]?.text);
 
   return (
     <DashboardLayout>
@@ -297,8 +291,9 @@ function Inquiry() {
                             <h4>Title</h4>
                             <input
                               type="text"
-                              onChange={(e) => {
+                              onChange={(e, index) => {
                                 setTempTitle(e);
+                                setSelectedTitle(index);
                               }}
                               style={{
                                 width: "47rem",
@@ -369,7 +364,7 @@ function Inquiry() {
                                         cursor: "pointer",
                                         color: "black",
                                       }}
-                                      onKeyDown
+                                      onKeyDown={() => removeTag(text.username)}
                                       onClick={() => removeTag(text.username)}
                                       role="button"
                                       tabIndex={0}
@@ -386,6 +381,7 @@ function Inquiry() {
                                   onChangeInput(e);
                                   setNameTag(e.target.value);
                                 }}
+                                value={nameTag}
                                 onFocus={() => setHide(true)}
                                 onKeyDown={onKeyDown}
                                 onKeyUp={onKeyUp}
@@ -401,7 +397,6 @@ function Inquiry() {
                                 }}
                                 onClick={(e) => {
                                   searchTag(e.target.value);
-                                  clearTag("");
                                 }}
                               />
                             </div>
@@ -433,7 +428,7 @@ function Inquiry() {
                                           onKeyDown(e);
                                           searchTag(e);
                                           setShowEmail(e);
-                                          clearTag("");
+                                          setNameTag("");
                                         }}
                                         onChange={(e) => {
                                           searchTag(e.target.value);
@@ -469,6 +464,82 @@ function Inquiry() {
                                 }}
                               />
                             </div>
+                            {/* <div
+                              style={{
+                                border: "1px solid black",
+                                marginTop: "1rem",
+                                width: "100%",
+                                overflowX: "scroll",
+                              }}
+                            >
+                              <div>
+                                <div
+                                  className="item-sender"
+                                  onClick={() => setVisibility(true)}
+                                  onKeyDown={showDrawer}
+                                  role="button"
+                                  tabIndex={0}
+                                >
+                                  {allQueryFetch?.data?.rooms[0]?.queries?.map((items) => (
+                                    <div
+                                      style={{
+                                        color: "black",
+                                        paddingTop: "20px",
+                                        cursor: "pointer",
+                                        marginLeft: "1rem",
+                                      }}
+                                    >
+                                      <li>
+                                        <div
+                                          style={{
+                                            paddingLeft: "20px",
+                                            marginTop: "-28px",
+                                            fontSize: "15px",
+                                          }}
+                                        >
+                                          {items.sender.username}
+                                        </div>
+                                        <div
+                                          style={{
+                                            paddingLeft: "150px",
+                                            marginTop: "-25px",
+                                            fontSize: "15px",
+                                          }}
+                                        >
+                                          {items.sender.createdAt.split("T")[0]}
+                                        </div>
+                                        <div
+                                          style={{
+                                            paddingLeft: "300px",
+                                            marginTop: "-25px",
+                                            fontSize: "15px",
+                                          }}
+                                        >
+                                          {date}
+                                          {currentTime}
+                                        </div>
+                                        <div
+                                          style={{
+                                            width: "90%",
+                                            height: "auto",
+                                          }}
+                                        >
+                                          <p
+                                            style={{
+                                              marginLeft: "1.3rem",
+                                              paddingTop: "10px",
+                                              fontSize: "15px",
+                                            }}
+                                          >
+                                            {items.text}
+                                          </p>
+                                        </div>
+                                      </li>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>

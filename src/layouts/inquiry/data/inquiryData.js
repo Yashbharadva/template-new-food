@@ -32,7 +32,7 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
-  console.log(selectedRoom, setSelectedRoom);
+  console.log(selectedRoom);
   const [selectedTag, setSelectedTag] = useState(null);
   const [hide, setHide] = useState(true);
   const [usero, setUsero] = useState("");
@@ -44,6 +44,8 @@ export default function data() {
   const [isKeyReleased, setIsKeyReleased] = useState(false);
   const [input, setInput] = useState("");
   const [searchElement, setSearchElement] = useState("");
+  const [nameTag, setNameTag] = useState("");
+  console.log(nameTag);
   console.log(searchElement);
   // const [selectedTag, setSelectedTag] = useState(null);
   console.log(selectedTag);
@@ -203,10 +205,7 @@ export default function data() {
     const allQueryData = await response1.json();
     setAll(allQueryData);
     console.log(postdata);
-    console.log(response);
-    // window.location.reload(false);
     setLoader(false);
-    setVisibility(true);
   };
 
   const searchTag = async (tagSearch) => {
@@ -441,8 +440,9 @@ export default function data() {
                             type="text"
                             onChange={(e) => {
                               searchTag(e.target.value);
-                              console.log(searchTag(e.target.value));
+                              setNameTag(e.target.value);
                             }}
+                            value={nameTag}
                             onFocus={() => setHide(true)}
                             onKeyDown={onKeyDown}
                             onKeyUp={onKeyUp}
@@ -491,6 +491,7 @@ export default function data() {
                                       setSelectedTag(e);
                                       onKeyDown(e);
                                       searchTag(e);
+                                      setNameTag("");
                                     }}
                                     onChange={(e) => {
                                       searchTag(e.target.value);
