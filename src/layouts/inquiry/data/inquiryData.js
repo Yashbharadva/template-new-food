@@ -352,7 +352,12 @@ export default function data() {
                       paddingBottom: "10px",
                     }}
                   >
-                    <AiOutlineClose />
+                    <div>
+                      <AiOutlineClose
+                        onClose={() => setVisibility(false)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </div>
                     <p style={{ paddingLeft: "60px" }}>Post Your Queries</p>
                     <div>
                       <div>
