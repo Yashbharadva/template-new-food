@@ -38,6 +38,7 @@ export default function data() {
   const [usero, setUsero] = useState("");
   console.log(usero);
   const [tagedUsers, setTagedUsers] = useState([]);
+  console.log(tagedUsers);
   const [filteredTagName, setFilteredTagName] = useState([]);
   const [show, setShow] = useState(true);
   const [tags, setTags] = useState([]);
@@ -284,6 +285,8 @@ export default function data() {
 
   const userId = id?.data?.user?.id;
 
+  console.log(storeTitle);
+
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
     rows: [
@@ -304,6 +307,7 @@ export default function data() {
                       setInquiryTitle(item.title);
                       setSelectedTag(index);
                       setStoreTitle(item.title);
+                      console.log(item);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}
@@ -616,7 +620,6 @@ export default function data() {
                                   fontSize: "15px",
                                 }}
                               >
-                                {/* {items.sender.createdAt.split("T")[1].split(".")[0]} */}
                                 {date}
                                 {currentTime}
                               </div>

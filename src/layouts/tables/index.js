@@ -40,7 +40,7 @@ function Tables() {
   const [visibility, setVisibility] = useState(false);
   const [loader, setLoader] = useState(false);
   const [isCreateUser, setCreateUser] = useState("");
-  console.log(isCreateUser);
+  console.log(loader, isCreateUser);
   const [isEmail, setEmail] = useState("");
   const [isUsername, setUsername] = useState("");
   const [isPassword, setPassword] = useState("");
@@ -286,84 +286,6 @@ function Tables() {
                           <Input.Password />
                         </Form.Item>
                       </Form>
-                      {/* <div>
-                        <div>
-                          <div style={{ color: "black" }}>
-                            <h4>Email:-</h4>
-                            <input
-                              onChange={(e) => {
-                                setEmail(e);
-                              }}
-                              type="email"
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                          <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
-                            <h4>Select Role:-</h4>
-                            <input
-                              type="text"
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <div style={{ color: "black", marginTop: "2rem" }}>
-                            <h4>Username:-</h4>
-                            <input
-                              type="text"
-                              onChange={(e) => {
-                                setUsername(e);
-                              }}
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                          <div style={{ marginLeft: "25rem", marginTop: "-5.4rem" }}>
-                            <h4>Password:-</h4>
-                            <input
-                              type="password"
-                              onChange={(e) => {
-                                setPassword(e);
-                              }}
-                              style={{
-                                width: "18rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div> */}
-                      {/* <button type="button" tabIndex={0} style={{ marginTop: "2rem" }}>
-                        Create
-                      </button> */}
                       <div>
                         {!loader && (
                           <Button
@@ -380,6 +302,15 @@ function Tables() {
                             Loading....
                           </Button>
                         )}
+                        {/* <Button
+                          type="submit"
+                          htmlType="submit"
+                          onClick={() => {
+                            createUser(createUsername, newRole, createEmail, createPassword);
+                          }}
+                        >
+                          Submit
+                        </Button> */}
                       </div>
                     </Drawer>
                   </form>

@@ -4,12 +4,16 @@ import Card from "@mui/material/Card";
 
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MDInput from "components/MDInput";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import { Editor } from "react-draft-wysiwyg";
+import useDebounce from "examples/Navbars/DashboardNavbar/debounceHook";
+import { useClickOutside } from "react-click-outside-hook";
+import axios from "axios";
 
 import inquiryData from "layouts/inquiry/data/inquiryData";
 import inquiry from "layouts/inquiry/data/inquiry";
@@ -22,8 +26,12 @@ import "./index.css";
 function Inquiry() {
   const { columns, rows } = inquiryData();
   const { columns: pColumns, rows: pRows } = inquiry();
-  const [setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
+  console.log(visible);
   const [placement, setPlacement] = useState("right");
+  const [isLoading, setLoading] = useState(false);
+  const [setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [postQueryRooms, setPostQueryRooms] = useState("");
   const [visibility, setVisibility] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -32,14 +40,19 @@ function Inquiry() {
   const [tempTitle, setTempTitle] = useState("");
   console.log(tempTitle);
   const [tempDes, setTempDes] = useState("");
+  const [parentRef, isClickedOutside] = useClickOutside();
   console.log(tempDes);
   const [tagedUsers, setTagedUsers] = useState([]);
+  console.log(tagedUsers);
   const [usero, setUsero] = useState("");
   const [searchElement, setSearchElement] = useState("");
   const [show, setShow] = useState(true);
   const [filteredTagName, setFilteredTagName] = useState([]);
+  console.log(filteredTagName);
   const [hide, setHide] = useState(true);
   const [selectedTag, setSelectedTag] = useState(null);
+  const [isCreated, setCreated] = useState(false);
+  console.log(isCreated);
   const [nameTag, setNameTag] = useState("");
   console.log(nameTag);
   console.log(selectedTag);
@@ -50,12 +63,108 @@ function Inquiry() {
   const [postdata, setPostTheData] = useState("");
   const [all, setAll] = useState({});
   const [showEmail, setShowEmail] = useState([]);
+  const [isExpanded, setExpanded] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState({});
+  console.log(selectedRoom, setSelectedRoom);
+  const [noTvShows, setNoTvShows] = useState(false);
   console.log(showEmail);
+  const [editLoader, setEditLoader] = useState(false);
   console.log(all);
   const [temp, setTemp] = useState("");
   const [selectedTitle, setSelectedTitle] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [searchField, setSearchField] = useState("");
+  console.log(isEdit);
+  const [storeTitle, setStoreTitle] = useState("");
+  const [isPostEdit, setPostEdit] = useState("");
+  const titlePostInquiry = storeTitle;
   console.log(selectedTitle);
-  const teess = temp?.blocks?.map((item) => item.text);
+  const editorPost = temp?.blocks?.map((item) => item.text);
+  const [tvShows, setTvShows] = useState([]);
+  // const [inquiryTitle, setInquiryTitle] = useState("");
+  // console.log(inquiryTitle);
+  const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
+
+  const collapseContainer = () => {
+    setExpanded(false);
+  };
+
+  useEffect(() => {
+    if (isClickedOutside) collapseContainer();
+  }, [isClickedOutside]);
+
+  const expandContainer = () => {
+    setExpanded(true);
+  };
+
+  const changeHandler = (e) => {
+    e.preventDefault();
+    if (e.target.value.trim() === "") setNoTvShows(false);
+    setSearchQuery(e.target.value);
+    console.log(noTvShows);
+    setSearchField(e.target.value);
+  };
+
+  const postEdit = async (title, user) => {
+    setEditLoader(true);
+    const editedUser = user;
+    for (let i = 0; i < editedUser.length; i += 1) {
+      if (editedUser[i].userId) {
+        editedUser[i].id = editedUser[i].userId;
+      } else {
+        editedUser[i].is_new = 1;
+      }
+    }
+    const parsedEdit = JSON.parse(localStorage.getItem("user-info"));
+    console.log(selectedRoom.id, title, editedUser);
+    const res = await fetch("https://inquiry-ts.herokuapp.com/user/edit-query-room", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${parsedEdit.data.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomId: selectedRoom.id,
+        title: `${title}`,
+        users: editedUser,
+      }),
+    });
+    const response = await res.json();
+    setPostEdit(response);
+    console.log(isPostEdit);
+    setEditLoader(false);
+    // window.location.reload(false);
+  };
+
+  const prepareSearchQuery = (query) => {
+    const url = `https://inquiry-ts.herokuapp.com/user/search-query?term=${query}`;
+    return encodeURI(url);
+  };
+
+  const searchTvShow = async () => {
+    if (!searchQuery || searchQuery.trim() === "") return;
+    setLoading(true);
+    setNoTvShows(false);
+    console.log(prepareSearchQuery);
+    const response = await axios
+      .get(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2FkZWRVc2VyIjp7ImlkIjoxLCJlbWFpbCI6InZhdHNhbHAudGNzQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoidmF0c2FsMTkiLCJyb2xlIjoyLCJpc19hY3RpdmUiOnRydWUsInJlc2V0VG9rZW4iOm51bGwsInJlc2V0VG9rZW5FeHBpcmF0aW9uIjpudWxsLCJjcmVhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjA0LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA3LTExVDA1OjQ2OjE5LjAwMFoifSwiaWF0IjoxNjU4NDk3MjEzLCJleHAiOjE2NTkxMDIwMTN9.U2ApxPDs-aDfNyez3leHp3F7JcMMQc0EIGLDhN7RHnw`,
+        },
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+      });
+    console.log(response);
+
+    if (response) {
+      console.log("Response: ", response.data.data.rooms[0]?.queries);
+      if (response.data) setNoTvShows(true);
+      setTvShows(response?.data?.data?.rooms[0]?.queries);
+    }
+    setLoading(false);
+  };
+  useDebounce(searchQuery, 100, searchTvShow);
 
   const onChangeInput = (e) => {
     const { value } = e.target;
@@ -89,13 +198,25 @@ function Inquiry() {
   const desPost = tempDes?.target?.value;
   const userPost = tagedUsers;
   console.log(searchElement);
-  console.log(titlePost, desPost, userPost);
+  console.log(titlePost, desPost, userPost, editorPost);
 
   const removeTag = (removedTag) => {
     const newTags = tagedUsers.filter((tag) => tag.username !== removedTag);
     setTagedUsers(newTags);
     console.log(removedTag);
   };
+
+  const filtereduserData = all?.data?.rooms[selectedTitle]?.queries.filter((user) =>
+    user.text?.toLowerCase().includes(searchField.toLowerCase())
+  );
+
+  console.log(filtereduserData);
+
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+  const today = new Date();
+  const currentTime = `${today.getHours()} : ${today.getMinutes()}`;
 
   const showDrawer = () => {
     setVisible(true);
@@ -140,21 +261,56 @@ function Inquiry() {
     setPostQueryRooms(response);
     console.log(postQueryRooms);
     console.log("---------->>>>>>", response);
+    if (response.status === 1) {
+      const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+      console.log(parsedPostQuery);
+      const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roomId: response.data.id,
+          text: `${text}`,
+        }),
+      });
+      setPostTheData(api);
+      const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+      const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${parsedAll.data.accessToken}`,
+        },
+      });
+      const allQueryData = await response1.json();
+      setAll(allQueryData);
+      console.log(postdata);
+      console.log(response);
+      setLoader(false);
+      setVisibility(true);
+    }
+    setLoader(false);
+    setCreated(true);
+    // window.location.reload(false);
+  };
 
+  const postTheQuery = async (text) => {
+    setLoader(true);
     const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
     console.log(parsedPostQuery);
-    const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+    const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        roomId: response.data.id,
+        roomId: selectedRoom.id,
         text: `${text}`,
       }),
     });
-    setPostTheData(api);
+    setPostTheData(response);
 
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
     const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
@@ -166,9 +322,6 @@ function Inquiry() {
     const allQueryData = await response1.json();
     setAll(allQueryData);
     console.log(postdata);
-    console.log(response);
-    setLoader(false);
-    setVisibility(true);
     setLoader(false);
   };
 
@@ -194,13 +347,23 @@ function Inquiry() {
       });
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    });
+  }, []);
+
   const roleCheck = localStorage.getItem("user-info");
 
   const role = JSON.parse(roleCheck);
 
   const finalRole = role?.data?.user?.role;
 
-  console.log(allQueryFetch?.data?.rooms[0]?.queries[0]?.text);
+  const user1 = localStorage.getItem("user-info");
+
+  const id = JSON.parse(user1);
+
+  const userId = id?.data?.user?.id;
 
   return (
     <DashboardLayout>
@@ -238,313 +401,607 @@ function Inquiry() {
                       ""
                     )}
                   </Space>
-                  <form>
-                    <Drawer
-                      placement={placement}
-                      width={800}
-                      onClose={() => setVisibility(false)}
-                      closable={false}
-                      visible={visibility}
-                      style={{ zIndex: 2000 }}
-                    >
-                      <div
-                        style={{
-                          color: "black",
-                          display: "flex",
-                          width: "100%",
-                          justifyContent: "space-between",
-                          borderBottom: "1px solid black",
-                          paddingBottom: "10px",
-                        }}
-                      >
-                        <AiOutlineClose
-                          onClick={() => setVisibility(false)}
+                  {isCreated === false ? (
+                    <div>
+                      <form>
+                        <Drawer
+                          placement={placement}
+                          width={800}
+                          onClose={() => setVisibility(false)}
+                          closable={false}
                           visible={visibility}
-                          style={{ cursor: "pointer" }}
-                        />
-                        <p>Create Room</p>
-                        {!loader && (
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              postQueryRoom(titlePost, desPost, userPost, teess);
+                          style={{ zIndex: 2000 }}
+                        >
+                          <div
+                            style={{
+                              color: "black",
+                              display: "flex",
+                              width: "100%",
+                              justifyContent: "space-between",
+                              borderBottom: "1px solid black",
+                              paddingBottom: "10px",
                             }}
                           >
-                            CREATE
-                          </Button>
-                        )}
-                        {loader && (
-                          <Button type="button" disabled>
-                            Loading...
-                          </Button>
-                        )}
-                      </div>
-                      <div>
-                        <div
-                          className="title-des"
-                          style={{
-                            justifyContent: "space-between",
-                            paddingTop: "20px",
-                          }}
-                        >
-                          <div className="title-drawer">
-                            <h4>Title</h4>
-                            <input
-                              type="text"
-                              onChange={(e, index) => {
-                                setTempTitle(e);
-                                setSelectedTitle(index);
-                              }}
-                              style={{
-                                width: "47rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                outline: "none",
-                                paddingLeft: "10px",
-                                fontSize: "15px",
-                              }}
+                            <AiOutlineClose
+                              onClick={() => setVisibility(false)}
+                              visible={visibility}
+                              style={{ cursor: "pointer" }}
                             />
-                          </div>
-                          <div style={{ marginTop: "2rem" }}>
-                            <h4>Description</h4>
-                            <input
-                              type="text"
-                              onChange={(e) => {
-                                setTempDes(e);
-                              }}
-                              style={{
-                                width: "47rem",
-                                height: "2.7rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                                color: "black",
-                                paddingLeft: "10px",
-                                fontSize: "15px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div style={{ color: "black", marginTop: "1rem" }}>
-                          <h4>User</h4>
-                          <div>
-                            <div
-                              style={{
-                                height: "auto",
-                                width: "47rem",
-                                border: "1px solid black",
-                                borderRadius: "5px",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexWrap: "wrap",
+                            <p>Create Room</p>
+                            {!loader && (
+                              <Button
+                                type="button"
+                                onClick={() => {
+                                  postQueryRoom(titlePost, desPost, userPost, editorPost);
                                 }}
                               >
-                                {tagedUsers.map((text) => (
+                                CREATE
+                              </Button>
+                            )}
+                            {loader && (
+                              <Button type="button" disabled>
+                                Loading...
+                              </Button>
+                            )}
+                          </div>
+                          <div>
+                            <div
+                              className="title-des"
+                              style={{
+                                justifyContent: "space-between",
+                                paddingTop: "20px",
+                              }}
+                            >
+                              <div className="title-drawer">
+                                <h4>Title</h4>
+                                <input
+                                  type="text"
+                                  onChange={(e, index) => {
+                                    setTempTitle(e);
+                                    setSelectedTitle(index);
+                                  }}
+                                  style={{
+                                    width: "47rem",
+                                    height: "2.7rem",
+                                    border: "1px solid black",
+                                    borderRadius: "5px",
+                                    color: "black",
+                                    outline: "none",
+                                    paddingLeft: "10px",
+                                    fontSize: "15px",
+                                  }}
+                                />
+                              </div>
+                              <div style={{ marginTop: "2rem" }}>
+                                <h4>Description</h4>
+                                <input
+                                  type="text"
+                                  onChange={(e) => {
+                                    setTempDes(e);
+                                  }}
+                                  style={{
+                                    width: "47rem",
+                                    height: "2.7rem",
+                                    border: "1px solid black",
+                                    borderRadius: "5px",
+                                    color: "black",
+                                    paddingLeft: "10px",
+                                    fontSize: "15px",
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div style={{ color: "black", marginTop: "1rem" }}>
+                              <h4>User</h4>
+                              <div>
+                                <div
+                                  style={{
+                                    height: "auto",
+                                    width: "47rem",
+                                    border: "1px solid black",
+                                    borderRadius: "5px",
+                                  }}
+                                >
                                   <div
                                     style={{
-                                      marginLeft: "1rem",
-                                      border: "1px solid black",
                                       display: "flex",
-                                      flexDirection: "row",
-                                      fontSize: "15px",
-                                      marginTop: "5px",
-                                      padding: "0 10px",
-                                      color: "black",
-                                      borderRadius: "5px",
+                                      flexWrap: "wrap",
                                     }}
                                   >
-                                    {text.username}
-                                    <span
-                                      style={{
-                                        paddingLeft: "10px",
-                                        cursor: "pointer",
-                                        color: "black",
-                                      }}
-                                      onKeyDown={() => removeTag(text.username)}
-                                      onClick={() => removeTag(text.username)}
-                                      role="button"
-                                      tabIndex={0}
-                                    >
-                                      x
-                                    </span>
+                                    {tagedUsers.map((text) => (
+                                      <div
+                                        style={{
+                                          marginLeft: "1rem",
+                                          border: "1px solid black",
+                                          display: "flex",
+                                          flexDirection: "row",
+                                          fontSize: "15px",
+                                          marginTop: "5px",
+                                          padding: "0 10px",
+                                          color: "black",
+                                          borderRadius: "5px",
+                                        }}
+                                      >
+                                        {text.username}
+                                        <span
+                                          style={{
+                                            paddingLeft: "10px",
+                                            cursor: "pointer",
+                                            color: "black",
+                                          }}
+                                          onKeyDown={() => removeTag(text.username)}
+                                          onClick={() => removeTag(text.username)}
+                                          role="button"
+                                          tabIndex={0}
+                                        >
+                                          x
+                                        </span>
+                                      </div>
+                                    ))}
                                   </div>
-                                ))}
+                                  <input
+                                    type="text"
+                                    onChange={(e) => {
+                                      searchTag(e.target.value);
+                                      onChangeInput(e);
+                                      setNameTag(e.target.value);
+                                    }}
+                                    value={nameTag}
+                                    onFocus={() => setHide(true)}
+                                    onKeyDown={onKeyDown}
+                                    onKeyUp={onKeyUp}
+                                    style={{
+                                      width: "46rem",
+                                      height: "auto",
+                                      border: "none",
+                                      borderRadius: "5px",
+                                      color: "black",
+                                      outline: "none",
+                                      paddingLeft: "10px",
+                                      fontSize: "15px",
+                                    }}
+                                    onClick={(e) => {
+                                      searchTag(e.target.value);
+                                    }}
+                                  />
+                                </div>
+                                {!show && (
+                                  <div>
+                                    {hide && (
+                                      <div
+                                        style={{
+                                          border: "1px solid black",
+                                          cursor: "pointer",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {filteredTagName.map((user) => (
+                                          <div
+                                            style={{
+                                              color: "black",
+                                              paddingTop: "10px",
+                                              marginLeft: "20rem",
+                                            }}
+                                            tabIndex={0}
+                                            onKeyDown
+                                            role="button"
+                                            onClick={(e) => {
+                                              setTagedUsers((oldArray) => [...oldArray, user]);
+                                              setUsero(e.target.innerText);
+                                              setHide(false);
+                                              setSelectedTag(e);
+                                              onKeyDown(e);
+                                              searchTag(e);
+                                              setShowEmail(e);
+                                              setNameTag("");
+                                            }}
+                                            onChange={(e) => {
+                                              searchTag(e.target.value);
+                                              onChangeInput(e);
+                                            }}
+                                          >
+                                            {user.username}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                                <div style={{ paddingTop: "50px" }}>
+                                  <Editor
+                                    className="editor-text"
+                                    onChange={(e) => {
+                                      const x = e;
+                                      setTemp(x);
+                                    }}
+                                    style={{ color: "black" }}
+                                    toolbarClassName="toolbarClassName"
+                                    wrapperClassName="wrapperClassName"
+                                    editorClassName="editorClassName"
+                                    wrapperStyle={{
+                                      width: 735,
+                                      border: "1px solid black",
+                                      height: "700",
+                                      color: "black",
+                                      paddingLeft: "10px",
+                                      fontSize: "15px",
+                                    }}
+                                  />
+                                </div>
                               </div>
+                            </div>
+                          </div>
+                        </Drawer>
+                      </form>
+                    </div>
+                  ) : (
+                    <form>
+                      <div>
+                        {/* <div
+                          role="button"
+                          type="primary"
+                          tabIndex={0}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {allQueryFetch?.data?.rooms?.map((item, index) => (
+                            <div className="main">
+                              <div
+                                className="fetch-title"
+                                role="button"
+                                onClick={() => {
+                                  setVisibility(true);
+                                  setSelectedTitle(index);
+                                  setTagedUsers(() => [...array(index)]);
+                                  setSelectedRoom(item);
+                                  setInquiryTitle(item.title);
+                                  setSelectedTag(index);
+                                  setStoreTitle(item.title);
+                                }}
+                                onKeyDown={showDrawer}
+                                tabIndex={0}
+                                style={{ width: "1000px", color: "black" }}
+                              >
+                                {item.title}
+                                <div style={{ color: "grey" }}>{item.description}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div> */}
+                        <Drawer
+                          placement={placement}
+                          onClose={() => setVisibility(false)}
+                          closable={false}
+                          width={800}
+                          visible={visibility}
+                          style={{ zIndex: 2000 }}
+                        >
+                          <div
+                            style={{
+                              color: "black",
+                              display: "flex",
+                              width: "100%",
+                              justifyContent: "space-between",
+                              borderBottom: "1px solid black",
+                              paddingBottom: "10px",
+                            }}
+                          >
+                            <div>
+                              <AiOutlineClose
+                                onClick={() => setVisibility(false)}
+                                visible={visibility}
+                                style={{ cursor: "pointer" }}
+                              />
+                            </div>
+                            <p style={{ paddingLeft: "60px" }}>Post Your Queries</p>
+                            <div>
+                              <div>
+                                <MDInput
+                                  type="search"
+                                  placeholder="Search Here..."
+                                  onChange={changeHandler}
+                                  value={searchQuery}
+                                  onFocus={expandContainer}
+                                  ref={parentRef}
+                                />
+                              </div>
+                              {isExpanded && !isEmpty && (
+                                <div>
+                                  {!isLoading && (
+                                    <div className="drop-inq-search">
+                                      <div>
+                                        {tvShows.map((object) => (
+                                          <div> {object.text} </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div
+                            className="title-tags"
+                            style={{
+                              display: "flex",
+                              marginTop: "2rem",
+                            }}
+                          >
+                            <div className="title-drawer">
+                              <h4>Title</h4>
                               <input
                                 type="text"
-                                onChange={(e) => {
-                                  searchTag(e.target.value);
-                                  onChangeInput(e);
-                                  setNameTag(e.target.value);
-                                }}
-                                value={nameTag}
-                                onFocus={() => setHide(true)}
-                                onKeyDown={onKeyDown}
-                                onKeyUp={onKeyUp}
                                 style={{
-                                  width: "46rem",
-                                  height: "auto",
-                                  border: "none",
+                                  width: "22rem",
+                                  height: "2.6rem",
+                                  border: "1px solid black",
                                   borderRadius: "5px",
                                   color: "black",
                                   outline: "none",
                                   paddingLeft: "10px",
                                   fontSize: "15px",
                                 }}
-                                onClick={(e) => {
-                                  searchTag(e.target.value);
+                                value={storeTitle}
+                                onChange={(e) => {
+                                  setStoreTitle(e.target.value);
                                 }}
+                                disabled={
+                                  userId !== selectedRoom.salesmanId ? selectedRoom.title : null
+                                }
                               />
                             </div>
-                            {!show && (
+                            <div style={{ marginLeft: "2.5rem" }}>
+                              <h4>Users</h4>
                               <div>
-                                {hide && (
+                                <div
+                                  style={{
+                                    height: "auto",
+                                    width: "22rem",
+                                    border: "1px solid black",
+                                    borderRadius: "5px",
+                                  }}
+                                >
                                   <div
                                     style={{
-                                      border: "1px solid black",
-                                      cursor: "pointer",
-                                      fontSize: "15px",
+                                      display: "flex",
+                                      flexWrap: "wrap",
                                     }}
                                   >
-                                    {filteredTagName.map((user) => (
+                                    {tagedUsers.map((text) => (
                                       <div
                                         style={{
+                                          marginLeft: "1rem",
+                                          border: "1px solid black",
+                                          fontSize: "15px",
+                                          marginTop: "5px",
+                                          padding: "0 10px",
                                           color: "black",
-                                          paddingTop: "10px",
-                                          marginLeft: "20rem",
-                                        }}
-                                        tabIndex={0}
-                                        onKeyDown
-                                        role="button"
-                                        onClick={(e) => {
-                                          setTagedUsers((oldArray) => [...oldArray, user]);
-                                          setUsero(e.target.innerText);
-                                          setHide(false);
-                                          setSelectedTag(e);
-                                          onKeyDown(e);
-                                          searchTag(e);
-                                          setShowEmail(e);
-                                          setNameTag("");
-                                        }}
-                                        onChange={(e) => {
-                                          searchTag(e.target.value);
-                                          onChangeInput(e);
                                         }}
                                       >
-                                        {user.username}
+                                        {text.username}
+                                        <span
+                                          style={{
+                                            paddingLeft: "10px",
+                                            cursor: "pointer",
+                                            color: "black",
+                                          }}
+                                          onKeyDown
+                                          onClick={() => removeTag(text.username)}
+                                          role="button"
+                                          tabIndex={0}
+                                        >
+                                          x
+                                        </span>
                                       </div>
                                     ))}
                                   </div>
-                                )}
-                              </div>
-                            )}
-                            <div style={{ paddingTop: "50px" }}>
-                              <Editor
-                                className="editor-text"
-                                onChange={(e) => {
-                                  const x = e;
-                                  setTemp(x);
-                                  console.log(x);
-                                }}
-                                style={{ color: "black" }}
-                                toolbarClassName="toolbarClassName"
-                                wrapperClassName="wrapperClassName"
-                                editorClassName="editorClassName"
-                                wrapperStyle={{
-                                  width: 735,
-                                  border: "1px solid black",
-                                  height: "700",
-                                  color: "black",
-                                  paddingLeft: "10px",
-                                  fontSize: "15px",
-                                }}
-                              />
-                            </div>
-                            {/* <div
-                              style={{
-                                border: "1px solid black",
-                                marginTop: "1rem",
-                                width: "100%",
-                                overflowX: "scroll",
-                              }}
-                            >
-                              <div>
-                                <div
-                                  className="item-sender"
-                                  onClick={() => setVisibility(true)}
-                                  onKeyDown={showDrawer}
-                                  role="button"
-                                  tabIndex={0}
-                                >
-                                  {allQueryFetch?.data?.rooms[0]?.queries?.map((items) => (
-                                    <div
-                                      style={{
-                                        color: "black",
-                                        paddingTop: "20px",
-                                        cursor: "pointer",
-                                        marginLeft: "1rem",
-                                      }}
-                                    >
-                                      <li>
-                                        <div
-                                          style={{
-                                            paddingLeft: "20px",
-                                            marginTop: "-28px",
-                                            fontSize: "15px",
-                                          }}
-                                        >
-                                          {items.sender.username}
-                                        </div>
-                                        <div
-                                          style={{
-                                            paddingLeft: "150px",
-                                            marginTop: "-25px",
-                                            fontSize: "15px",
-                                          }}
-                                        >
-                                          {items.sender.createdAt.split("T")[0]}
-                                        </div>
-                                        <div
-                                          style={{
-                                            paddingLeft: "300px",
-                                            marginTop: "-25px",
-                                            fontSize: "15px",
-                                          }}
-                                        >
-                                          {date}
-                                          {currentTime}
-                                        </div>
-                                        <div
-                                          style={{
-                                            width: "90%",
-                                            height: "auto",
-                                          }}
-                                        >
-                                          <p
+                                  <input
+                                    type="text"
+                                    onChange={(e) => {
+                                      searchTag(e.target.value);
+                                      setNameTag(e.target.value);
+                                    }}
+                                    value={nameTag}
+                                    onFocus={() => setHide(true)}
+                                    onKeyDown={onKeyDown}
+                                    onKeyUp={onKeyUp}
+                                    style={{
+                                      width: "21rem",
+                                      height: "auto",
+                                      border: "none",
+                                      borderRadius: "5px",
+                                      color: "black",
+                                      outline: "none",
+                                      paddingLeft: "10px",
+                                      fontSize: "15px",
+                                    }}
+                                    onClick={(e) => {
+                                      searchTag(e.target.value);
+                                    }}
+                                    disabled={
+                                      userId !== selectedRoom.salesmanId ? selectedRoom.title : null
+                                    }
+                                  />
+                                </div>
+                                {!show && (
+                                  <div>
+                                    {hide && (
+                                      <div
+                                        style={{
+                                          border: "1px solid black",
+                                          cursor: "pointer",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {filteredTagName?.map((user) => (
+                                          <div
                                             style={{
-                                              marginLeft: "1.3rem",
+                                              color: "black",
                                               paddingTop: "10px",
-                                              fontSize: "15px",
+                                              marginLeft: "10rem",
+                                            }}
+                                            tabIndex={0}
+                                            onKeyDown
+                                            role="button"
+                                            onClick={(e) => {
+                                              setTagedUsers((oldArray) => [...oldArray, user]);
+                                              setUsero(e.target.innerText);
+                                              setHide(false);
+                                              setSelectedTag(e);
+                                              onKeyDown(e);
+                                              searchTag(e);
+                                              setNameTag("");
+                                            }}
+                                            onChange={(e) => {
+                                              searchTag(e.target.value);
+                                              onChangeInput(e);
                                             }}
                                           >
-                                            {items.text}
-                                          </p>
-                                        </div>
-                                      </li>
-                                    </div>
-                                  ))}
-                                </div>
+                                            {user.username}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
                               </div>
-                            </div> */}
+                            </div>
                           </div>
-                        </div>
+                          {!editLoader && userId === selectedRoom.salesmanId ? (
+                            <Button
+                              onClick={() => {
+                                setIsEdit(true);
+                                postEdit(titlePostInquiry, userPost);
+                              }}
+                            >
+                              SAVE
+                            </Button>
+                          ) : (
+                            ""
+                          )}
+                          {editLoader && userId === selectedRoom.salesmanId ? (
+                            <Button disabled>Loading...</Button>
+                          ) : (
+                            ""
+                          )}
+                          <div className="change-editor" style={{ marginTop: "2rem" }}>
+                            <h4>Text Editor</h4>
+                          </div>
+                          <Editor
+                            className="editor-text"
+                            onChange={(e) => {
+                              const x = e;
+                              setTemp(x);
+                              console.log(x);
+                            }}
+                            style={{ color: "black" }}
+                            toolbarClassName="toolbarClassName"
+                            wrapperClassName="wrapperClassName"
+                            editorClassName="editorClassName"
+                            wrapperStyle={{
+                              width: 735,
+                              border: "1px solid black",
+                              height: "700",
+                              color: "black",
+                              paddingLeft: "10px",
+                              fontSize: "15px",
+                            }}
+                          />
+                          {!loader && (
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                postTheQuery(editorPost);
+                                setTemp("");
+                              }}
+                            >
+                              SAVE
+                            </Button>
+                          )}
+                          {loader && (
+                            <Button type="button" disabled>
+                              Loading...
+                            </Button>
+                          )}
+                          <div
+                            style={{
+                              border: "1px solid black",
+                              marginTop: "1rem",
+                              width: "100%",
+                              overflowX: "scroll",
+                            }}
+                          >
+                            <div>
+                              <div
+                                className="item-sender"
+                                onClick={() => setVisibility(true)}
+                                onKeyDown={showDrawer}
+                                role="button"
+                                tabIndex={0}
+                              >
+                                {filtereduserData?.map((items) => (
+                                  <div
+                                    style={{
+                                      color: "black",
+                                      paddingTop: "20px",
+                                      cursor: "pointer",
+                                      marginLeft: "1rem",
+                                    }}
+                                  >
+                                    <li>
+                                      <div
+                                        style={{
+                                          paddingLeft: "20px",
+                                          marginTop: "-28px",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {items.sender.username}
+                                      </div>
+                                      <div
+                                        style={{
+                                          paddingLeft: "150px",
+                                          marginTop: "-25px",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {items.sender.createdAt.split("T")[0]}
+                                      </div>
+                                      <div
+                                        style={{
+                                          paddingLeft: "300px",
+                                          marginTop: "-25px",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {date}
+                                        {currentTime}
+                                      </div>
+                                      <div
+                                        style={{
+                                          width: "90%",
+                                          height: "auto",
+                                        }}
+                                      >
+                                        <p
+                                          style={{
+                                            marginLeft: "1.3rem",
+                                            paddingTop: "10px",
+                                            fontSize: "15px",
+                                          }}
+                                        >
+                                          {items.text}
+                                        </p>
+                                      </div>
+                                    </li>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </Drawer>
                       </div>
-                    </Drawer>
-                  </form>
+                    </form>
+                  )}
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

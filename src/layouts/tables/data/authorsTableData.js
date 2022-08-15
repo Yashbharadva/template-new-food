@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
-import Popup from "reactjs-popup";
+// import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
-import { Button } from "antd";
+import { Modal } from "antd";
 import "./authorTable.scss";
 
 export default function FirstTable() {
   const [customer] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
   const [adminUsers, setAdminUsers] = useState({});
-  const [visibility, setVisibility] = useState(false);
-  console.log(visibility);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   // const [visible, setVisible] = useState(false);
   // const [confirmLoading, setConfirmLoading] = useState(false);
   console.log(adminUsers);
@@ -122,30 +130,28 @@ export default function FirstTable() {
                   >
                     Delete
                   </div> */}
-                  <Popup
-                    trigger={<div style={{ marginTop: "20px", cursor: "pointer" }}>Delete</div>}
-                    position="right center"
+                  <div
+                    style={{
+                      marginTop: "20px",
+                      cursor: "pointer",
+                    }}
+                    onClick={showModal}
+                    onKeyDown
+                    tabIndex={0}
+                    role="button"
                   >
-                    <div style={{ fontSize: "15px", padding: "10px 10px" }}>Are you sure..??</div>
-                    <Button
-                      onClick={console.log("------------------------", () => setVisibility(false))}
-                      visible={visibility}
-                      style={{ cursor: "pointer" }}
-                    >
-                      Cancel
-                    </Button>
-                    {!deleteLoader && (
-                      <Button
-                        onClick={() => {
-                          deleteUser(item.id);
-                        }}
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Delete
-                      </Button>
-                    )}
-                    {deleteLoader && <Button disabled>Deleting...</Button>}
-                  </Popup>
+                    Delete
+                  </div>
+                  <Modal
+                    title="Delete this user.."
+                    visible={isModalVisible}
+                    onOk={() => {
+                      deleteUser(item.id);
+                    }}
+                    onCancel={handleCancel}
+                  >
+                    <p>Are you sure you want delete this user..??</p>
+                  </Modal>
                 </div>
               ))}
             </div>
