@@ -32,7 +32,7 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
-  console.log(selectedRoom);
+  console.log(selectedRoom.title);
   const [selectedTag, setSelectedTag] = useState(null);
   const [hide, setHide] = useState(true);
   const [usero, setUsero] = useState("");
@@ -64,6 +64,7 @@ export default function data() {
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
   const [storeTitle, setStoreTitle] = useState("");
   const titlePostInquiry = storeTitle;
+  console.log(storeTitle);
 
   const collapseContainer = () => {
     setExpanded(false);
@@ -285,8 +286,6 @@ export default function data() {
 
   const userId = id?.data?.user?.id;
 
-  console.log(storeTitle);
-
   return {
     columns: [{ Header: "inquiry", accessor: "inquiry", width: "40%", align: "left" }],
     rows: [
@@ -307,7 +306,7 @@ export default function data() {
                       setInquiryTitle(item.title);
                       setSelectedTag(index);
                       setStoreTitle(item.title);
-                      console.log(item);
+                      console.log(item.title);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}

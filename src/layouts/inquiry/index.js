@@ -365,6 +365,8 @@ function Inquiry() {
 
   const userId = id?.data?.user?.id;
 
+  console.log(selectedRoom.title);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -740,7 +742,7 @@ function Inquiry() {
                                   paddingLeft: "10px",
                                   fontSize: "15px",
                                 }}
-                                value={storeTitle}
+                                value={selectedRoom.title}
                                 onChange={(e) => {
                                   setStoreTitle(e.target.value);
                                 }}
