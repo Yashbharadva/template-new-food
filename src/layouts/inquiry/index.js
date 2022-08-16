@@ -282,7 +282,7 @@ function Inquiry() {
       const allQueryData = await response1.json();
 
       if (allQueryData.status === 0) {
-        return alert(`${allQueryData.message}`);
+         alert(`${allQueryData.message}`);
       }
       setAll(allQueryData);
       setLoader(false);
