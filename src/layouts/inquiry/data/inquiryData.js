@@ -185,6 +185,10 @@ export default function data() {
         text: `${text}`,
       }),
     });
+    const allQueryData1 = await response.json();
+    if (allQueryData1.status === 0) {
+      alert(`${allQueryData1.message}`);
+    }
     setPostTheData(response);
 
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));

@@ -255,7 +255,7 @@ function Inquiry() {
     });
     const response = await res.json();
     if (response.status === 0) {
-       alert(`${response.message}`);
+      alert(`${response.message}`);
     }
     setPostQueryRooms(response);
     if (response.status === 1) {
@@ -271,6 +271,10 @@ function Inquiry() {
           text: `${text}`,
         }),
       });
+      const response3 = await api.json();
+      if (response3.status === 0) {
+        alert(`${response3.message}`);
+      }
       setPostTheData(api);
       const parsedAll = JSON.parse(localStorage.getItem("user-info"));
       const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
@@ -282,7 +286,7 @@ function Inquiry() {
       const allQueryData = await response1.json();
 
       if (allQueryData.status === 0) {
-         alert(`${allQueryData.message}`);
+        alert(`${allQueryData.message}`);
       }
       setAll(allQueryData);
       setLoader(false);
@@ -307,6 +311,10 @@ function Inquiry() {
         text: `${text}`,
       }),
     });
+    const allQueryData1 = await response.json();
+    if (allQueryData1.status === 0) {
+      alert(`${allQueryData1.message}`);
+    }
     setPostTheData(response);
 
     const parsedAll = JSON.parse(localStorage.getItem("user-info"));
@@ -318,7 +326,7 @@ function Inquiry() {
     });
     const allQueryData = await response1.json();
     if (allQueryData.status === 0) {
-       alert(`${allQueryData.message}`);
+      alert(`${allQueryData.message}`);
     }
     setAll(allQueryData);
     setLoader(false);
