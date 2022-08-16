@@ -240,6 +240,7 @@ function Inquiry() {
 
   const postQueryRoom = async (title, description, user, text) => {
     setLoader(true);
+    const title1 = title;
     const parsedPostQueryRoom = JSON.parse(localStorage.getItem("user-info"));
     const res = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
       method: "POST",
@@ -248,7 +249,7 @@ function Inquiry() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: `${title}`,
+        title: title1,
         description: `${description}`,
         users: user,
       }),
