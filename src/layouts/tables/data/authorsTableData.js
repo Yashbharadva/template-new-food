@@ -14,7 +14,8 @@ export default function FirstTable() {
     setIsModalVisible(true);
   };
 
-  const handleCancel = () => {
+  const handleCancel = (item) => {
+    console.log(item);
     setIsModalVisible(false);
   };
 
@@ -136,7 +137,7 @@ export default function FirstTable() {
                       cursor: "pointer",
                     }}
                     onClick={showModal}
-                    onKeyDown
+                    onKeyDown={showModal}
                     tabIndex={0}
                     role="button"
                   >
@@ -148,7 +149,7 @@ export default function FirstTable() {
                     onOk={() => {
                       deleteUser(item.id);
                     }}
-                    onCancel={handleCancel}
+                    onCancel={() => handleCancel(item)}
                   >
                     <p>Are you sure you want delete this user..??</p>
                   </Modal>

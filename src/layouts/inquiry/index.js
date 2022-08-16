@@ -207,10 +207,11 @@ function Inquiry() {
     console.log(removedTag);
   };
 
-  const filtereduserData = allQueryFetch?.data?.rooms[0]?.queries.filter((user) =>
+  const filtereduserData = all?.data?.rooms[0]?.queries.filter((user) =>
     user.text?.toLowerCase().includes(searchField.toLowerCase())
   );
 
+  const drawerData = all?.data?.rooms[0];
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
@@ -739,7 +740,7 @@ function Inquiry() {
                                     paddingLeft: "10px",
                                     fontSize: "15px",
                                   }}
-                                  value={tempTitle?.target?.value}
+                                  value={drawerData?.title}
                                   onChange={(e) => {
                                     setStoreTitle(e.target.value);
                                   }}
