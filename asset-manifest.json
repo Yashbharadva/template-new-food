@@ -1,31 +1,16 @@
 {
   "files": {
-    "main.css": "/template-new-food/static/css/main.c59b0530.css",
-    "main.js": "/template-new-food/static/js/main.da201e7f.js",
-    "static/media/home-decor-3.jpg": "/template-new-food/static/media/home-decor-3.74d13fcbd3c631fc7908.jpg",
-    "static/media/home-decor-2.jpg": "/template-new-food/static/media/home-decor-2.b4e5397c9846645ba275.jpg",
-    "static/media/home-decor-1.jpg": "/template-new-food/static/media/home-decor-1.05e218fd495ccc65c99d.jpg",
+    "main.css": "/template-new-food/static/css/main.a7f862db.css",
+    "main.js": "/template-new-food/static/js/main.8f1b1d7d.js",
     "static/media/bg-sign-in-basic.jpeg": "/template-new-food/static/media/bg-sign-in-basic.f327db1d0e4b00ba3c81.jpeg",
-    "static/media/bg-profile.jpeg": "/template-new-food/static/media/bg-profile.af1219a742e09fc7b612.jpeg",
     "static/media/coding2.jpg": "/template-new-food/static/media/coding2.afc591ed190794936a10.jpg",
-    "static/media/home-decor-4.jpeg": "/template-new-food/static/media/home-decor-4.5b448fd339a14695f6aa.jpeg",
-    "static/media/team-1.jpg": "/template-new-food/static/media/team-1.0fd36e0ee93dcfacdef8.jpg",
-    "static/media/bruce-mars.jpg": "/template-new-food/static/media/bruce-mars.8a606c4a6dab54c9ceff.jpg",
-    "static/media/marie.jpg": "/template-new-food/static/media/marie.c28f32663b6432b46f78.jpg",
-    "static/media/team-2.jpg": "/template-new-food/static/media/team-2.13ae2ce3e12f4cfed420.jpg",
-    "static/media/team-3.jpg": "/template-new-food/static/media/team-3.0ef0be95e6850814c79e.jpg",
-    "static/media/ivana-square.jpg": "/template-new-food/static/media/ivana-square.f7bc23b269d1d2509c82.jpg",
-    "static/media/kal-visuals-square.jpg": "/template-new-food/static/media/kal-visuals-square.3210e28a48ff572ae88b.jpg",
-    "static/media/cancel.png": "/template-new-food/static/media/cancel.1c2963ee3467352a1681.png",
-    "static/media/team-4.jpg": "/template-new-food/static/media/team-4.85c82b6e60178804017f.jpg",
-    "static/media/mark.png": "/template-new-food/static/media/mark.b26e2ccee7ab3aad71c9.png",
     "index.html": "/template-new-food/index.html",
     "static/media/antd.less": "/template-new-food/static/media/antd.7affb7a1925b6ab47ea6.less",
-    "main.c59b0530.css.map": "/template-new-food/static/css/main.c59b0530.css.map",
-    "main.da201e7f.js.map": "/template-new-food/static/js/main.da201e7f.js.map"
+    "main.a7f862db.css.map": "/template-new-food/static/css/main.a7f862db.css.map",
+    "main.8f1b1d7d.js.map": "/template-new-food/static/js/main.8f1b1d7d.js.map"
   },
   "entrypoints": [
-    "static/css/main.c59b0530.css",
-    "static/js/main.da201e7f.js"
+    "static/css/main.a7f862db.css",
+    "static/js/main.8f1b1d7d.js"
   ]
 }
