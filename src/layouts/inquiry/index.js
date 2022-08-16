@@ -255,7 +255,7 @@ function Inquiry() {
     });
     const response = await res.json();
     if (response.status === 0) {
-      return alert(`${response.message}`);
+       alert(`${response.message}`);
     }
     setPostQueryRooms(response);
     if (response.status === 1) {
@@ -318,7 +318,7 @@ function Inquiry() {
     });
     const allQueryData = await response1.json();
     if (allQueryData.status === 0) {
-      return alert(`${allQueryData.message}`);
+       alert(`${allQueryData.message}`);
     }
     setAll(allQueryData);
     setLoader(false);
