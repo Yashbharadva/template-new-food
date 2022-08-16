@@ -19,7 +19,6 @@ export default function AllQuery() {
       },
     });
     const allQueryData = await response.json();
-    console.log(allQueryData);
     setAllQueryFetch(allQueryData);
   };
   // console.log(allQueryFetch);

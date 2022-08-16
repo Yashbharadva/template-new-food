@@ -7,31 +7,29 @@ import "./authorTable.scss";
 export default function FirstTable() {
   const [customer] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
-  const [adminUsers, setAdminUsers] = useState({});
+  const [adminUsers, setAdminUsers] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState();
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleCancel = (item) => {
-    console.log(item);
     setIsModalVisible(false);
   };
 
   // const [visible, setVisible] = useState(false);
   // const [confirmLoading, setConfirmLoading] = useState(false);
-  console.log(adminUsers);
   // const [loader, setLoader] = useState(false);
   const [deleteLoader, setDeleteLoader] = useState(false);
-  console.log(deleteLoader);
 
   useEffect(() => {
     // console.log(customer);
   }, [customer]);
 
   const getUsers = async () => {
-    const parsedGetUsers = JSON.parse(localStorage.getItem("user-info"));
+    const parsedGetUsers = await JSON.parse(localStorage.getItem("user-info"));
     const response = await fetch("https://inquiry-ts.herokuapp.com/admin/get-users", {
       method: "GET",
       headers: {
@@ -39,6 +37,7 @@ export default function FirstTable() {
       },
     });
     const getusers = await response.json();
+    console.log(getusers);
     setAdminUsers(getusers);
   };
 
@@ -49,8 +48,6 @@ export default function FirstTable() {
   const deleteUser = async (id) => {
     setDeleteLoader(true);
     const parsedDeleteUsers = JSON.parse(localStorage.getItem("user-info"));
-    console.log(parsedDeleteUsers);
-    console.log(id);
     const responseDelete = await fetch("https://inquiry-ts.herokuapp.com/admin/delete-user", {
       method: "DELETE",
       headers: {
@@ -62,7 +59,6 @@ export default function FirstTable() {
       }),
     });
     const response = await responseDelete.json();
-    console.log(response);
     setDeleteLoader(false);
     window.location.reload(false);
   };
@@ -123,6 +119,7 @@ export default function FirstTable() {
                       cursor: "pointer",
                     }}
                     onClick={() => {
+                      alert('Are you sure you want to delete this user?');
                       deleteUser(item.id);
                     }}
                     onKeyDown={() => {
@@ -136,8 +133,11 @@ export default function FirstTable() {
                       marginTop: "20px",
                       cursor: "pointer",
                     }}
-                    onClick={showModal}
-                    onKeyDown={showModal}
+                    onClick={() => {
+                      showModal();
+                      setDeleteUserId(item.id);
+                    }}
+                    onKeyDown
                     tabIndex={0}
                     role="button"
                   >
@@ -147,9 +147,9 @@ export default function FirstTable() {
                     title="Delete this user.."
                     visible={isModalVisible}
                     onOk={() => {
-                      deleteUser(item.id);
+                      deleteUser(deleteUserId);
                     }}
-                    onCancel={() => handleCancel(item)}
+                    onCancel={() => handleCancel(deleteUserId)}
                   >
                     <p>Are you sure you want delete this user..??</p>
                   </Modal>

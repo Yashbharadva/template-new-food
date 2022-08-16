@@ -42,13 +42,11 @@ import Tables from "layouts/tables";
 // import Billing from "layouts/billing";
 // import RTL from "layouts/rtl";
 // import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import Tables2 from "layouts/tables2";
 // import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 // import Dashboard from "layouts/dashboard";
 import Inquiry from "layouts/inquiry";
@@ -65,7 +63,6 @@ const ROLE = JSON.parse(roleAdmin);
 
 const role = ROLE?.data?.user?.role;
 
-console.log("ROLE---------->", role);
 
 const routes = [];
 
@@ -85,22 +82,6 @@ if (role === 0) {
       icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
       route: "/inquiry",
       component: <Inquiry />,
-    },
-    {
-      type: "collapse",
-      name: "Caterer",
-      key: "tables2",
-      icon: <Icon fontSize="small">table_view</Icon>,
-      route: "/tables2",
-      component: <Tables2 />,
-    },
-    {
-      type: "collapse",
-      name: "Profile",
-      key: "profile",
-      icon: <Icon fontSize="small">person</Icon>,
-      route: "/profile",
-      component: <Profile />,
     },
     {
       type: "collapse",
@@ -130,22 +111,6 @@ if (role === 0) {
       icon: <AiOutlineProfile>Inquiry</AiOutlineProfile>,
       route: "/inquiry",
       component: <Inquiry />,
-    },
-    {
-      type: "collapse",
-      name: "Caterer",
-      key: "tables2",
-      icon: <Icon fontSize="small">table_view</Icon>,
-      route: "/tables2",
-      component: <Tables2 />,
-    },
-    {
-      type: "collapse",
-      name: "Profile",
-      key: "profile",
-      icon: <Icon fontSize="small">person</Icon>,
-      route: "/profile",
-      component: <Profile />,
     },
     {
       type: "collapse",

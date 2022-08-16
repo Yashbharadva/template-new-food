@@ -3,7 +3,7 @@ import logInUser from "./user.utils";
 
 export const UserContext = createContext({
   user: {},
-  LogInUser: () => {},
+  LogInUser: () => { },
 });
 
 function UserProvider(children) {
@@ -14,7 +14,6 @@ function UserProvider(children) {
   }, []);
 
   useEffect(() => {
-    console.log(user);
   }, [user]);
 
   const LogInUser = (userCredentials) => setUser(logInUser(userCredentials));

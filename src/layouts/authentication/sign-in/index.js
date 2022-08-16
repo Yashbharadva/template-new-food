@@ -107,7 +107,7 @@ function Basic() {
           return ReadableStream.message;
         }
         localStorage.setItem("user-info", JSON.stringify(resData));
-        navigate("/profile");
+        navigate("/tables");
         window.location.reload(false);
         return console.log(resData.message);
       })

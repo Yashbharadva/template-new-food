@@ -32,13 +32,10 @@ export default function data() {
   const [parentRef, isClickedOutside] = useClickOutside();
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState({});
-  console.log(selectedRoom.title);
   const [selectedTag, setSelectedTag] = useState(null);
   const [hide, setHide] = useState(true);
   const [usero, setUsero] = useState("");
-  console.log(usero);
   const [tagedUsers, setTagedUsers] = useState([]);
-  console.log(tagedUsers);
   const [filteredTagName, setFilteredTagName] = useState([]);
   const [show, setShow] = useState(true);
   const [tags, setTags] = useState([]);
@@ -46,17 +43,15 @@ export default function data() {
   const [input, setInput] = useState("");
   const [searchElement, setSearchElement] = useState("");
   const [nameTag, setNameTag] = useState("");
-  console.log(nameTag);
-  console.log(searchElement);
   // const [selectedTag, setSelectedTag] = useState(null);
-  console.log(selectedTag);
   const [inquiryTitle, setInquiryTitle] = useState("");
-  console.log(inquiryTitle);
 
   const [isPostEdit, setPostEdit] = useState("");
 
   const [isEdit, setIsEdit] = useState(false);
-  console.log(isEdit);
+  const [titleChange, setTitleChange] = useState(false);
+  const [editorChange, setEditorChange] = useState(false);
+
 
   const teess = temp?.blocks?.map((item) => item.text);
   const userPost = tagedUsers;
@@ -64,7 +59,6 @@ export default function data() {
   const isEmpty = !tvShows || tvShows.length === 0 || searchQuery.length === 0;
   const [storeTitle, setStoreTitle] = useState("");
   const titlePostInquiry = storeTitle;
-  console.log(storeTitle);
 
   const collapseContainer = () => {
     setExpanded(false);
@@ -88,7 +82,6 @@ export default function data() {
     e.preventDefault();
     if (e.target.value.trim() === "") setNoTvShows(false);
     setSearchQuery(e.target.value);
-    console.log(noTvShows);
     setSearchField(e.target.value);
   };
 
@@ -105,7 +98,6 @@ export default function data() {
     if (!searchQuery || searchQuery.trim() === "") return;
     setLoading(true);
     setNoTvShows(false);
-    console.log(prepareSearchQuery);
     const response = await axios
       .get(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
         headers: {
@@ -115,10 +107,8 @@ export default function data() {
       .catch((err) => {
         console.log("Error: ", err);
       });
-    console.log(response);
 
     if (response) {
-      console.log("Response: ", response.data.data.rooms[0]?.queries);
       if (response.data) setNoTvShows(true);
       setTvShows(response?.data?.data?.rooms[0]?.queries);
     }
@@ -160,7 +150,6 @@ export default function data() {
       }
     }
     const parsedEdit = JSON.parse(localStorage.getItem("user-info"));
-    console.log(selectedRoom.id, title, editedUser);
     const res = await fetch("https://inquiry-ts.herokuapp.com/user/edit-query-room", {
       method: "PUT",
       headers: {
@@ -175,7 +164,6 @@ export default function data() {
     });
     const response = await res.json();
     setPostEdit(response);
-    console.log(isPostEdit);
     setEditLoader(false);
     // window.location.reload(false);
   };
@@ -183,7 +171,6 @@ export default function data() {
   const postTheQuery = async (text) => {
     setLoader(true);
     const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-    console.log(parsedPostQuery);
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
       method: "POST",
       headers: {
@@ -206,12 +193,10 @@ export default function data() {
     });
     const allQueryData = await response1.json();
     setAll(allQueryData);
-    console.log(postdata);
     setLoader(false);
   };
 
   const searchTag = async (tagSearch) => {
-    console.log(tagSearch);
     const parsedSearchTag = await JSON.parse(localStorage.getItem("user-info"));
     fetch(`https://inquiry-ts.herokuapp.com/user/search-user?term=${tagSearch}`, {
       headers: {
@@ -221,10 +206,7 @@ export default function data() {
     })
       .then(async (res) => {
         const resJSON = await res.json();
-        console.log("==-=-=-=-=-=-", resJSON.data);
         setFilteredTagName(resJSON.data?.users);
-        console.log(setFilteredTagName);
-        console.log(tagSearch);
         setSearchElement(resJSON);
         setShow(!show);
       })
@@ -265,7 +247,6 @@ export default function data() {
   const removeTag = (removedTag) => {
     const newTags = tagedUsers.filter((tag) => tag.username !== removedTag);
     setTagedUsers(newTags);
-    console.log(removedTag);
   };
 
   const current = new Date();
@@ -276,7 +257,6 @@ export default function data() {
 
   const array = (titleSelect) => {
     const x = allQueryFetch?.data?.rooms[titleSelect]?.taggedUsers;
-    console.log(x);
     return x;
   };
 
@@ -306,7 +286,6 @@ export default function data() {
                       setInquiryTitle(item.title);
                       setSelectedTag(index);
                       setStoreTitle(item.title);
-                      console.log(item.title);
                     }}
                     onKeyDown={showDrawer}
                     tabIndex={0}
@@ -390,6 +369,7 @@ export default function data() {
                         value={storeTitle}
                         onChange={(e) => {
                           setStoreTitle(e.target.value);
+                          setTitleChange(true)
                         }}
                         disabled={userId !== selectedRoom.salesmanId ? selectedRoom.title : null}
                       />
@@ -513,6 +493,7 @@ export default function data() {
                   </div>
                   {!editLoader && userId === selectedRoom.salesmanId ? (
                     <Button
+                      disabled={!titleChange}
                       onClick={() => {
                         setIsEdit(true);
                         postEdit(titlePostInquiry, userPost);
@@ -536,7 +517,7 @@ export default function data() {
                     onChange={(e) => {
                       const x = e;
                       setTemp(x);
-                      console.log(x);
+                      setEditorChange(true);
                     }}
                     style={{ color: "black" }}
                     toolbarClassName="toolbarClassName"
@@ -554,6 +535,7 @@ export default function data() {
                   {!loader && (
                     <Button
                       type="button"
+                      disabled={!editorChange}
                       onClick={() => {
                         postTheQuery(teess);
                         setTemp("");

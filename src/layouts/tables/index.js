@@ -40,12 +40,10 @@ function Tables() {
   const [visibility, setVisibility] = useState(false);
   const [loader, setLoader] = useState(false);
   const [isCreateUser, setCreateUser] = useState("");
-  console.log(loader, isCreateUser);
   const [isEmail, setEmail] = useState("");
   const [isUsername, setUsername] = useState("");
   const [isPassword, setPassword] = useState("");
   const [isRole, setRole] = useState("");
-  console.log(isRole);
 
   const createEmail = isEmail?.target?.value;
   const createUsername = isUsername?.target?.value;
@@ -53,10 +51,7 @@ function Tables() {
   // const createRole = isRole;
   const [newRole, setNewRole] = useState();
 
-  console.log(createUsername, newRole, createEmail, createPassword);
-
   const [roleSelect, setRoleSelect] = useState(["Admin", "Salesman", "User"]);
-  console.log(newRole);
   const [rolePopup, setRolePopup] = useState(false);
 
   const handleSetRole = (e) => {
@@ -128,10 +123,13 @@ function Tables() {
       }),
     });
     const response = await res.json();
-    setCreateUser(response);
-    console.log("~~~~~~~~~~~~~~~~", response);
+    if (response.status === 0) {
+      alert(`${response.message}`);
+    } else {
+      alert(`${response.message}`);
+      window.location.reload(false);
+    }
     setLoader(false);
-    window.location.reload(false);
   };
 
   return (

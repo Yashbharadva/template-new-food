@@ -121,7 +121,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
     e.preventDefault();
     if (e.target.value.trim() === "") setNoTvShows(false);
     setSearchQuery(e.target.value);
-    console.log(noTvShows);
   };
 
   const expandContainer = () => {
@@ -140,8 +139,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
     setLoading(true);
     setNoTvShows(false);
 
-    console.log(prepareSearchQuery(searchQuery));
-
     const response = await axios
       .get(`https://inquiry-ts.herokuapp.com/user/search-query?term=${searchQuery}`, {
         headers: {
@@ -151,10 +148,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
       .catch((err) => {
         console.log("Error: ", err);
       });
-    console.log(response);
 
     if (response) {
-      console.log("Response: ", response.data.data.rooms[0].title);
       if (response.data) setNoTvShows(true);
       setTvShows(response?.data?.data?.rooms);
     }
