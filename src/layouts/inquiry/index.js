@@ -254,46 +254,56 @@ function Inquiry() {
       }),
     });
     const response = await res.json();
+    console.log(response);
     if (response.status === 0) {
       alert(`${response.message}`);
-    }
-    setPostQueryRooms(response);
-    if (response.status === 1) {
-      const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
-      const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          roomId: response.data.id,
-          text: `${text}`,
-        }),
-      });
-      const response3 = await api.json();
-      if (response3.status === 0) {
-        alert(`${response3.message}`);
-      }
-      setPostTheData(api);
-      const parsedAll = JSON.parse(localStorage.getItem("user-info"));
-      const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${parsedAll.data.accessToken}`,
-        },
-      });
-      const allQueryData = await response1.json();
-
-      if (allQueryData.status === 0) {
-        alert(`${allQueryData.message}`);
-      }
-      setAll(allQueryData);
       setLoader(false);
-      setVisibility(true);
+    } else {
+      setPostQueryRooms(response);
+      if (response.status === 1) {
+        const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
+        const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${parsedPostQuery.data.accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            roomId: response.data.id,
+            text: `${text}`,
+          }),
+        });
+        const response3 = await api.json();
+        if (response3.status === 0) {
+          alert(`${response3.message}`);
+          setLoader(false);
+        } else {
+          setPostTheData(api);
+          const parsedAll = JSON.parse(localStorage.getItem("user-info"));
+          const response1 = await fetch("https://inquiry-ts.herokuapp.com/user/get-query-rooms", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${parsedAll.data.accessToken}`,
+            },
+          });
+          const allQueryData = await response1.json();
+
+          if (allQueryData.status === 0) {
+            alert(`${allQueryData.message}`);
+            setLoader(false);
+          } else {
+
+            setAll(allQueryData);
+            setLoader(false);
+            setVisibility(true);
+          }
+        }
+        setLoader(false);
+        setCreated(true);
+      }
+
     }
-    setLoader(false);
-    setCreated(true);
+
     // window.location.reload(false);
   };
 
@@ -639,13 +649,32 @@ function Inquiry() {
                                       }}
                                     />
                                   </div>
-                                  <Button
-                                    onClick={() => {
-                                      postQueryRoom(titlePost, desPost, userPost, editorPost);
+                                  <div
+                                    style={{
+                                      color: "black",
+                                      display: "flex",
+                                      width: "100%",
+                                      justifyContent: "space-between",
+                                      borderBottom: "1px solid black",
+                                      paddingBottom: "10px",
                                     }}
                                   >
-                                    SAVE
-                                  </Button>
+                                    {!loader && (
+                                      <Button
+                                        type="button"
+                                        onClick={() => {
+                                          postQueryRoom(titlePost, desPost, userPost, editorPost);
+                                        }}
+                                      >
+                                        SAVE
+                                      </Button>
+                                    )}
+                                    {loader && (
+                                      <Button type="button" disabled>
+                                        Loading...
+                                      </Button>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
