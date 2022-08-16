@@ -163,6 +163,9 @@ export default function data() {
       }),
     });
     const response = await res.json();
+    if (response.status === 0) {
+      alert(`${response.message}`);
+    }
     setPostEdit(response);
     setEditLoader(false);
     // window.location.reload(false);
@@ -192,6 +195,9 @@ export default function data() {
       },
     });
     const allQueryData = await response1.json();
+    if (allQueryData.status === 0) {
+      alert(`${allQueryData.message}`);
+    }
     setAll(allQueryData);
     setLoader(false);
   };

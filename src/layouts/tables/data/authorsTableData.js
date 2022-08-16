@@ -59,6 +59,9 @@ export default function FirstTable() {
       }),
     });
     const response = await responseDelete.json();
+    if (response.status === 0) {
+      return alert(`${response.message}`);
+    }
     setDeleteLoader(false);
     window.location.reload(false);
   };

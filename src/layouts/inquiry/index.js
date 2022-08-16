@@ -115,9 +115,14 @@ function Inquiry() {
       }),
     });
     const response = await res.json();
-    setPostEdit(response);
-    setEditLoader(false);
-    window.location.reload(false);
+    if (response.status === 0) {
+      alert(`${response.message}`);
+    } else {
+      alert(`${response.message}`);
+      setPostEdit(response);
+      setEditLoader(false);
+      window.location.reload(false);
+    }
   };
 
   const prepareSearchQuery = (query) => {
@@ -249,6 +254,9 @@ function Inquiry() {
       }),
     });
     const response = await res.json();
+    if (response.status === 0) {
+      return alert(`${response.message}`);
+    }
     setPostQueryRooms(response);
     if (response.status === 1) {
       const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
@@ -272,6 +280,10 @@ function Inquiry() {
         },
       });
       const allQueryData = await response1.json();
+
+      if (allQueryData.status === 0) {
+        return alert(`${allQueryData.message}`);
+      }
       setAll(allQueryData);
       setLoader(false);
       setVisibility(true);
@@ -305,6 +317,9 @@ function Inquiry() {
       },
     });
     const allQueryData = await response1.json();
+    if (allQueryData.status === 0) {
+      return alert(`${allQueryData.message}`);
+    }
     setAll(allQueryData);
     setLoader(false);
   };
