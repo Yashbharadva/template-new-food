@@ -108,6 +108,9 @@ function Tables() {
     } else if (role === "User") {
       role1 = 2;
     }
+    const postName = username;
+    const postEmail = email;
+    const postPassword = password;
     const parsedCreateUser = JSON.parse(localStorage.getItem("user-info"));
     const res = await fetch("https://inquiry-ts.herokuapp.com/admin/register", {
       method: "POST",
@@ -116,10 +119,10 @@ function Tables() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: `${username}`,
+        username: postName,
         role: role1,
-        email: `${email}`,
-        password: `${password}`,
+        email: postEmail,
+        password: postPassword,
       }),
     });
     const response = await res.json();

@@ -94,6 +94,7 @@ function Inquiry() {
   const postEdit = async (title, user) => {
     setEditLoader(true);
     const editedUser = user;
+    const postTitle = title;
     for (let i = 0; i < editedUser.length; i += 1) {
       if (editedUser[i].userId) {
         editedUser[i].id = editedUser[i].userId;
@@ -110,7 +111,7 @@ function Inquiry() {
       },
       body: JSON.stringify({
         roomId: selectedRoom.id,
-        title: `${title}`,
+        title: postTitle,
         users: editedUser,
       }),
     });
@@ -240,7 +241,8 @@ function Inquiry() {
 
   const postQueryRoom = async (title, description, user, text) => {
     setLoader(true);
-    const title1 = title;
+    const postTitle = title;
+    const postDescription = description;
     const parsedPostQueryRoom = JSON.parse(localStorage.getItem("user-info"));
     const res = await fetch("https://inquiry-ts.herokuapp.com/user/post-query-room", {
       method: "POST",
@@ -249,8 +251,8 @@ function Inquiry() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: title1,
-        description: `${description}`,
+        title: postTitle,
+        description: postDescription,
         users: user,
       }),
     });
@@ -262,6 +264,7 @@ function Inquiry() {
     } else {
       setPostQueryRooms(response);
       if (response.status === 1) {
+        const postText = text;
         const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
         const api = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
           method: "POST",
@@ -271,7 +274,7 @@ function Inquiry() {
           },
           body: JSON.stringify({
             roomId: response.data.id,
-            text: `${text}`,
+            text: postText,
           }),
         });
         const response3 = await api.json();
@@ -310,6 +313,7 @@ function Inquiry() {
 
   const postTheQuery = async (text) => {
     setLoader(true);
+    const postText = text;
     const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
       method: "POST",
@@ -319,7 +323,7 @@ function Inquiry() {
       },
       body: JSON.stringify({
         roomId: selectedRoom.id,
-        text: `${text}`,
+        text: postText,
       }),
     });
     const allQueryData1 = await response.json();

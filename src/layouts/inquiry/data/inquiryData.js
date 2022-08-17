@@ -141,6 +141,7 @@ export default function data() {
 
   const postEdit = async (title, user) => {
     setEditLoader(true);
+    const postTitle = title;
     const editedUser = user;
     for (let i = 0; i < editedUser.length; i += 1) {
       if (editedUser[i].userId) {
@@ -158,7 +159,7 @@ export default function data() {
       },
       body: JSON.stringify({
         roomId: selectedRoom.id,
-        title: `${title}`,
+        title: postTitle,
         users: editedUser,
       }),
     });
@@ -173,6 +174,7 @@ export default function data() {
 
   const postTheQuery = async (text) => {
     setLoader(true);
+    const postText = text;
     const parsedPostQuery = JSON.parse(localStorage.getItem("user-info"));
     const response = await fetch("https://inquiry-ts.herokuapp.com/user/post-query", {
       method: "POST",
@@ -182,7 +184,7 @@ export default function data() {
       },
       body: JSON.stringify({
         roomId: selectedRoom.id,
-        text: `${text}`,
+        text: postText,
       }),
     });
     const allQueryData1 = await response.json();
